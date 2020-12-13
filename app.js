@@ -4,8 +4,12 @@ if (process.env.NODE_ENV !== 'production') {
 
 const express = require('express');
 const exphbs  = require('express-handlebars');
+const hbs_section = require('express-handlebars-sections')
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const passport = require('passport')
+const flash = require('express-flash')
+const session = require('express-session')
  
 const app = express();
 const port = process.env.PORT || 8080;
@@ -14,22 +18,38 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cookieParser());
+
+require('./config/passport_config')(passport)
  
 app.engine('hbs', exphbs({
-    extname: '.hbs'
+    extname: '.hbs',
+    helpers: {
+        section: hbs_section()
+    }
 }));
 app.set('view engine', 'hbs');
 
+app.use(flash())
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false
+}))
+app.use(passport.initialize())
+app.use(passport.session())
+
 const mongoose = require("mongoose")
 mongoose.connect(process.env.DATABASE_URL, {
-    useNewUrlParser: true
+    useNewUrlParser: true,
+    useUnifiedTopology: true
 })
 const db = mongoose.connection
 db.on('error', error => console.error(error))
-db.once('open', () => console.log('Connect to Mongoose'))
+db.once('open', () => console.log('Database connected'))
  
 app.use('/', require('./routes/home'))
-app.use('/login', require('./routes/login'))
+const loginRoute = require('./routes/login')(passport)
+app.use('/login', loginRoute)
 app.use('/register', require('./routes/register'))
 
 app.listen(port, () => {
