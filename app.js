@@ -19,8 +19,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cookieParser());
 
-require('./config/passport_config')(passport)
- 
 app.engine('hbs', exphbs({
     extname: '.hbs',
     helpers: {
@@ -35,6 +33,9 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }))
+
+require('./config/passport_config')(passport)
+ 
 app.use(passport.initialize())
 app.use(passport.session())
 

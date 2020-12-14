@@ -3,13 +3,13 @@ const router = express.Router()
 const User = require('../models/user')
 const bcrypt = require('bcrypt')
 const validate = require('../middlewares/validation')
-const { body } = require('express-validator')
+const authenticate = require('../middlewares/authentication')
 
-router.get('/', (req, res) => {
+router.get('/', authenticate.checkNotAuthenticated, (req, res) => {
     res.render('register')
 })
 
-router.post('/', validate.validateRegister(), async (req, res) => {
+router.post('/', authenticate.checkNotAuthenticated, validate.validateRegister(), async (req, res) => {
     const {username, email, password} = req.body
 
     if (!res.locals.fail) {

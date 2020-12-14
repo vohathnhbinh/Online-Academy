@@ -1,5 +1,16 @@
 <header>
     <nav>
     <h1><a href="/">ACA</a></h1>
+    <h2>
+        <ul type="none">
+            {{#if user}}
+                <li>Hello {{user.username}}</li>
+                <li><a href="/login/logout">Logout</a></li>
+            {{else}}
+                <li><a href="/register">Register</a></li>
+                <li><a href="/login">Login</a></li>
+            {{/if}}
+        </ul>
+    </h2>
 </nav>
 </header>

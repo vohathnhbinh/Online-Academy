@@ -1,23 +1,25 @@
 const express = require('express')
+const authentication = require('../middlewares/authentication')
 const router = express.Router()
+const authenticate = require('../middlewares/authentication')
 
 module.exports = passport => {
-    router.get('/', (req, res) => {
+    router.get('/', authenticate.checkNotAuthenticated, (req, res) => {
         res.render('login')
     })
 
-    router.post('/', passport.authenticate('local', {
+    router.post('/', authenticate.checkNotAuthenticated, passport.authenticate('local', {
         successRedirect: '/',
         failureRedirect: '/login',
         failureFlash: true
     }), (req, res) => {
-        console.log(req.body)
         res.redirect('/')
     })
 
-    router.get('/logout', (req,res) => {
-        req.logout()
-        res.redirect('/')
+    router.get('/logout', authenticate.checkAuthenticated, (req,res) => {
+        req.logOut()
+        req.session.destroy()
+        res.redirect('/login')
     })
 
     return router
