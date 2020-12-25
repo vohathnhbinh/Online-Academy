@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt')
 const User = require('../models/user')
 
 module.exports = passport => {
-    const authenticateUser = async (req, username, password, done) => {
+    const authenticateUser = async (username, password, done) => {
         try {
             const user = await User.findOne({
                 username: username
@@ -19,7 +19,7 @@ module.exports = passport => {
         }
     }
 
-    passport.use(new LocalStratedy({passReqToCallback: true}, authenticateUser))
+    passport.use(new LocalStratedy(authenticateUser))
     passport.serializeUser((user, done) => done(null, user.id))
     passport.deserializeUser(async (id, done) => {
         return done(null, await User.findById(id))
