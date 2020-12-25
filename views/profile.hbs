@@ -1,0 +1,135 @@
+<h1 name="errorMsg" id="errorMsg"></h1>
+<div class="mx-5" style="margin-top: 30px">
+    <table class="table table-hover" style="table-layout: fixed" id="profile">
+        <tr data-toggle="collapse" data-target="#collapseFullname">
+            <th>Fullname</th>
+            <td>{{fullname}}</td>
+            <td class="small-col"><i class="fas fa-edit"></i></td>
+            <td class="blue">Edit</td>
+        </tr>
+        <tr class="non-hover">
+            <td colspan="4">
+                <div class="collapse" id="collapseFullname" data-parent="#profile">
+                    <div class="row justify-content-md-center">
+                        <form class="col-md-4" action="" method="post" name="frmFullname" id="frmFullname">
+                            <label for="fullname">Fullname</label>
+                            <input type="text" class="form-control" id="fullname" name="fullname" required>
+                            <button type="submit" class="btn btn-primary mt-2">Save change</button>
+                        </form>
+                    </div>
+                </div>
+            </td>
+        </tr>
+
+        <tr data-toggle="collapse" data-target="#collapseUsername">
+            <th>Username</th>
+            <td>{{username}}</td>
+            <td class="small-col"><i class="fas fa-edit"></i></td>
+            <td class="blue">Edit</td>
+        </tr>
+        <tr class="non-hover">
+            <td colspan="4">
+                <div class="collapse" id="collapseUsername" data-parent="#profile">
+                    <div class="row justify-content-md-center">
+                        <form class="col-md-4" action="" method="post" name="frmUsername" id="frmUsername">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                            <button type="submit" class="btn btn-primary mt-2">Save change</button>
+                        </form>
+                    </div>
+                </div>
+            </td>
+        </tr>
+
+        <tr data-toggle="collapse" data-target="#collapseEmail">
+            <th>Email</th>
+            <td>{{email}}</td>
+            <td class="small-col"><i class="fas fa-edit"></i></td>
+            <td class="blue">Edit</td>
+        </tr>
+        <tr class="non-hover">
+            <td colspan="4">
+                <div class="collapse" id="collapseEmail" data-parent="#profile">
+                    <div class="row justify-content-md-center">
+                        <form class="col-md-4" action="" method="post" name="frmEmail" id="frmEmail">
+                            <label for="email">Email</label>
+                            <input type="text" class="form-control" id="email" name="email" required>
+                            <button type="submit" class="btn btn-primary mt-2">Save change</button>
+                        </form>
+                    </div>
+                </div>
+            </td>
+        </tr>
+
+        <tr data-toggle="collapse" data-target="#collapsePassword">
+            <th colspan="2" style="text-align: center;">Password</th>
+            <td class="small-col"><i class="fas fa-edit"></i></td>
+            <td class="blue">Edit</td>
+        </tr>
+        <tr class="non-hover">
+            <td colspan="4">
+                <div class="collapse" id="collapsePassword" data-parent="#profile">
+                    <div class="row justify-content-md-center">
+                        <form class="col-md-4" action="" method="post" name="frmPassword" id="frmPassword">
+                            <label for="o-password">Old password</label>
+                            <input type="text" class="form-control" id="o-password" name="o-password" required>
+                            <label for="n-password">New password</label>
+                            <input type="text" class="form-control" id="n-password" name="n-password" required>
+                            <button type="submit" class="btn btn-primary mt-2">Save change</button>
+                        </form>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+{{#section 'script'}}
+    <script>
+        const User = require('../models/user')
+
+        $('#frmUsername').on('submit', e => {
+            e.preventDefault();
+
+            const temp_username = $('#username').val();
+            if (temp_username.length < 6) {
+                $('#errorMsg').html('Username must have at least 6 characters')
+                return
+            }
+            User.findOne({
+                username: temp_username
+            }, (err, user) => {
+                if (err) console.log(err)
+                if (user) {
+                    $('#errorMsg').html('Username is not available')
+                    return
+                }
+            })
+            
+        })
+    </script>
+{{/section}}
+
+{{#section 'style'}}
+    <style>
+        .table-hover>tbody>tr.non-hover:hover {
+            background-color: transparent;
+        }
+        .table-hover>tbody>tr>th,
+        .table-hover>tbody>tr>td {
+            border: none;
+        }
+        i.fas {
+            display: none;
+        }
+        .table-hover>tbody>tr:hover i.fas {
+            display: inline-block;
+        }
+        td.small-col {
+            width: 1px;
+        }
+        .table-hover>tbody>tr:hover td.blue {
+            color: blue;
+        }
+    </style>
+{{/section}}

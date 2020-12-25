@@ -52,6 +52,7 @@ app.use('/', require('./routes/home'))
 const loginRoute = require('./routes/login')(passport)
 app.use('/login', loginRoute)
 app.use('/register', require('./routes/register'))
+app.use('/profile', require('./routes/profile'))
 
 app.listen(port, () => {
     console.log(`Listening to requests on http://localhost:${port}`);

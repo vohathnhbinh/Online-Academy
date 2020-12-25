@@ -4,7 +4,8 @@
     <h2>
         <ul type="none">
             {{#if user}}
-                <li>Hello {{user.username}}</li>
+                <li>Hello {{user.fullname}}</li>
+                <li><a href="/profile">Profile</a></li>
                 <li><a href="/login/logout">Logout</a></li>
             {{else}}
                 <li><a href="/register">Register</a></li>

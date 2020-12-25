@@ -10,7 +10,7 @@ router.get('/', authenticate.checkNotAuthenticated, (req, res) => {
 })
 
 router.post('/', authenticate.checkNotAuthenticated, validate.validateRegister(), async (req, res) => {
-    const {username, email, password} = req.body
+    const {username, email, password, fullname} = req.body
 
     if (!res.locals.fail) {
         try {
@@ -18,6 +18,7 @@ router.post('/', authenticate.checkNotAuthenticated, validate.validateRegister()
 
             const user = new User({
                 username,
+                fullname,
                 email,
                 password: hashedPassword,
                 role: 0
@@ -28,12 +29,14 @@ router.post('/', authenticate.checkNotAuthenticated, validate.validateRegister()
             console.log(err)
             res.render('register', {
                 username,
+                fullname,
                 email
             })
         }
     } else {
         res.render('register', {
             username,
+            fullname,
             email
         })
     }
