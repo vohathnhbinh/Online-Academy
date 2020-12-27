@@ -1,9 +1,13 @@
-<h1 name="errorMsg" id="errorMsg"></h1>
+<h1 name="errorMsg" id="errorMsg">
+    {{#if isSuccessful}}
+        Password updated!
+    {{/if}}
+</h1>
 <div class="mx-5" style="margin-top: 30px">
     <table class="table table-hover" style="table-layout: fixed" id="profile">
         <tr data-toggle="collapse" data-target="#collapseFullname">
             <th>Fullname</th>
-            <td>{{fullname}}</td>
+            <td>{{user.fullname}}</td>
             <td class="small-col"><i class="fas fa-edit"></i></td>
             <td class="blue">Edit</td>
         </tr>
@@ -11,7 +15,7 @@
             <td colspan="4">
                 <div class="collapse" id="collapseFullname" data-parent="#profile">
                     <div class="row justify-content-md-center">
-                        <form class="col-md-4" action="" method="post" name="frmFullname" id="frmFullname">
+                        <form class="col-md-4" action="/profile" method="post" name="frmFullname" id="frmFullname">
                             <label for="fullname">Fullname</label>
                             <input type="text" class="form-control" id="fullname" name="fullname" required>
                             <button type="submit" class="btn btn-primary mt-2">Save change</button>
@@ -23,7 +27,7 @@
 
         <tr data-toggle="collapse" data-target="#collapseUsername">
             <th>Username</th>
-            <td>{{username}}</td>
+            <td>{{user.username}}</td>
             <td class="small-col"><i class="fas fa-edit"></i></td>
             <td class="blue">Edit</td>
         </tr>
@@ -31,7 +35,7 @@
             <td colspan="4">
                 <div class="collapse" id="collapseUsername" data-parent="#profile">
                     <div class="row justify-content-md-center">
-                        <form class="col-md-4" action="" method="post" name="frmUsername" id="frmUsername">
+                        <form class="col-md-4" action="/profile" method="post" name="frmUsername" id="frmUsername">
                             <label for="username">Username</label>
                             <input type="text" class="form-control" id="username" name="username" required>
                             <button type="submit" class="btn btn-primary mt-2">Save change</button>
@@ -43,7 +47,7 @@
 
         <tr data-toggle="collapse" data-target="#collapseEmail">
             <th>Email</th>
-            <td>{{email}}</td>
+            <td>{{user.email}}</td>
             <td class="small-col"><i class="fas fa-edit"></i></td>
             <td class="blue">Edit</td>
         </tr>
@@ -51,9 +55,9 @@
             <td colspan="4">
                 <div class="collapse" id="collapseEmail" data-parent="#profile">
                     <div class="row justify-content-md-center">
-                        <form class="col-md-4" action="" method="post" name="frmEmail" id="frmEmail">
+                        <form class="col-md-4" action="/profile" method="post" name="frmEmail" id="frmEmail">
                             <label for="email">Email</label>
-                            <input type="text" class="form-control" id="email" name="email" required>
+                            <input type="email" class="form-control" id="email" name="email" required>
                             <button type="submit" class="btn btn-primary mt-2">Save change</button>
                         </form>
                     </div>
@@ -70,11 +74,11 @@
             <td colspan="4">
                 <div class="collapse" id="collapsePassword" data-parent="#profile">
                     <div class="row justify-content-md-center">
-                        <form class="col-md-4" action="" method="post" name="frmPassword" id="frmPassword">
-                            <label for="o-password">Old password</label>
-                            <input type="text" class="form-control" id="o-password" name="o-password" required>
-                            <label for="n-password">New password</label>
-                            <input type="text" class="form-control" id="n-password" name="n-password" required>
+                        <form class="col-md-4" action="/profile" method="post" name="frmPassword" id="frmPassword">
+                            <label for="o_password">Current password</label>
+                            <input type="password" class="form-control" id="o_password" name="o_password" required>
+                            <label for="n_password">New password</label>
+                            <input type="password" class="form-control" id="n_password" name="n_password" required>
                             <button type="submit" class="btn btn-primary mt-2">Save change</button>
                         </form>
                     </div>
@@ -86,26 +90,56 @@
 
 {{#section 'script'}}
     <script>
-        const User = require('../models/user')
-
         $('#frmUsername').on('submit', e => {
-            e.preventDefault();
-
-            const temp_username = $('#username').val();
+            e.preventDefault()
+            const temp_username = $('#username').val()
             if (temp_username.length < 6) {
                 $('#errorMsg').html('Username must have at least 6 characters')
                 return
             }
-            User.findOne({
-                username: temp_username
-            }, (err, user) => {
-                if (err) console.log(err)
-                if (user) {
+            $.getJSON(`/profile/is-available?username=${temp_username}`, data => {
+                if (data === true) {
+                    $('#frmUsername').off('submit').submit()
+                } else {
                     $('#errorMsg').html('Username is not available')
                     return
                 }
+            }) 
+        })
+
+        $('#frmEmail').on('submit', e => {
+            e.preventDefault()
+            const temp_email = $('#email').val()
+            $.getJSON(`/profile/is-available?email=${temp_email}`, data => {
+                if (data === true) {
+                    $('#frmEmail').off('submit').submit()
+                } else {
+                    $('#errorMsg').html('Email is already in use')
+                    return
+                }
+            }) 
+        })
+
+        $('#frmPassword').on('submit', e => {
+            e.preventDefault()
+            const temp_o_password = $('#o_password').val()
+            const temp_n_password = $('#n_password').val()
+            if (temp_o_password.length < 6 || temp_n_password.length < 6) {
+                $('#errorMsg').html('Password must have at least 6 characters')
+                return
+            }
+            if (temp_o_password === temp_n_password) {
+                $('#errorMsg').html('Your new password must be different from the old one')
+                return
+            }
+            $.getJSON(`/profile/is-found?password=${temp_o_password}`, data => {
+                if (data === true) {
+                    $('#frmPassword').off('submit').submit()
+                } else {
+                    $('#errorMsg').html('Password is incorrect')
+                    return
+                }
             })
-            
         })
     </script>
 {{/section}}
