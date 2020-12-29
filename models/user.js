@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema({
     role: {
         type: Number,
         required:true
+    },
+    activated: {
+        type: Boolean,
+        required: true
     }
 })
 

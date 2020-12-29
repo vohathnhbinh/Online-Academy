@@ -21,7 +21,8 @@ router.post('/', authenticate.checkNotAuthenticated, validate.validateRegister()
                 fullname,
                 email,
                 password: hashedPassword,
-                role: 0
+                role: 0,
+                activated: false
             })
             await user.save()
             res.redirect('/login')
