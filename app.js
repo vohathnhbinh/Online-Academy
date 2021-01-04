@@ -58,12 +58,8 @@ app.use('/login', loginRoute)
 app.use('/register', require('./routes/register'))
 app.use('/profile', require('./routes/profile'))
 app.use('/verify', require('./routes/verify'))
-<<<<<<< HEAD
 app.use('/course',course)
 app.use('/profile',profile)
-=======
-app.use('/course', require('./routes/course'))
->>>>>>> 13a8a2bf578fce62a049acbaa756ec27995918f1
 
 app.use(function(req,res){
     res.render('404',{
