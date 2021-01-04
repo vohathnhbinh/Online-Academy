@@ -28,7 +28,7 @@ router.get('/:id', async (req, res) => {
         const courses = await Course.find({
             category: mongoose.ObjectId(req.params)
         })
-        res.render('course', {
+        res.render('vwCourse/course', {
             user: req.user ? req.user._doc : null,
             categories,
             courses,
