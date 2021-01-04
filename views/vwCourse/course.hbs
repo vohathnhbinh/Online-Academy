@@ -1,0 +1,92 @@
+<<<<<<< HEAD
+{{#section 'script'}}
+    <script>
+        document.getElementById("sometext").addEventListener('click', editDetail);
+        function editDetail(){
+            let x = document.getElementById("sometext");    
+            x.contentEditable = true;
+            //document.getElementById("sometext").contentEditable = false;
+        }
+    </script>
+{{/section}}
+<div class="course-container" style="display: flex;">
+    <div style="width: 30%; border-right: 2px solid red">
+        <div style="display: flex; flex-direction: column;">
+            <a class="btn btn-success" href="javascript:;" role="button"> 
+                <i class="fas fa-plus" aria-hidden="true"></i>
+                Thêm khoá học
+            </a>
+        </div>
+        <div>
+            <p>danh sach khoa hoc</p>
+        </div>
+    </div>
+
+    <div  style="width: 70%; height: 100%; border: 2px solid red">
+        <div style="width: 100%; height: 30%; border-bottom: 2px solid red;">
+            <p>Mô tả khoá học</p>
+            <p id="sometext">This is the paragraph you cant to be able to edit</p>
+        </div>
+        <div style="width: 100%; display: flex;">
+            <a class="btn btn-success" href="javascript:;" role="button" style="width: 20%;"> 
+                <i class="fas fa-plus" aria-hidden="true"></i>
+                Thêm bài giảng
+            </a>
+            <div class="course-listcourse" style="display: flex; flex-shrink: 0; width: 80%; overflow-x: scroll;">
+                <div style="width: 50%; height: 100%; flex:none; border: 2px solid green;">
+                    <p>Video 1</p>
+                </div>
+                <div style="width: 40%; height: 100%; flex:none; border: 2px solid green;">
+                    <p>Video 2</p>
+                </div>
+                <div style="width: 40%; height: 100%; flex:none; border: 2px solid green;">
+                    <p>Video 3</p>
+                </div>
+                <div style="width: 40%; height: 100%; flex:none; border: 2px solid green;">
+                    <p>Video 4</p>
+                </div>
+                <div style="width: 40%; height: 100%; flex:none; border: 2px solid green;">
+                    <p>Video 5</p>
+                </div>
+                <div style="width: 40%; height: 100%; flex:none; border: 2px solid green;">
+                    <p>Video 6</p>
+                </div>
+            </div>
+            <div>
+                <p>Count number video: </p>
+            </div>
+        </div>
+    </div>
+=======
+<div class="card">
+    {{#if empty}}
+    <div class="card-body">
+        <p class="card-text">Không có dữ liệu.</p>
+    </div>
+    {{else}}
+        <div class="card-body">
+            <div class="row">
+                {{#each courses}}
+                    <div class="col-sm-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h6 class="card-title">{{this.title}}</h6>
+                                <h5 class="card-title text-danger">{{this.fee}}</h5>
+                                <p class="card-text">
+                                    {{this.minDesc}}
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                <a class="btn btn-sm btn-outline-primary" href="#" role="button">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                    Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+    {{/if}}
+>>>>>>> 13a8a2bf578fce62a049acbaa756ec27995918f1
+</div>

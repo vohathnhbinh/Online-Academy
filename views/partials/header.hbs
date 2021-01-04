@@ -1,18 +1,38 @@
 <header>
     <nav>
-    <h1><a href="/">ACA</a></h1>
-    <h2>
-        <ul type="none">
-            {{#if user}}
-                <li>Hello {{user.fullname}}</li>
-                <li><a href="/profile">Profile</a></li>
-                <li><a href="/login/logout">Logout</a></li>
-                <li><a href="/verify">Verify</a></li>
-            {{else}}
-                <li><a href="/register">Register</a></li>
-                <li><a href="/login">Login</a></li>
-            {{/if}}
-        </ul>
-    </h2>
-</nav>
+        <h1><a href="/">ACA</a></h1>
+        <h2>
+            <ul type="none">
+                {{#if user}}
+                    <li>Hello {{user.fullname}}</li>
+                    <li><a href="/profile">Profile</a></li>
+                    <li><a href="/login/logout">Logout</a></li>
+                    <li><a href="/verify">Verify</a></li>
+                {{else}}
+                    <li><a href="/register">Register</a></li>
+                    <li><a href="/login">Login</a></li>
+                {{/if}}
+            </ul>
+        </h2>
+        {{#if categories}}
+            <div id="category">
+                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseWeb">Web</button>
+                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseMobile">Mobile</button>
+                <div class="collapse" id="collapseWeb" data-parent="#category">
+                    {{#each categories}}
+                    {{#ifEquals this.type "Web"}}
+                            <li><a href="/course/{{this._id}}">{{this.name}}</a></li>
+                        {{/ifEquals}}
+                    {{/each}}
+                </div>
+                <div class="collapse" id="collapseMobile" data-parent="#category">
+                    {{#each categories}}
+                        {{#ifEquals this.type "Mobile"}}
+                            <li><a href="/course/{{this._id}}">{{this.name}}</a></li>
+                        {{/ifEquals}}
+                    {{/each}}
+                </div>
+            </div>
+        {{/if}}
+    </nav>
 </header>
