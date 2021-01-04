@@ -1,0 +1,43 @@
+{{#section 'script'}}
+    <script src="https://cdn.tiny.cloud/1/o2ds10rhf7w3ectp2eh67hk821s2eq0sgrj2dys1gw00f7oj/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+        selector: '#txtFullDesc'
+      });
+    </script>
+    <script>
+        tinymce.init({
+        selector: '#txtMinDesc'
+      });
+    </script>
+{{/section}}
+
+<div class="row justify-content-md-center" style="margin-top: 30px">
+    <div class="col-md-5">
+        <div class="mb-3">
+            <label for="formFile" class="form-label">Hình ảnh khóa học</label>
+            <input class="form-control" type="file" accept="image/*" id="formFile">
+        </div>
+
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">Tên khóa học</label>
+            <input class="form-control" type="text" placeholder="Tên khóa học" aria-label="default input example">
+        </div>
+        
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">Mô tả khóa học</label>
+            <textarea id="txtMinDesc" class="form-control" id="exampleFormControlTextarea1" rows="10" cols="30"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">Chi tiết khóa học</label>
+            <textarea id="txtFullDesc" class="form-control h200" id="exampleFormControlTextarea1"  rows="10" cols="30"></textarea>
+        </div>
+
+        <label for="exampleFormControlTextarea1" class="form-label">Học phí</label>
+        <div class="input-group mb-3">            
+            <span class="input-group-text">VND</span>
+            <input class="form-control" type="text" aria-label="Amount (to the nearest dollar)" placeholder="Số tiền học phí" aria-label="default input example">
+        </div>
+    </div>
+</div>
