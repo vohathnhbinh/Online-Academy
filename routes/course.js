@@ -18,6 +18,10 @@ router.get('/test', async (req, res) => {
     }
 })
 
+router.get('/add', (req,res) => {
+    res.render('vwCourse/add');
+})
+
 router.get('/:id', async (req, res) => {
     try {
         const categories = await Category.find({}).lean()

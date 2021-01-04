@@ -58,6 +58,12 @@ app.use('/profile', require('./routes/profile'))
 app.use('/verify', require('./routes/verify'))
 app.use('/course', require('./routes/course'))
 
+app.use(function(req,res){
+    res.render('404',{
+        layout: false 
+    });
+});
+
 app.listen(port, () => {
     console.log(`Listening to requests on http://localhost:${port}`);
 });
