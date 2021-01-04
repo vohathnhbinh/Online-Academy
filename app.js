@@ -26,6 +26,8 @@ app.engine('hbs', exphbs({
     }
 }));
 app.set('view engine', 'hbs');
+const hbs = exphbs.create({})
+require('./config/helper')(hbs)
 
 app.use(flash())
 app.use(session({
@@ -54,6 +56,7 @@ app.use('/login', loginRoute)
 app.use('/register', require('./routes/register'))
 app.use('/profile', require('./routes/profile'))
 app.use('/verify', require('./routes/verify'))
+app.use('/course', require('./routes/course'))
 
 app.listen(port, () => {
     console.log(`Listening to requests on http://localhost:${port}`);

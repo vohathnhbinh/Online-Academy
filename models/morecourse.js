@@ -1,6 +1,11 @@
 const mongoose = require('mongoose')
 
 const morecourseSchema = new mongoose.Schema({
+    course: {
+        type: String,
+        required: true,
+        unique: true
+    },
     student: [{
         student: {
             type: mongoose.Schema.Types.ObjectId,

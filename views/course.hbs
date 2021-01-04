@@ -1,0 +1,31 @@
+<div class="card">
+    {{#if empty}}
+    <div class="card-body">
+        <p class="card-text">Không có dữ liệu.</p>
+    </div>
+    {{else}}
+        <div class="card-body">
+            <div class="row">
+                {{#each courses}}
+                    <div class="col-sm-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h6 class="card-title">{{this.title}}</h6>
+                                <h5 class="card-title text-danger">{{this.fee}}</h5>
+                                <p class="card-text">
+                                    {{this.minDesc}}
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                <a class="btn btn-sm btn-outline-primary" href="#" role="button">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                    Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+    {{/if}}
+</div>
