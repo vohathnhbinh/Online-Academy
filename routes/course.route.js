@@ -22,6 +22,20 @@ router.get('/add', (req,res) => {
     res.render('vwCourse/add');
 })
 
+router.post('/add',function(req,res){
+    const {img,namecourse,category,mindesc,fulldesc,fee}=req.body;
+    const course=new Course({
+        title:namecourse,
+        category:category,
+        smallPicture:img,        
+        fee:fee,
+        mindesc:mindesc,
+        fulldesc:fulldesc
+    });
+    console.log(req.body);
+    res.send('OK');
+});
+
 router.get('/', (req,res)=>{
     res.render('vwCourse/profilecourse');
 })

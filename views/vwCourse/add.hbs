@@ -11,33 +11,51 @@
       });
     </script>
 {{/section}}
+<form action="" method="post">
+    <div class="card justify-content-md-center">
+        <h5 class="card-header">
+            Thêm khóa học mới
+        </h5>
+        <div class="card-body">
+            <div class="col-md-8">
+                <div class="mb-3">
+                    <label for="Image" class="form-label">Hình ảnh khóa học</label>
+                    <input id="Image" name="imgCourse" class="form-control" type="file" accept="image/*" id="formFile">
+                </div>
 
-<div class="row justify-content-md-center" style="margin-top: 30px">
-    <div class="col-md-5">
-        <div class="mb-3">
-            <label for="formFile" class="form-label">Hình ảnh khóa học</label>
-            <input class="form-control" type="file" accept="image/*" id="formFile">
-        </div>
+                <div class="mb-3">
+                    <label for="txtNameCourse" class="form-label" >Tên khóa học</label>
+                    <input id="txtNameCourse" name="NameCourse" class="form-control" type="text" placeholder="Tên khóa học" >
+                </div>
+                
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="inputCategory">Lĩnh vực</label>
+                    <select class="form-select" id="inputCategory" name="CategoryCourse">
+                        <option selected>Web</option>
+                        <option value="1">Mobile</option>                       
+                    </select>
+                </div>
 
-        <div class="mb-3">
-            <label for="exampleFormControlTextarea1" class="form-label">Tên khóa học</label>
-            <input class="form-control" type="text" placeholder="Tên khóa học" aria-label="default input example">
-        </div>
-        
-        <div class="mb-3">
-            <label for="exampleFormControlTextarea1" class="form-label">Mô tả khóa học</label>
-            <textarea id="txtMinDesc" class="form-control" id="exampleFormControlTextarea1" rows="10" cols="30"></textarea>
-        </div>
 
-        <div class="mb-3">
-            <label for="exampleFormControlTextarea1" class="form-label">Chi tiết khóa học</label>
-            <textarea id="txtFullDesc" class="form-control h200" id="exampleFormControlTextarea1"  rows="10" cols="30"></textarea>
-        </div>
+                <div class="mb-3">
+                    <label for="txtMinDesc" class="form-label" >Mô tả khóa học</label>
+                    <textarea id="txtMinDesc" name="MinDesc" class="form-control" id="exampleFormControlTextarea1" rows="10" cols="30"></textarea>
+                </div>
 
-        <label for="exampleFormControlTextarea1" class="form-label">Học phí</label>
-        <div class="input-group mb-3">            
-            <span class="input-group-text">VND</span>
-            <input class="form-control" type="text" aria-label="Amount (to the nearest dollar)" placeholder="Số tiền học phí" aria-label="default input example">
+                <div class="mb-3">
+                    <label for="txtFullDesc" class="form-label">Chi tiết khóa học</label>
+                    <textarea id="txtFullDesc" name="FullDesc" class="form-control h200" id="exampleFormControlTextarea1"  rows="10" cols="30"></textarea>
+                </div>
+
+                <label for="txtFee" class="form-label">Học phí</label>
+                <div class="input-group mb-3">            
+                    <span class="input-group-text">VND</span>
+                    <input id="txtFee" name="Fee" class="form-control" type="text" aria-label="Amount (to the nearest dollar)" placeholder="Số tiền học phí" aria-label="default input example">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Thêm khóa học</button>
+            </div>
         </div>
     </div>
-</div>
+</form>
+
