@@ -41,6 +41,10 @@ router.get('/is-found', async (req, res) => {
     }
 })
 
+router.get('/author', (req,res)=>{
+    res.render('vwProfile/author');
+})
+
 router.post('/', async (req, res) => {
     let updatedValue = {fullname, username, email, n_password} = req.body
     

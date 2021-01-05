@@ -33,16 +33,6 @@ const courseSchema = new mongoose.Schema({
     fullDesc: {
         type: String,
         required: true
-    },
-    more: { // Thong tin khac
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'MoreCourse',
-        required: true
-    },
-    content: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'CourseContent',
-        required: true
     }
 })
 

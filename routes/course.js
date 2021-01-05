@@ -22,6 +22,14 @@ router.get('/add', (req,res) => {
     res.render('vwCourse/add');
 })
 
+router.get('/', (req,res)=>{
+    res.render('vwCourse/profilecourse');
+})
+
+router.get('/profileauthor', (req,res)=>{
+    res.render('vwProfile/author');
+})
+
 router.get('/:id', async (req, res) => {
     try {
         const categories = await Category.find({}).lean()

@@ -10,8 +10,6 @@ const bodyParser = require('body-parser');
 const passport = require('passport')
 const flash = require('express-flash')
 const session = require('express-session')
-const course = require('./routes/courses.route')
-const profile = require('./routes/profile.route')
  
 const app = express();
 const port = process.env.PORT || 8080;
@@ -58,8 +56,8 @@ app.use('/login', loginRoute)
 app.use('/register', require('./routes/register'))
 app.use('/profile', require('./routes/profile'))
 app.use('/verify', require('./routes/verify'))
-app.use('/course',course)
-app.use('/profile',profile)
+app.use('/course', require('./routes/course'))
+app.use('/profile', require('./routes/profile'))
 
 app.use(function(req,res){
     res.render('404',{
