@@ -30,7 +30,7 @@ router.get('/profileauthor', (req,res)=>{
     res.render('vwProfile/author');
 })
 
-router.get('/:id', async (req, res) => {
+router.get('/byCat/:id', async (req, res) => {
     try {
         const categories = await Category.find({}).lean()
         const courses = await Course.find({

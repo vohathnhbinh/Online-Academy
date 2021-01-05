@@ -50,14 +50,13 @@ const db = mongoose.connection
 db.on('error', error => console.error(error))
 db.once('open', () => console.log('Database connected'))
  
-app.use('/', require('./routes/home'))
-const loginRoute = require('./routes/login')(passport)
+app.use('/', require('./routes/home.route'))
+const loginRoute = require('./routes/login.route')(passport)
 app.use('/login', loginRoute)
-app.use('/register', require('./routes/register'))
-app.use('/profile', require('./routes/profile'))
-app.use('/verify', require('./routes/verify'))
-app.use('/course', require('./routes/course'))
-app.use('/profile', require('./routes/profile'))
+app.use('/register', require('./routes/register.route'))
+app.use('/profile', require('./routes/profile.route'))
+app.use('/verify', require('./routes/verify.route'))
+app.use('/course', require('./routes/course.route'))
 
 app.use(function(req,res){
     res.render('404',{
