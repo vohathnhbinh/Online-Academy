@@ -7,7 +7,7 @@ const morecourseSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    student: [{
+    students: [{
         student: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
@@ -21,8 +21,7 @@ const morecourseSchema = new mongoose.Schema({
         amount: Number // So luong hoc vien danh gia
     },
     uploadDate: { // Ngay dang
-        type: Date,
-        required: true
+        type: Date
     },
     viewAmount: Number, // So luong click xem chi tiet
     updatedDate: Date // Lan cap nhat cuoi

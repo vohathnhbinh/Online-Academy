@@ -60,7 +60,7 @@
 <div class="card">
     {{#if empty}}
     <div class="card-body">
-        <p class="card-text">Không có dữ liệu.</p>
+        <p class="card-text">No data</p>
     </div>
     {{else}}
         <div class="card-body">
@@ -70,13 +70,13 @@
                         <div class="card h-100">
                             <div class="card-body">
                                 <h6 class="card-title">{{this.title}}</h6>
-                                <h5 class="card-title text-danger">{{this.fee}}</h5>
+                                <h5 class="card-title text-danger">{{this.fee.price}}</h5>
                                 <p class="card-text">
                                     {{this.minDesc}}
                                 </p>
                             </div>
                             <div class="card-footer">
-                                <a class="btn btn-sm btn-outline-primary" href="#" role="button">
+                                <a class="btn btn-sm btn-outline-primary" href="/course/detail/{{this._id}}" role="button">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                     Details
                                 </a>

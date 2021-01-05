@@ -5,7 +5,7 @@ const User = require('../models/user')
 const bcrypt = require('bcrypt')
 
 router.get('/', authenticate.checkAuthenticated, (req, res) => {
-    res.render('profile', {
+    res.render('vwProfile/profile', {
         user: req.user ? req.user._doc : null
     })
 })

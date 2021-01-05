@@ -1,0 +1,51 @@
+<div class="card">
+    <h5 class="card-header">
+        {{morecourse.course.title}}
+    </h5>
+    <div class="card-body">
+        <img src="/public/imgs/sp/{{ProID}}/main.jpg" alt="{{ProName}}" title="{{ProName}}">
+        <p class="card-text mt-3">Price: <span class="text-danger font-weight-bold">{{morecourse.course.fee.price}}</span></p>
+        <p class="card-text">
+            {{{morecourse.course.fullDesc}}}
+        </p>
+        {{#if user}}
+            <form action="/course/join" method="POST" id="frmJoin">
+                <div class="row form-group">
+                    <div class="col-sm-4">
+                        <div class="input-group mb-3">
+                            <input type="hidden" value="{{morecourse.course._id}}" name="id" id="id">
+                            <button class="btn btn-outline-primary" type="submit">
+                                Join
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            {{#if isIn}}
+                <h3>Chapter 1...?</h3>
+            {{/if}}
+        {{/if}}
+        <h3 id="errorMsg">
+            {{#if successful}}
+                Join successful
+            {{/if}}
+        </h3>
+    </div>
+</div>
+
+{{#section 'script'}}
+    <script>
+        $('#frmJoin').on('submit', e => {
+            e.preventDefault()
+            const temp_id = $('#id').val()
+            $.getJSON(`/course/has-joined?courseId=${temp_id}`, data => {
+                if (data === false) {
+                    $('#frmJoin').off('submit').submit()
+                } else {
+                    $('#errorMsg').html('You have already joined the course')
+                    return
+                }
+            }) 
+        })
+    </script>
+{{/section}}
