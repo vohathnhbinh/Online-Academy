@@ -12,7 +12,7 @@ router.get('/test', async (req, res) => {
             name: "Python"
         })
         let course = new Course({
-            title: "Python Web Development",
+            title: "Python Web Development 1",
             category: category._id,
             teacher: req.user._doc._id,
             fee: {
@@ -30,22 +30,34 @@ router.get('/test', async (req, res) => {
     }
 })
 
-router.get('/add', (req,res) => {
+router.get('/add',  (req,res) => {
     res.render('vwCourse/add');
 })
 
-router.post('/add',function(req,res){
-    const {img,namecourse,category,mindesc,fulldesc,fee}=req.body;
-    const course=new Course({
-        title:namecourse,
-        category:category,
-        smallPicture:img,        
-        fee:fee,
-        mindesc:mindesc,
-        fulldesc:fulldesc
-    });
-    console.log(req.body);
-    res.send('OK');
+router.post('/add', async function(req,res){
+    const {imgCourse, NameCourse, CategoryCourse, MinDesc, FullDesc, Fee}=req.body;   
+    try {
+        let category = await Category.findOne({
+            name: CategoryCourse
+        })
+        let course = new Course({
+            title: NameCourse,
+            category: category._id,
+            teacher: req.user._doc._id,
+            fee: {
+                price: Fee,
+                sale: 10
+            },
+            smallPicture: imgCourse,
+            minDesc: MinDesc,
+            fullDesc: FullDesc
+        })
+        console.log(course);
+        await course.save()
+        res.redirect('/')
+    } catch(err) {
+        console.log(err)
+    }    
 });
 
 router.get('/', (req,res)=>{
