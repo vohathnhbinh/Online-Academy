@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const multer = require('multer')
 const Category = require('../models/category')
 const Course = require('../models/course')
 const MoreCourse = require('../models/morecourse')
@@ -36,10 +37,14 @@ router.get('/add',  (req,res) => {
 
 router.post('/add', async function(req,res){
     const {imgCourse, NameCourse, CategoryCourse, MinDesc, FullDesc, Fee}=req.body;   
-    try {
+    
+    try {       
+       
+
         let category = await Category.findOne({
             name: CategoryCourse
         })
+        
         let course = new Course({
             title: NameCourse,
             category: category._id,
@@ -53,7 +58,8 @@ router.post('/add', async function(req,res){
             fullDesc: FullDesc
         })
         console.log(course);
-        await course.save()
+        
+        //await course.save()
         res.redirect('/')
     } catch(err) {
         console.log(err)
