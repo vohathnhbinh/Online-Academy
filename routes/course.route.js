@@ -6,7 +6,6 @@ const Course = require('../models/course')
 const MoreCourse = require('../models/morecourse')
 const User = require('../models/user')
 const utils = require('../config/utils')
-const { find } = require('../models/category')
 
 router.get('/test', async (req, res) => {
     try {
@@ -69,18 +68,6 @@ router.post('/add', async function(req,res){
     }    
 });
 
-router.get('/', (req,res)=>{
-    res.render('vwCourse/profilecourse');
-})
-
-/*router.get('/mycourse/:id', (req,res)=>{
-    res.render('vwCourse/');
-}) */ // Chi tiet khoa hoc gianh cho giao vien (dung de chinh sua, them bai giang)
-
-router.get('/profileauthor', (req,res)=>{
-    res.render('vwProfile/author');
-})
-
 router.get('/has-joined', async (req, res) => {
     const courseId = req.query.courseId
     try {
@@ -136,6 +123,7 @@ router.get('/byCat', async (req, res) => {
         const courses = await Course.find({
             category: utils.convertId(categoryId)
         }).populate('teacher').populate('category').lean()
+        req.session.courses = courses
 
         res.render('vwCourse/course', {
             user: req.user ? req.user._doc : null,

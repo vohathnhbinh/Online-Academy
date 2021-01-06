@@ -1,38 +1,60 @@
-<header>
-    <nav>
-        <h1><a href="/">ACA</a></h1>
-        <h2>
-            <ul type="none">
-                {{#if user}}
-                    <li>Hello {{user.fullname}}</li>
-                    <li><a href="/profile">Profile</a></li>
-                    <li><a href="/login/logout">Logout</a></li>
-                    <li><a href="/verify">Verify</a></li>
-                {{else}}
-                    <li><a href="/register">Register</a></li>
-                    <li><a href="/login">Login</a></li>
-                {{/if}}
-            </ul>
-        </h2>
-        {{#if categories}}
-            <div id="category">
-                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseWeb">Web</button>
-                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseMobile">Mobile</button>
-                <div class="collapse" id="collapseWeb" data-parent="#category">
-                    {{#each categories}}
-                    {{#ifEquals this.type "Web"}}
-                            <li><a href="/course/byCat?categoryId={{this._id}}">{{this.name}}</a></li>
-                        {{/ifEquals}}
-                    {{/each}}
-                </div>
-                <div class="collapse" id="collapseMobile" data-parent="#category">
-                    {{#each categories}}
-                        {{#ifEquals this.type "Mobile"}}
-                            <li><a href="/course/byCat?categoryId={{this._id}}">{{this.name}}</a></li>
-                        {{/ifEquals}}
-                    {{/each}}
-                </div>
-            </div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand text-danger" href="/"><h1>ACA</h1></a>
+    <ul class="navbar-nav mr-auto">
+        {{#if user}}
+            <span class="navbar-text text-primary"><h3>Hello {{user.fullname}}</h3></span>
+            <li class="nav-item"><a class="nav-link" href="/profile"><h3>Profile</h3></a></li>
+            <li class="nav-item"><a class="nav-link" href="/login/logout"><h3>Logout</h3></a></li>
+            <li class="nav-item"><a class="nav-link" href="/verify"><h3>Verify</h3></a></li>
+        {{else}}
+            <li class="nav-item"><a class="nav-link" href="/register"><h3>Register</h3></a></li>
+            <li class="nav-item"><a class="nav-link" href="/login"><h3>Login</h3></a></li>
         {{/if}}
-    </nav>
-</header>
+    </ul>
+    <form action="/search" class="form-inline my-2 my-lg-0" method="GET">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" name="q">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+</nav>
+{{#if categories}}
+    <div id="category">
+        <button class="btn btn-outline-dark btn-block" type="button" data-toggle="collapse" data-target="#collapseWeb">Web</button>
+        <div class="collapse container" id="collapseWeb" data-parent="#category">
+            <div class="row row-cols-3">
+                {{#each categories}}
+                    {{#ifEquals this.type "Web"}}
+                        <div class="col-sm">
+                            <a class="btn btn-outline-danger btn-block" href="/course/byCat?categoryId={{this._id}}">{{this.name}}</a>
+                        </div>
+                    {{/ifEquals}}
+                {{/each}}
+            </div>
+        </div>
+        <button class="btn btn-outline-dark btn-block" type="button" data-toggle="collapse" data-target="#collapseMobile">Mobile</button>
+        <div class="collapse container" id="collapseMobile" data-parent="#category">
+            <div class="row row-cols-3">
+                {{#each categories}}
+                    {{#ifEquals this.type "Mobile"}}
+                        <div class="col-sm">
+                            <a class="btn btn-outline-danger btn-block" href="/course/byCat?categoryId={{this._id}}">{{this.name}}</a>
+                        </div>
+                    {{/ifEquals}}
+                {{/each}}
+            </div>
+        </div>
+    </div>
+{{/if}}
+
+{{#section 'style'}}
+    <style>
+    </style>
+{{/section}}
+
+{{#section 'script'}}
+    <script>
+        $(document).ready(function() {
+            $('li.active').removeClass('active');
+            $('a[href="' + location.pathname + '"]').closest('li').addClass('active'); 
+        });
+    </script>
+{{/section}}
