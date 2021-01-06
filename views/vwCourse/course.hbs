@@ -68,6 +68,7 @@
                 {{#each courses}}
                     <div class="col-sm-4 mb-3">
                         <div class="card h-100">
+                            <img src="{{this.smallPicture}}" class="card-img-top" alt="{{this.title}}">
                             <div class="card-body">
                                 <h6 class="card-title">{{this.title}}</h6>
                                 <h5 class="card-title text-danger">{{this.fee.price}}</h5>

@@ -35,6 +35,7 @@ router.get('/add', async (req,res) => {
     try {
         const categories = await Category.find({}).lean()
         res.render('vwCourse/add', {
+            user: req.user ? req.user._doc : null,
             categories
         })
     } catch(err) {
