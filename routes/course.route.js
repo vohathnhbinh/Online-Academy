@@ -30,19 +30,24 @@ router.get('/test', async (req, res) => {
     }
 })
 
-router.get('/add',  (req,res) => {
-    res.render('vwCourse/add');
+router.get('/add', async (req,res) => {
+    try {
+        const categories = await Category.find({}).lean()
+        res.render('vwCourse/add', {
+            categories
+        })
+    } catch(err) {
+        console.log(err)
+    }
 })
 
 router.post('/add', async function(req,res){
-    const {imgCourse, NameCourse, CategoryCourse, MinDesc, FullDesc, Fee}=req.body;   
+    const {imgCourse, NameCourse, CategoryCourse, MinDesc, FullDesc, Fee}=req.body;
+    console.log(req.body) 
     try {
-        let category = await Category.findOne({
-            name: CategoryCourse
-        })
         let course = new Course({
             title: NameCourse,
-            category: category._id,
+            category: utils.convertId(CategoryCourse),
             teacher: req.user._doc._id,
             fee: {
                 price: Fee,
