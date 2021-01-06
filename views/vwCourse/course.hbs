@@ -70,14 +70,17 @@
                         <div class="card h-100">
                             <img src="{{this.smallPicture}}" class="card-img-top" alt="{{this.title}}">
                             <div class="card-body">
-                                <h6 class="card-title">{{this.title}}</h6>
-                                <h5 class="card-title text-danger">{{this.fee.price}}</h5>
+                                <h5 class="card-title">{{this.title}}</h6>
+                                <h6 class="card-subtitle">by {{this.teacher.fullname}}</h5>
+                                <h6 class="text-primary pt-4">{{this.category.name}}</h6>
+                                <h5 class="text-danger">{{this.fee.price}} VND</h5>
+                                <h5 class="text-warning">Sale off: {{this.fee.sale}}%</h5>
                                 <p class="card-text">
-                                    {{this.minDesc}}
+                                    {{{this.minDesc}}}
                                 </p>
                             </div>
                             <div class="card-footer">
-                                <a class="btn btn-sm btn-outline-primary" href="/course/detail/{{this._id}}" role="button">
+                                <a class="btn btn-sm btn-outline-primary" href="/course/detail?courseId={{this._id}}" role="button">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                     Details
                                 </a>

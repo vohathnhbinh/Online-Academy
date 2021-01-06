@@ -21,14 +21,14 @@
                 <div class="collapse" id="collapseWeb" data-parent="#category">
                     {{#each categories}}
                     {{#ifEquals this.type "Web"}}
-                            <li><a href="/course/byCat/{{this._id}}">{{this.name}}</a></li>
+                            <li><a href="/course/byCat?categoryId={{this._id}}">{{this.name}}</a></li>
                         {{/ifEquals}}
                     {{/each}}
                 </div>
                 <div class="collapse" id="collapseMobile" data-parent="#category">
                     {{#each categories}}
                         {{#ifEquals this.type "Mobile"}}
-                            <li><a href="/course/byCat/{{this._id}}">{{this.name}}</a></li>
+                            <li><a href="/course/byCat?categoryId={{this._id}}">{{this.name}}</a></li>
                         {{/ifEquals}}
                     {{/each}}
                 </div>

@@ -62,7 +62,14 @@ app.use(function(req,res){
     res.render('404',{
         layout: false 
     });
-});
+})
+
+app.use(function (err, req, res, next) {
+    console.error(err.stack);
+    res.render('500', {
+        layout: false
+    })
+})
 
 app.listen(port, () => {
     console.log(`Listening to requests on http://localhost:${port}`);

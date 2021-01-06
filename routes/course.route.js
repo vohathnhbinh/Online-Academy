@@ -4,8 +4,9 @@ const multer = require('multer')
 const Category = require('../models/category')
 const Course = require('../models/course')
 const MoreCourse = require('../models/morecourse')
+const User = require('../models/user')
 const utils = require('../config/utils')
-const { findOneAndUpdate } = require('../models/category')
+const { find } = require('../models/category')
 
 router.get('/test', async (req, res) => {
     try {
@@ -104,33 +105,37 @@ router.post('/join', async (req, res) => {
                     students: {
                         student: req.user._doc._id
                     }
+                },
+                $inc: {
+                    studentNum: 1
                 }
             },
             {
                 new: true,
-                upsert: true,
                 useFindAndModify: false
             }
-        ).populate('course').lean()
+        ).populate({
+            path: 'course',
+            model: Course,
+            populate: {
+                path: 'teacher',
+                model: User
+            }
+        }).populate('students.student').lean()
         
-        res.render('vwCourse/detail', {
-            user: req.user ? req.user._doc : null,
-            morecourse,
-            empty: morecourse.length === 0,
-            successful: true,
-            isIn: true
-        })
+        res.redirect(`detail?courseId=${req.body.id}`)
     } catch(err) {
         console.log(err)
     }
 })
 
-router.get('/byCat/:id', async (req, res) => {
+router.get('/byCat', async (req, res) => {
     try {
         const categories = await Category.find({}).lean()
+        const categoryId = req.query.categoryId
         const courses = await Course.find({
-            category: utils.convertId(req.params.id)
-        }).lean()
+            category: utils.convertId(categoryId)
+        }).populate('teacher').populate('category').lean()
 
         res.render('vwCourse/course', {
             user: req.user ? req.user._doc : null,
@@ -143,11 +148,12 @@ router.get('/byCat/:id', async (req, res) => {
     }
 })
 
-router.get('/detail/:id', async (req, res) => {
+router.get('/detail', async (req, res) => {
     try {
+        const courseId = req.query.courseId
         const morecourse = await MoreCourse.findOneAndUpdate(
             {
-                course: utils.convertId(req.params.id)
+                course: utils.convertId(courseId)
             },
             {
                 $inc: {
@@ -159,23 +165,75 @@ router.get('/detail/:id', async (req, res) => {
                 upsert: true,
                 useFindAndModify: false
             }
-        ).populate('course').lean()
-        
+        ).populate({
+            path: 'course',
+            model: Course,
+            populate: {
+                path: 'teacher',
+                model: User
+            }
+        }).populate('students.student').lean()
+
         let isIn = false
         const userId = req.user ? req.user._doc._id : null
-        for (i = 0; i < morecourse.students.length; i++) {
-            if (morecourse.students[i].student.equals(userId)) {
+        const studentNum = morecourse.students ? morecourse.students.length : 0
+        for (i = 0; i < studentNum; i++) {
+            if (morecourse.students[i].student._id.equals(userId)) {
                 isIn = true
                 break
             }
         }
 
+        const altMorecourses = await MoreCourse.find({
+            course: {$ne: utils.convertId(courseId)}
+        }).populate({
+            path: 'course',
+            model: 'Course',
+            populate: {
+                path: 'category',
+                model: Category,
+                match: {
+                    _id: morecourse.course.category
+                }
+            },
+            populate: {
+                path: 'teacher',
+                model: User
+            }
+        }).sort({
+            studentNum: -1 // Descending
+        }).limit(5).lean()
+        console.log(altMorecourses)
         res.render('vwCourse/detail', {
             user: req.user ? req.user._doc : null,
             morecourse,
-            empty: morecourse.length === 0,
-            isIn
+            isIn,
+            altMorecourses
         })
+    } catch(err) {
+        console.log(err)
+    }
+})
+
+router.post('/feedback', async (req, res) => {
+    try {
+        console.log(req.body.feedback)
+        const morecourse = await MoreCourse.findOneAndUpdate(
+            {
+                course: utils.convertId(req.body.id),
+                'students.student': req.user._doc._id
+            },
+            {
+                $set: {
+                    'students.$.feedback': req.body.feedback
+                }
+            },
+            {
+                new: true,
+                useFindAndModify: false
+            }
+        )
+        res.redirect(`detail?courseId=${req.body.id}`)
     } catch(err) {
         console.log(err)
     }
