@@ -38,13 +38,13 @@
     </div>
     {{else}}
         <div class="card-body">
-            <div class="row row-cols-3">
+            <div class="row">
                 {{#each courses}}
                     <div class="col-sm-4 mb-3">
                         <div class="card h-100">
                             <img src="{{this.smallPicture}}" class="card-img-top" alt="{{this.title}}">
                             <div class="card-body">
-                                <h5 class="card-title">{{this.title}}</h6>
+                                <h5 class="card-title">{{this.title}}</h5>
                                 <h6 class="card-subtitle">by {{this.teacher.fullname}}</h5>
                                 <h6 class="text-primary pt-4">{{this.category.name}}</h6>
                                 <h5 class="text-danger">{{this.fee.price}} VND</h5>

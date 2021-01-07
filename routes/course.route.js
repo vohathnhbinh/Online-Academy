@@ -6,7 +6,6 @@ const Course = require('../models/course')
 const MoreCourse = require('../models/morecourse')
 const User = require('../models/user')
 const utils = require('../config/utils')
-const course = require('../models/course')
 
 router.get('/test', async (req, res) => {
     try {
@@ -115,14 +114,7 @@ router.post('/join', async (req, res) => {
                 new: true,
                 useFindAndModify: false
             }
-        ).populate({
-            path: 'course',
-            model: Course,
-            populate: {
-                path: 'teacher',
-                model: User
-            }
-        }).populate('students.student').lean()
+        )
         
         res.redirect(`detail?courseId=${req.body.id}`)
     } catch(err) {
