@@ -6,6 +6,7 @@ const Course = require('../models/course')
 const MoreCourse = require('../models/morecourse')
 const User = require('../models/user')
 const utils = require('../config/utils')
+const course = require('../models/course')
 
 router.get('/test', async (req, res) => {
     try {
@@ -58,7 +59,7 @@ router.post('/add', async function(req,res){
             smallPicture: imgCourse,
             minDesc: MinDesc,
             fullDesc: FullDesc
-        })
+        }, {timestamps: true})
         console.log(course);
         
         //await course.save()
@@ -125,10 +126,32 @@ router.get('/byCat', async (req, res) => {
         }).populate('teacher').populate('category').lean()
         req.session.courses = courses
 
+        const page = (req.query.page <= (courses.length-1)) || req.query.page ? req.query.page : 1 
+        const perPage = 2
+        const altCourses = await Course.find({
+            category: utils.convertId(categoryId)
+        }).populate('teacher').populate('category')
+        .limit(perPage).skip((page - 1) * perPage)
+        .sort({
+            createdAt: -1,
+            updatedAt: -1
+        }).lean()
+
+        const pages = []
+        let paginationNum = 0
+        if (((courses.length-1) / perPage) == parseInt((courses.length-1) / perPage)) {
+            paginationNum = (courses.length-1) / perPage
+        } else paginationNum = parseInt((courses.length-1) / perPage) + 1
+        for(i = 1; i <= paginationNum; i++) {
+            pages.push(i)
+        }
+
         res.render('vwCourse/course', {
             user: req.user ? req.user._doc : null,
             categories,
-            courses,
+            categoryId,
+            courses: altCourses,
+            pages,
             empty: courses.length === 0
         })
     } catch(err) {
@@ -139,65 +162,66 @@ router.get('/byCat', async (req, res) => {
 router.get('/detail', async (req, res) => {
     try {
         const courseId = req.query.courseId
-        const morecourse = await MoreCourse.findOneAndUpdate(
-            {
-                course: utils.convertId(courseId)
-            },
-            {
-                $inc: {
-                    viewAmount: 1
+        if(courseId) {
+            const morecourse = await MoreCourse.findOneAndUpdate(
+                {
+                    course: utils.convertId(courseId)
+                },
+                {
+                    $inc: {
+                        viewAmount: 1
+                    }
+                },
+                {
+                    new: true,
+                    upsert: true,
+                    useFindAndModify: false
                 }
-            },
-            {
-                new: true,
-                upsert: true,
-                useFindAndModify: false
-            }
-        ).populate({
-            path: 'course',
-            model: Course,
-            populate: {
-                path: 'teacher',
-                model: User
-            }
-        }).populate('students.student').lean()
-
-        let isIn = false
-        const userId = req.user ? req.user._doc._id : null
-        const studentNum = morecourse.students ? morecourse.students.length : 0
-        for (i = 0; i < studentNum; i++) {
-            if (morecourse.students[i].student._id.equals(userId)) {
-                isIn = true
-                break
-            }
-        }
-
-        const altMorecourses = await MoreCourse.find({
-            course: {$ne: utils.convertId(courseId)}
-        }).populate({
-            path: 'course',
-            model: 'Course',
-            populate: {
-                path: 'category',
-                model: Category,
-                match: {
-                    _id: morecourse.course.category
+            ).populate({
+                path: 'course',
+                model: Course,
+                populate: {
+                    path: 'teacher',
+                    model: User
                 }
-            },
-            populate: {
-                path: 'teacher',
-                model: User
+            }).populate('students.student').lean()
+
+            let isIn = false
+            const userId = req.user ? req.user._doc._id : null
+            const studentNum = morecourse.students ? morecourse.students.length : 0
+            for (i = 0; i < studentNum; i++) {
+                if (morecourse.students[i].student._id.equals(userId)) {
+                    isIn = true
+                    break
+                }
             }
-        }).sort({
-            studentNum: -1 // Descending
-        }).limit(5).lean()
-        console.log(altMorecourses)
-        res.render('vwCourse/detail', {
-            user: req.user ? req.user._doc : null,
-            morecourse,
-            isIn,
-            altMorecourses
-        })
+
+            const altMorecourses = await MoreCourse.find({
+                course: {$ne: utils.convertId(courseId)}
+            }).populate({
+                path: 'course',
+                model: 'Course',
+                populate: {
+                    path: 'category',
+                    model: Category,
+                    match: {
+                        _id: morecourse.course.category
+                    }
+                },
+                populate: {
+                    path: 'teacher',
+                    model: User
+                }
+            }).sort({
+                studentNum: -1 // Descending
+            }).limit(5).lean()
+            res.render('vwCourse/detail', {
+                user: req.user ? req.user._doc : null,
+                morecourse,
+                isIn,
+                altMorecourses
+            })
+        } else res.redirect('/no')
     } catch(err) {
         console.log(err)
     }
