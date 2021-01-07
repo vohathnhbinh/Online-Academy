@@ -20,12 +20,8 @@ const morecourseSchema = new mongoose.Schema({
         rate: Number, // Danh gia
         amount: Number // So luong hoc vien danh gia
     },
-    uploadDate: { // Ngay dang
-        type: Date
-    },
     viewAmount: Number, // So luong click xem chi tiet
     studentNum: Number, // So luong dang ky
-    updatedDate: Date // Lan cap nhat cuoi
 })
 
 module.exports = mongoose.model('MoreCourse', morecourseSchema)

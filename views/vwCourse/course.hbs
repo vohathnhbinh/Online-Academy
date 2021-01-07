@@ -19,6 +19,18 @@
     <div class="d-flex flex-row-reverse mr-5">
         <a class="btn btn-outline-danger" href="/search/sort-rating">Sort rating descending</a>
         <a class="btn btn-outline-warning" href="/search/sort-fee">Sort fee ascending</a>
+        <ul class="pagination">
+            {{#each pages}}
+                <li class="page-item">
+                    {{#if courseId}}
+                        <a class="page-link" href="/course/byCat?categoryId={{../categoryId}}&page={{this}}">{{this}}</a>
+                    {{/if}}
+                    {{#if searchQ}}
+                        <a class="page-link" href="/search?q={{../searchQ}}&page={{this}}">{{this}}</a>
+                    {{/if}}
+                </li>
+            {{/each}}
+        </ul>
     </div>
     {{#if empty}}
     <div class="card-body">
