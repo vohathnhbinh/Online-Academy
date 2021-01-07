@@ -42,13 +42,22 @@ router.get('/add', async (req,res) => {
         console.log(err)
     }
 })
-
-router.get('/add/image',(req,res)=>{
-    res.render('vwCourse/addimage')
+  
+let filename=null;
+const storage = multer.diskStorage({
+    destination: function(req,file,cb){
+        cb(null,'./public/image')
+    },
+    filename : function(req,file,cb){
+        filename=file.originalname;
+        cb(null,file.originalname)
+    }
 })
+const upload=multer({storage})
 
-router.post('/add', async function(req,res){
-    const {NameCourse, CategoryCourse, MinDesc, FullDesc, Fee}=req.body;
+router.post('/add', upload.single('fuMain') , async function(req,res){
+    const {fuMain, NameCourse, CategoryCourse, MinDesc, FullDesc, Fee}=req.body;
+    console.log(req.body)
     try {
         let course = new Course({
             title: NameCourse,
@@ -58,16 +67,14 @@ router.post('/add', async function(req,res){
                 price: Fee,
                 sale: 10
             },
-            // smallPicture: imgCourse,
+            smallPicture: filename,
             minDesc: MinDesc,
             fullDesc: FullDesc
         })
         
-        res.render('vwCourse/addimage',{
-            courseInfo: course,
-        })
+        console.log(course);
         //await course.save()
-        //res.redirect('/')
+        res.redirect('/')
     } catch(err) {
         console.log(err)
     }    

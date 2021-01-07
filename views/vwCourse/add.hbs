@@ -25,18 +25,18 @@
     
 {{/section}}
 
-<form action="/course/add/image" method="post" >
+<form action="" method="post" enctype="multipart/form-data">
     <div class="card">
         <h5 class="card-header">
             Thêm khóa học mới
         </h5>
         <div class="card-body">
             <div class="col-md-12">                
-                {{!-- <div class="mb-3">
-                    <input id="fuMain" name="fuMain" type="file" class="file" >
-                    <label for="Image" class="form-label">Hình ảnh khóa học</label>
-                    <input id="Image" name="imgCourse" class="form-control" type="file" accept="image/*" id="formFile">
-                </div> --}}
+                <div class="form-group">
+                    {{!-- <input id="fuMain" name="fuMain" type="file" class="file"> --}}
+                    <label for="formFile" class="form-label">Hình ảnh khóa học</label>
+                    <input  name="fuMain" class="form-control" type="file" accept="image/*" id="formFile">
+                </div>
 
                 <div class="mb-3">
                     <label for="txtNameCourse" class="form-label" >Tên khóa học</label>
