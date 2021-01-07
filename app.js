@@ -17,7 +17,7 @@ const port = process.env.PORT || 8080;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(cookieParser());
+app.use('/public', express.static('public'))
 
 app.engine('hbs', exphbs({
     extname: '.hbs',
