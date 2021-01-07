@@ -43,9 +43,12 @@ router.get('/add', async (req,res) => {
     }
 })
 
+router.get('/add/image',(req,res)=>{
+    res.render('vwCourse/addimage')
+})
+
 router.post('/add', async function(req,res){
-    const {imgCourse, NameCourse, CategoryCourse, MinDesc, FullDesc, Fee}=req.body;
-    console.log(req.body) 
+    const {NameCourse, CategoryCourse, MinDesc, FullDesc, Fee}=req.body;
     try {
         let course = new Course({
             title: NameCourse,
@@ -55,18 +58,42 @@ router.post('/add', async function(req,res){
                 price: Fee,
                 sale: 10
             },
-            smallPicture: imgCourse,
+            // smallPicture: imgCourse,
             minDesc: MinDesc,
             fullDesc: FullDesc
         })
-        console.log(course);
         
+        res.render('vwCourse/addimage',{
+            courseInfo: course,
+        })
         //await course.save()
-        res.redirect('/')
+        //res.redirect('/')
     } catch(err) {
         console.log(err)
     }    
 });
+
+router.post('/add/image',(req,res)=>{
+    console.log(courseInfo);
+    const storage=multer.diskStorage({
+        destination: function(req,file,cb){
+            cb(null,'./public/image')
+        },
+        filename: function(req,res,cb){
+            cb(null,file.originalname)
+        }
+    })
+    const upload=multer({storage});
+    storage.single('fuMain')(req,res,function(err){
+        if(err){
+            console.log(err)
+            console.log(courseInfo)
+        }else {
+            courseInfo.smallPicture=file.originalname
+            console.log(courseInfo)
+        }
+    })
+})
 
 router.get('/', (req,res)=>{
     res.render('vwCourse/profilecourse');
