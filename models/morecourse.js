@@ -24,6 +24,7 @@ const morecourseSchema = new mongoose.Schema({
         type: Date
     },
     viewAmount: Number, // So luong click xem chi tiet
+    studentNum: Number, // So luong dang ky
     updatedDate: Date // Lan cap nhat cuoi
 })
 

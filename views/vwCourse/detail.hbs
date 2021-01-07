@@ -1,13 +1,15 @@
 <div class="card">
     <h5 class="card-header">
-        {{morecourse.course.title}}
+        {{morecourse.course.title}} by {{morecourse.course.teacher.fullname}}
     </h5>
     <div class="card-body">
-        <img src="{{morecourse.course.bigPicture}}" alt="{{morecourse.course.title}}" title="{{morecourse.course.title}}">
+        <img src="{{morecourse.course.bigPicture}}" alt="{{morecourse.course.title}}">
         <p class="card-text mt-3">Price: <span class="text-danger font-weight-bold">{{morecourse.course.fee.price}}</span></p>
+        <p class="card-text">Sale off: <span class="text-warning font-weight-bold">{{morecourse.course.fee.sale}}%</span></p>
         <p class="card-text">
             {{{morecourse.course.fullDesc}}}
         </p>
+        <p class="card-text text-success">There are (is) {{morecourse.students.length}} student(s) in this course</p>
         {{#if user}}
             {{#unless isIn}}
                 <form action="/course/join" method="POST" id="frmJoin">
@@ -23,9 +25,6 @@
                     </div>
                 </form>
             {{/unless}}
-            {{#if isIn}}
-                <h3>Chapter 1...?</h3>
-            {{/if}}
         {{/if}}
         <h3 id="errorMsg">
             {{#if successful}}
@@ -35,6 +34,70 @@
                 You have already joined the course
             {{/if}}
         </h3>
+    </div>
+</div>
+<div class="card">
+    <h5 class="card-header">Content</h5>
+    <div class="card-body">
+        {{#if isIn}}
+            <h3>Chapter 1...?</h3>
+        {{/if}}
+    </div>
+</div>
+<div class="card">
+    <h5 class="card-header">Hottest courses in same category</h5>
+    <div class="card-body">
+        <div class="row">
+            {{#each altMorecourses}}
+                <div class="col-sm-4 mb-3">
+                    <div class="card h-100">
+                        <img src="{{this.course.smallPicture}}" class="card-img-top" alt="{{this.course.title}}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{this.course.title}}</h6>
+                            <h6 class="card-subtitle">by {{this.course.teacher.fullname}}</h5>
+                            <h6 class="text-primary pt-4">{{this.course.category.name}}</h6>
+                            <h5 class="text-danger">{{this.course.fee.price}} VND</h5>
+                            <h5 class="text-warning">Sale off: {{this.course.fee.sale}}%</h5>
+                            <p class="card-text">
+                                {{{this.course.minDesc}}}
+                            </p>
+                        </div>
+                        <div class="card-footer">
+                            <a class="btn btn-sm btn-outline-primary" href="/course/detail?courseId={{this._id}}" role="button">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+</div>
+<div class="card">
+    <h5 class="card-header">Feedbacks</h5>
+    <div class="card-body">
+        {{#if isIn}}
+            <form action="/course/feedback" method="POST" id="frmFeedback" name="frmFeedback">
+                <div class="row form-group">
+                    <div class="col-sm-4">
+                        <div class="input-group mb-3">
+                            <input type="hidden" value="{{morecourse.course._id}}" name="id" id="id">
+                            <textarea form="frmFeedback" class="form-control" style="resize:none" id="feedback" name="feedback" rows="3" cols="50" placeholder="Give us your feedback about this course (This may replace your old feedback if you have already given one" required></textarea>
+                            <button class="btn btn-outline-danger" type="submit">
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        {{/if}}
+        {{#each morecourse.students}}
+            {{#if this.feedback}}
+                <h5>{{this.student.fullname}}</h5>
+                <p class="card-text">{{this.feedback}}</p>
+            {{/if}}
+        {{/each}}
     </div>
 </div>
 

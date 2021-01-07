@@ -13,4 +13,8 @@ const categorySchema = new mongoose.Schema({
     }
 })
 
+categorySchema.index({
+    name: 'text'
+})
+
 module.exports = mongoose.model('Category', categorySchema)

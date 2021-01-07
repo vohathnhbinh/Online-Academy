@@ -36,4 +36,10 @@ const courseSchema = new mongoose.Schema({
     }
 })
 
+courseSchema.index(
+    {
+        title: 'text',
+        minDesc: 'text'
+    }
+)
 module.exports = mongoose.model('Course', courseSchema)

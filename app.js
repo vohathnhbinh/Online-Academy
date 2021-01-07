@@ -17,7 +17,7 @@ const port = process.env.PORT || 8080;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(cookieParser());
+app.use('/public', express.static('public'))
 
 app.engine('hbs', exphbs({
     extname: '.hbs',
@@ -57,12 +57,20 @@ app.use('/register', require('./routes/register.route'))
 app.use('/profile', require('./routes/profile.route'))
 app.use('/verify', require('./routes/verify.route'))
 app.use('/course', require('./routes/course.route'))
+app.use('/search', require('./routes/search.route'))
 
 app.use(function(req,res){
     res.render('404',{
         layout: false 
     });
-});
+})
+
+app.use(function (err, req, res, next) {
+    console.error(err.stack);
+    res.render('500', {
+        layout: false
+    })
+})
 
 app.listen(port, () => {
     console.log(`Listening to requests on http://localhost:${port}`);

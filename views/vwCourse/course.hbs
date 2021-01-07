@@ -8,76 +8,41 @@
         }
     </script>
 {{/section}}
-<div class="course-container" style="display: flex;">
-    <div style="width: 30%; border-right: 2px solid red">
-        <div style="display: flex; flex-direction: column;">
-            <a class="btn btn-success" href="javascript:;" role="button"> 
-                <i class="fas fa-plus" aria-hidden="true"></i>
-                Thêm khoá học
-            </a>
-        </div>
-        <div>
-            <p>danh sach khoa hoc</p>
-        </div>
-    </div>
-
-    <div  style="width: 70%; height: 100%;">
-        <div style="width: 100%; height: 30%;">
-            <p>Mô tả khoá học</p>
-            <p id="sometext">This is the paragraph you cant to be able to edit</p>
-        </div>
-        <div style="width: 100%; display: flex;">
-            <a class="btn btn-success" href="javascript:;" role="button" style="width: 20%;"> 
-                <i class="fas fa-plus" aria-hidden="true"></i>
-                Thêm bài giảng
-            </a>
-            <div class="course-listcourse" style="display: flex; flex-shrink: 0; width: 80%; overflow-x: scroll;">
-                <div style="width: 50%; height: 100%; flex:none; border: 2px solid green;">
-                    <p>Video 1</p>
-                </div>
-                <div style="width: 40%; height: 100%; flex:none; border: 2px solid green;">
-                    <p>Video 2</p>
-                </div>
-                <div style="width: 40%; height: 100%; flex:none; border: 2px solid green;">
-                    <p>Video 3</p>
-                </div>
-                <div style="width: 40%; height: 100%; flex:none; border: 2px solid green;">
-                    <p>Video 4</p>
-                </div>
-                <div style="width: 40%; height: 100%; flex:none; border: 2px solid green;">
-                    <p>Video 5</p>
-                </div>
-                <div style="width: 40%; height: 100%; flex:none; border: 2px solid green;">
-                    <p>Video 6</p>
-                </div>
-            </div>
-            <div>
-                <p>Count number video: </p>
-            </div>
-        </div>
-    </div>
+<div class="d-flex flex-row">
+    <a class="btn btn-success btn-block" href="/course/add" role="button"> 
+        <i class="fas fa-plus" aria-hidden="true"></i>
+        Add course
+    </a>
 </div>
 <div class="card">
+    <h3 class="card-title text-center mt-3">Courses</h3>
+    <div class="d-flex flex-row-reverse mr-5">
+        <a class="btn btn-outline-danger" href="/search/sort-rating">Sort rating descending</a>
+        <a class="btn btn-outline-warning" href="/search/sort-fee">Sort fee ascending</a>
+    </div>
     {{#if empty}}
     <div class="card-body">
         <p class="card-text">No data</p>
     </div>
     {{else}}
         <div class="card-body">
-            <div class="row">
+            <div class="row row-cols-3">
                 {{#each courses}}
                     <div class="col-sm-4 mb-3">
                         <div class="card h-100">
                             <img src="{{this.smallPicture}}" class="card-img-top" alt="{{this.title}}">
                             <div class="card-body">
-                                <h6 class="card-title">{{this.title}}</h6>
-                                <h5 class="card-title text-danger">{{this.fee.price}}</h5>
+                                <h5 class="card-title">{{this.title}}</h6>
+                                <h6 class="card-subtitle">by {{this.teacher.fullname}}</h5>
+                                <h6 class="text-primary pt-4">{{this.category.name}}</h6>
+                                <h5 class="text-danger">{{this.fee.price}} VND</h5>
+                                <h5 class="text-warning">Sale off: {{this.fee.sale}}%</h5>
                                 <p class="card-text">
-                                    {{this.minDesc}}
+                                    {{{this.minDesc}}}
                                 </p>
                             </div>
                             <div class="card-footer">
-                                <a class="btn btn-sm btn-outline-primary" href="/course/detail/{{this._id}}" role="button">
+                                <a class="btn btn-sm btn-outline-primary" href="/course/detail?courseId={{this._id}}" role="button">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                     Details
                                 </a>
