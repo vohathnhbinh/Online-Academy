@@ -23,8 +23,8 @@ router.get('/', async (req, res) => {
         }).populate('teacher').populate('category')
         .limit(perPage).skip((page - 1) * perPage)
         .sort({
-            createdAt: -1,
-            updatedAt: -1
+            createdOn: -1,
+            updatedOn: -1
         }).lean()
 
         const pages = []
@@ -54,6 +54,23 @@ router.get('/sort-fee', async (req, res) => {
     try {
         const categories = await Category.find({}).lean()
         courses.sort((a, b) => a.fee.price - b.fee.price)
+
+        res.render('vwCourse/course', {
+            user: req.user ? req.user._doc : null,
+            categories,
+            courses,
+            empty: courses.length === 0
+        })
+    } catch (err) {
+        console.log(err)
+    }
+})
+
+router.get('/sort-rate', async (req, res) => {
+    const courses = req.session.courses
+    try {
+        const categories = await Category.find({}).lean()
+        courses.sort((a, b) => b.rate - a.rate)
 
         res.render('vwCourse/course', {
             user: req.user ? req.user._doc : null,

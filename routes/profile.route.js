@@ -41,10 +41,6 @@ router.get('/is-found', async (req, res) => {
     }
 })
 
-router.get('/author', (req,res)=>{
-    res.render('vwProfile/author');
-})
-
 router.post('/', async (req, res) => {
     let updatedValue = {fullname, username, email, n_password} = req.body
     
@@ -76,26 +72,12 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.get('/edit',async (req,res)=>{
-    try {
-        const courseId = req.query.courseId
-        if (courseId){
-            const morecourse=MoreCourse.findOneAndUpdate(
-                {
-                    course: utils.convertId(courseId)
-                }
-            ).populate({
-                path: 'course',
-                model: Course
-            })
-            console.log(morecourse)
-            res.render('/vwCourse/edit',{
-                morecourse
-            })
-        }       
-    } catch (err) {
-        console.log(err)
-    }
+router.get('/mycourse', (req, res) => {
+    // render view course
 })
+
+router.get('/superdetail', (req, res) => {
+    // get course id from query
+}) 
 
 module.exports = router

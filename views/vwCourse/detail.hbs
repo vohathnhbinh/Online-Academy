@@ -3,7 +3,7 @@
         {{morecourse.course.title}} by {{morecourse.course.teacher.fullname}}
     </h5>
     <div class="card-body">
-        <img src="{{morecourse.course.bigPicture}}" alt="{{morecourse.course.title}}">
+        <img src="/public/images/{{morecourse.course.teacher._id}}/{{morecourse.course._id}}/{{morecourse.course.smallPicture}}" alt="{{morecourse.course.title}}">
         <p class="card-text mt-3">Price: <span class="text-danger font-weight-bold">{{morecourse.course.fee.price}}</span></p>
         <p class="card-text">Sale off: <span class="text-warning font-weight-bold">{{morecourse.course.fee.sale}}%</span></p>
         <p class="card-text">
@@ -51,7 +51,7 @@
             {{#each altMorecourses}}
                 <div class="col-sm-4 mb-3">
                     <div class="card h-100">
-                        <img src="{{this.course.smallPicture}}" class="card-img-top" alt="{{this.course.title}}">
+                        <img src="/public/images/{{this.course.teacher._id}}/{{this.course._id}}/{{this.course.smallPicture}}" class="card-img-top" alt="{{this.course.title}}" width="286" height="180">
                         <div class="card-body">
                             <h5 class="card-title">{{this.course.title}}</h6>
                             <h6 class="card-subtitle">by {{this.course.teacher.fullname}}</h5>

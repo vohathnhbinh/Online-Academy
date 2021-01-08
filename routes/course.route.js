@@ -6,6 +6,7 @@ const Course = require('../models/course')
 const MoreCourse = require('../models/morecourse')
 const User = require('../models/user')
 const utils = require('../config/utils')
+const fs = require('fs')
 
 router.get('/test', async (req, res) => {
     try {
@@ -43,21 +44,23 @@ router.get('/add', async (req,res) => {
     }
 })
   
-let filename=null;
+let filename
+let dir
 const storage = multer.diskStorage({
-    destination: function(req,file,cb){
-        cb(null,`./public/image`)
+    destination: async function(req,file,cb){
+        dir = './public/tmp'
+        await fs.promises.mkdir(dir, { recursive: true })
+        cb(null, dir)
     },
     filename : function(req,file,cb){
-        filename= Date.now()+'.jpg';
-        cb(null,filename)
+        filename = Date.now() + file.originalname
+        cb(null, filename)
     }
 })
 const upload=multer({storage})
 
 router.post('/add', upload.single('fuMain') , async function(req,res){
-    const {NameCourse, CategoryCourse, MinDesc, FullDesc, Fee}=req.body;    
-    storage.destination
+    const {fuMain, NameCourse, CategoryCourse, MinDesc, FullDesc, Fee}=req.body;
     try {
         let course = new Course({
             title: NameCourse,
@@ -70,15 +73,26 @@ router.post('/add', upload.single('fuMain') , async function(req,res){
             smallPicture: filename,
             minDesc: MinDesc,
             fullDesc: FullDesc
-        }, {timestamps: true})
-        
-        console.log(course);
-        //await course.save()
-        res.redirect('/')
+        })
+        await course.save()
+
+        const altCourse = await Course.findOne({
+            title: NameCourse
+        })
+        console.log(altCourse)
+        const trueDir = './public/images/' + altCourse.teacher + '/' + altCourse._id
+        await fs.promises.mkdir(trueDir, { recursive: true })
+
+        await fs.promises.rename(
+            dir + '/' + filename,
+            trueDir + '/' + filename
+        )
+
+        res.redirect(`detail?courseId=${altCourse._id}`)
     } catch(err) {
         console.log(err)
     }    
-});
+})
 
 router.get('/has-joined', async (req, res) => {
     const courseId = req.query.courseId
@@ -150,8 +164,8 @@ router.get('/byCat', async (req, res) => {
         }).populate('teacher').populate('category')
         .limit(perPage).skip((page - 1) * perPage)
         .sort({
-            createdAt: -1,
-            updatedAt: -1
+            createdOn: -1,
+            updatedOn: -1
         }).lean()
 
         const pages = []
