@@ -1,0 +1,29 @@
+<div class="card">
+    <div class="card-header">
+        <h2>{{user.fullname}}</h2>
+    </div>
+    <div class="card-body">
+        {{#each courses}}
+            <div class="col-md-8">
+                <div>
+                    <img src="/public/images/{{this.teacher}}/{{this._id}}/{{this.smallPicture}}" alt="{{this.title}}">
+                </div>
+                <div class="mb-3">
+                    <h5>{{this.title}}</h5>
+                    <p class="card-text mt-3">Price: <span class="text-danger font-weight-bold">{{this.fee.price}}</span></p>
+                    <p class="card-text">Sale off: <span class="text-warning font-weight-bold">{{this.fee.sale}}%</span></p>
+                    <p class="card-text">
+                        {{{this.minDesc}}}
+                    </p>
+                    <a name="Edit" id="Edit" class="btn btn-primary" href="#" role="button">
+                        <i class="fas fa-edit"></i>
+                        Edit
+                    </a>
+                </div>         
+            </div>           
+        {{/each}}
+    </div>
+    <div class="card-footer text-muted">
+        Footer
+    </div>
+</div>

@@ -2,6 +2,10 @@ const express = require('express')
 const router = express.Router()
 const authenticate = require('../middlewares/authentication')
 const User = require('../models/user')
+const Category = require('../models/category')
+const Course = require('../models/course')
+const MoreCourse = require('../models/morecourse')
+const utils = require('../config/utils')
 const bcrypt = require('bcrypt')
 
 router.get('/', authenticate.checkAuthenticated, (req, res) => {
@@ -72,12 +76,19 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.get('/mycourse', (req, res) => {
-    // render view course
+router.get('/mycourse', async (req, res) => {
+    const courses = await Course.find(
+        {
+            teacher: req.user._doc._id
+        }
+    ).populate('teacher').populate('category').lean()
+    console.log(courses)
+    res.render('vwProfile/courses',{
+        user: req.user ? req.user._doc : null,
+        courses    
+    })
 })
 
-router.get('/superdetail', (req, res) => {
-    // get course id from query
-}) 
+
 
 module.exports = router
