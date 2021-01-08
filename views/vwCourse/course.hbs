@@ -6,10 +6,8 @@
 </div>
 <div class="card">
     <h3 class="card-title text-center mt-3">Courses</h3>
-    <div class="d-flex flex-row-reverse mr-5">
-        <a class="btn btn-outline-danger" href="/search/sort-rating">Sort rating descending</a>
-        <a class="btn btn-outline-warning" href="/search/sort-fee">Sort fee ascending</a>
-        <ul class="pagination">
+    <div class="d-flex justify-content-between">
+        <ul class="pagination ml-3">
             {{#each pages}}
                 <li class="page-item">
                     {{#if ../categoryId}}
@@ -21,6 +19,10 @@
                 </li>
             {{/each}}
         </ul>
+        <div class="mr-5">
+            <a class="btn btn-outline-danger" href="/search/sort-rating">Sort rating descending</a>
+            <a class="btn btn-outline-warning" href="/search/sort-fee">Sort fee ascending</a>
+        </div>
     </div>
     {{#if empty}}
     <div class="card-body">
@@ -32,7 +34,7 @@
                 {{#each courses}}
                     <div class="col-sm-4 mb-3">
                         <div class="card h-100">
-                            <img src="{{this.smallPicture}}" class="card-img-top" alt="{{this.title}}">
+                            <img src="/public/images/{{this.teacher._id}}/{{this._id}}/{{this.smallPicture}}" class="card-img-top" alt="{{this.title}}" width="286" height="180">
                             <div class="card-body">
                                 <h5 class="card-title">{{this.title}}</h5>
                                 <h6 class="card-subtitle">by {{this.teacher.fullname}}</h5>

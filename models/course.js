@@ -17,8 +17,6 @@ const courseSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
-    smallPicture: String,
-    bigPicture: String,
     fee: {
         price: { // Hoc phi
             type: Number,
@@ -26,6 +24,7 @@ const courseSchema = new mongoose.Schema({
         },
         sale: Number // Khuyen mai (%)
     },
+    smallPicture: String,
     minDesc: {
         type: String,
         required: true
@@ -34,7 +33,9 @@ const courseSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    rate: Number
+    rate: Number,
+    createdOn: {type: Date, default: new Date()},
+    updatedOn: Date
 })
 
 courseSchema.index(
