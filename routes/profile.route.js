@@ -76,4 +76,26 @@ router.post('/', async (req, res) => {
     }
 })
 
+router.get('/edit',async (req,res)=>{
+    try {
+        const courseId = req.query.courseId
+        if (courseId){
+            const morecourse=MoreCourse.findOneAndUpdate(
+                {
+                    course: utils.convertId(courseId)
+                }
+            ).populate({
+                path: 'course',
+                model: Course
+            })
+            console.log(morecourse)
+            res.render('/vwCourse/edit',{
+                morecourse
+            })
+        }       
+    } catch (err) {
+        console.log(err)
+    }
+})
+
 module.exports = router

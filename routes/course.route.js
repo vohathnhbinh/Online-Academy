@@ -46,18 +46,18 @@ router.get('/add', async (req,res) => {
 let filename=null;
 const storage = multer.diskStorage({
     destination: function(req,file,cb){
-        cb(null,'./public/image')
+        cb(null,`./public/image`)
     },
     filename : function(req,file,cb){
-        filename=file.originalname;
-        cb(null,file.originalname)
+        filename= Date.now()+'.jpg';
+        cb(null,filename)
     }
 })
 const upload=multer({storage})
 
 router.post('/add', upload.single('fuMain') , async function(req,res){
-    const {fuMain, NameCourse, CategoryCourse, MinDesc, FullDesc, Fee}=req.body;
-    console.log(req.body)
+    const {NameCourse, CategoryCourse, MinDesc, FullDesc, Fee}=req.body;    
+    storage.destination
     try {
         let course = new Course({
             title: NameCourse,
@@ -65,13 +65,12 @@ router.post('/add', upload.single('fuMain') , async function(req,res){
             teacher: req.user._doc._id,
             fee: {
                 price: Fee,
-                sale: 10
+                sale: 0
             },
             smallPicture: filename,
             minDesc: MinDesc,
             fullDesc: FullDesc
         }, {timestamps: true})
-        console.log(course);
         
         console.log(course);
         //await course.save()
