@@ -47,10 +47,18 @@
                                 <input id="{{this.title}}" name="{{this.title}}" class="kv-ltr-theme-svg-star rating-loading mt-3" value="{{this.rate}}" dir="ltr" data-size="sm" readonly="true">
                             </div>
                             <div class="card-footer">
-                                <a class="btn btn-sm btn-outline-primary" href="/course/detail?courseId={{this._id}}" role="button">
-                                    <i class="fa fa-eye" aria-hidden="true"></i>
-                                    Details
-                                </a>
+                                {{#ifEquals ../user.role 0}}
+                                    <a class="btn btn-sm btn-outline-primary" href="/course/detail?courseId={{this._id}}" role="button">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                        Details
+                                    </a>
+                                {{/if}}
+                                {{#ifEquals ../user.role 1}}
+                                    <a class="btn btn-sm btn-outline-primary" href="/profile/edit?courseId={{this._id}}" role="button">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                        Details
+                                    </a>
+                                {{/if}}
                             </div>
                         </div>
                     </div>
