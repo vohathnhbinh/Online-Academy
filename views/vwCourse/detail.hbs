@@ -9,7 +9,7 @@
         <p class="card-text">
             {{{morecourse.course.fullDesc}}}
         </p>
-        <p class="card-text text-success">There are (is) {{morecourse.students.length}} student(s) in this course</p>
+        <p class="card-text text-success">Out of {{morecourse.students.length}} student(s) in this course, {{morecourse.rating.amount}} has (have) rated</p>
         {{#if user}}
             {{#unless isIn}}
                 <form action="/course/join" method="POST" id="frmJoin">
@@ -61,6 +61,7 @@
                             <p class="card-text">
                                 {{{this.course.minDesc}}}
                             </p>
+                            <input id="{{this.title}}" name="{{this.title}}" class="kv-ltr-theme-svg-star rating-loading mt-3" value="{{this.rate}}" dir="ltr" data-size="sm" readonly="true">
                         </div>
                         <div class="card-footer">
                             <a class="btn btn-sm btn-outline-primary" href="/course/detail?courseId={{this._id}}" role="button">
@@ -78,12 +79,21 @@
     <h5 class="card-header">Feedbacks</h5>
     <div class="card-body">
         {{#if isIn}}
+            <form action="/course/rating" method="POST" id="frmRating" name="frmRating">
+                <input type="hidden" value="{{morecourse.course._id}}" name="id" id="id">
+                <label for="rating">Rate this course</label>
+                <input id="rating" name="rating" class="kv-ltr-theme-svg-star rating-loading" value="0" dir="ltr" data-size="sm" required>
+                <button class="btn btn-outline-warning mt-2" type="submit">
+                    Submit
+                </button>
+            </form>
+
             <form action="/course/feedback" method="POST" id="frmFeedback" name="frmFeedback">
                 <div class="row form-group">
                     <div class="col-sm-4">
                         <div class="input-group mb-3">
                             <input type="hidden" value="{{morecourse.course._id}}" name="id" id="id">
-                            <textarea form="frmFeedback" class="form-control" style="resize:none" id="feedback" name="feedback" rows="3" cols="50" placeholder="Give us your feedback about this course (This may replace your old feedback if you have already given one" required></textarea>
+                            <textarea form="frmFeedback" class="form-control mt-3" style="resize:none" id="feedback" name="feedback" rows="3" cols="50" placeholder="Give us your feedback about this course (This may replace your old feedback if you have already given one" required></textarea>
                             <button class="btn btn-outline-danger" type="submit">
                                 Submit
                             </button>
@@ -92,9 +102,11 @@
                 </div>
             </form>
         {{/if}}
+        <input id="rating-display" name="rating-display" class="kv-ltr-theme-svg-star rating-loading mt-3" value="{{morecourse.rating.rate}}" dir="ltr" data-size="xl" readonly="true">
+
         {{#each morecourse.students}}
             {{#if this.feedback}}
-                <h5>{{this.student.fullname}}</h5>
+                <h5 class="mt-3">{{this.student.fullname}}</h5>
                 <p class="card-text">{{this.feedback}}</p>
             {{/if}}
         {{/each}}
@@ -102,7 +114,16 @@
 </div>
 
 {{#section 'script'}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.6/js/star-rating.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.6/themes/krajee-svg/theme.js"></script>
     <script>
+        $(document).ready(function(){
+            $('.kv-ltr-theme-svg-star').rating({
+                hoverOnClear: false,
+                theme: 'krajee-svg'
+            })
+        })
+
         $('#frmJoin').on('submit', e => {
             e.preventDefault()
             const temp_id = $('#id').val()
@@ -116,4 +137,9 @@
             }) 
         })
     </script>
+{{/section}}
+
+{{#section 'style'}}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.6/css/star-rating.min.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.6/themes/krajee-svg/theme.css" media="all" rel="stylesheet" type="text/css" />
 {{/section}}

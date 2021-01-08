@@ -33,7 +33,8 @@ const courseSchema = new mongoose.Schema({
     fullDesc: {
         type: String,
         required: true
-    }
+    },
+    rate: Number
 })
 
 courseSchema.index(

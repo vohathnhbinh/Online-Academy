@@ -115,6 +115,19 @@ router.post('/join', async (req, res) => {
                 useFindAndModify: false
             }
         )
+
+        const course = await Course.findById(utils.convertId(req.body.id))
+
+        await Category.update(
+            {
+                _id: course.category
+            },
+            {
+                $inc: {
+                    studentNum: 1
+                }
+            }
+        )
         
         res.redirect(`detail?courseId=${req.body.id}`)
     } catch(err) {
@@ -131,7 +144,7 @@ router.get('/byCat', async (req, res) => {
         }).populate('teacher').populate('category').lean()
         req.session.courses = courses
 
-        const page = (req.query.page <= (courses.length-1)) || req.query.page ? req.query.page : 1 
+        const page = req.query.page 
         const perPage = 2
         const altCourses = await Course.find({
             category: utils.convertId(categoryId)
@@ -144,9 +157,9 @@ router.get('/byCat', async (req, res) => {
 
         const pages = []
         let paginationNum = 0
-        if (((courses.length-1) / perPage) == parseInt((courses.length-1) / perPage)) {
-            paginationNum = (courses.length-1) / perPage
-        } else paginationNum = parseInt((courses.length-1) / perPage) + 1
+        if ((courses.length / perPage) == parseInt(courses.length / perPage)) {
+            paginationNum = courses.length / perPage
+        } else paginationNum = parseInt(courses.length / perPage) + 1
         for(i = 1; i <= paginationNum; i++) {
             pages.push(i)
         }
@@ -234,7 +247,6 @@ router.get('/detail', async (req, res) => {
 
 router.post('/feedback', async (req, res) => {
     try {
-        console.log(req.body.feedback)
         const morecourse = await MoreCourse.findOneAndUpdate(
             {
                 course: utils.convertId(req.body.id),
@@ -253,6 +265,62 @@ router.post('/feedback', async (req, res) => {
         res.redirect(`detail?courseId=${req.body.id}`)
     } catch(err) {
         console.log(err)
+    }
+})
+
+router.post('/rating', async (req, res) => {
+    try {
+        const morecourse = await MoreCourse.findOneAndUpdate(
+            {
+                course: utils.convertId(req.body.id),
+                'students.student': req.user._doc._id
+            },
+            {
+                $set: {
+                    'students.$.rate': req.body.rating
+                }
+            },
+            {
+                new: true,
+                useFindAndModify: false
+            }
+        )
+        
+        let sum = 0
+        let amount = 0
+        for(i = 0; i < morecourse.students.length; i++) {
+            if(morecourse.students[i].rate) {
+                sum += morecourse.students[i].rate
+                ++amount
+            }
+        }
+        const truerate = sum / amount
+
+        await MoreCourse.update(
+            {
+                course: utils.convertId(req.body.id)
+            },
+            {
+                $set: {
+                    'rating.rate': truerate,
+                    'rating.amount': amount
+                }
+            }
+        )
+        await Course.update(
+            {
+                _id: utils.convertId(req.body.id)
+            },
+            {
+                $set: {
+                    rate: truerate
+                }
+            }
+        )
+
+        res.redirect(`detail?courseId=${req.body.id}`)
+    } catch(err) {
+
     }
 })
 

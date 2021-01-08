@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
         }).populate('teacher').populate('category').lean()
         req.session.courses = courses
 
-        const page = (req.query.page <= (courses.length-1)) || req.query.page ? req.query.page : 1 
+        const page = (req.query.page <= courses.length) || req.query.page ? req.query.page : 1 
         const perPage = 2
         const altCourses = await Course.find({
             $text: {
@@ -29,9 +29,9 @@ router.get('/', async (req, res) => {
 
         const pages = []
         let paginationNum = 0
-        if (((courses.length-1) / perPage) == parseInt((courses.length-1) / perPage)) {
-            paginationNum = (courses.length-1) / perPage
-        } else paginationNum = parseInt((courses.length-1) / perPage) + 1
+        if ((courses.length / perPage) == parseInt(courses.length / perPage)) {
+            paginationNum = courses.length / perPage
+        } else paginationNum = parseInt(courses.length / perPage) + 1
         for(i = 1; i <= paginationNum; i++) {
             pages.push(i)
         }

@@ -7,10 +7,7 @@ const coursecontentSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    content: [{
-        chapter: Number,
-        content: String
-    }]
+    content: [String]
 })
 
 module.exports = mongoose.model('CourseContent', coursecontentSchema)

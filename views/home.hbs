@@ -133,11 +133,11 @@
               </div>
             </div>
         </div>
-        {{#each morecourses}}
+        {{#each hottestCategories}}
             <div class="carousel-item text-center">
                 <div class="card text-center text-white bg-light">
                     <div class="card-body">
-                        <a href="/course/byCat?categoryId={{this.course.category._id}}">{{this.course.category.name}}</a>
+                        <a href="/course/byCat?categoryId={{this._id}}">{{this.name}}</a>
                     </div>
                 </div>
             </div>

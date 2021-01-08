@@ -52,12 +52,18 @@ router.get('/', async (req, res) => {
             createdAt: -1
         }).limit(10).lean()
 
+        const hottestCategories = await Category.find({})
+        .sort({
+            studentNum: -1
+        }).limit(3).lean()
+
         res.render('home', {
             user: req.user ? req.user._doc : null,
             categories,
             morecourses,
             viewestMorecourses,
-            newestCourses
+            newestCourses,
+            hottestCategories
         })
     } catch(err) {
         console.log(err)

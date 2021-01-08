@@ -13,7 +13,7 @@ const morecourseSchema = new mongoose.Schema({
             ref: 'User',
             required: true
         },
-        hasRated: Boolean,
+        rate: Number,
         feedback: String
     }],
     rating: {

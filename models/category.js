@@ -10,7 +10,8 @@ const categorySchema = new mongoose.Schema({
     type: { // Lap trinh web, Lap trinh thiet bi di dong
         type: String,
         required: true
-    }
+    },
+    studentNum: Number
 })
 
 categorySchema.index({
