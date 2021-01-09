@@ -1,12 +1,12 @@
 <div class="card">
     <div class="card-header">
-        {{morecourse.course.title}}
+        {{course.title}}
     </div>
     <div class="card-body">
         <table class="table table-hover" style="table-layout: fixed" id="profile">
             <tr data-toggle="collapse" data-target="#collapseFullname">
                 <th>Course</th>
-                <td>{{morecourse.course.title}}</td>
+                <td>{{course.title}}</td>
                 <td class="small-col"><i class="fas fa-edit"></i></td>
                 <td class="blue">Edit</td>
             </tr>
@@ -26,7 +26,7 @@
 
             <tr data-toggle="collapse" data-target="#collapseCourseprice">
                 <th>Price</th>
-                <td>{{morecourse.course.fee.price}}</td>
+                <td>{{course.fee.price}}</td>
                 <td class="small-col"><i class="fas fa-edit"></i></td>
                 <td class="blue">Edit</td>
             </tr>
@@ -46,7 +46,7 @@
 
             <tr data-toggle="collapse" data-target="#collapseSale">
                 <th>Sale</th>
-                <td>{{morecourse.course.fee.sale}}</td>
+                <td>{{course.fee.sale}}</td>
                 <td class="small-col"><i class="fas fa-edit"></i></td>
                 <td class="blue">Edit</td>
             </tr>
@@ -65,8 +65,8 @@
             </tr>
 
             <tr data-toggle="collapse" data-target="#collapseMinDesc">
-                <th colspan="2" style="text-align: center;">Min Description</th>
-                <td>{{morecourse.course.minDesc}}</td>
+                <th>Min Description</th>
+                <td>{{{course.minDesc}}}</td>
                 <td class="small-col"><i class="fas fa-edit"></i></td>
                 <td class="blue">Edit</td>
             </tr>
@@ -74,7 +74,7 @@
                 <td colspan="4">
                     <div class="collapse" id="collapseMinDesc" data-parent="#profile">
                         <div class="row justify-content-md-center">
-                            <form class="col-md-4" action="/profile" method="post" name="frmMinDesc" id="frmMinDesc">
+                            <form class="col-md-10" action="/profile" method="post" name="frmMinDesc" id="frmMinDesc">
                                 <label for="MinDesc">Min Description</label>
                                 <textarea id="txtMinDesc" name="MinDesc" class="form-control h200" id="exampleFormControlTextarea1" rows="10" cols="30"></textarea>
                                 <button type="submit" class="btn btn-primary mt-2">Save change</button>
@@ -85,8 +85,8 @@
             </tr>
 
             <tr data-toggle="collapse" data-target="#collapseFullDesc">
-                <th colspan="2" style="text-align: center;">Full Description</th>
-                <td>{{morecourse.course.fullDesc}}</td>
+                <th>Full Description</th>
+                <td>{{{course.fullDesc}}}</td>
                 <td class="small-col"><i class="fas fa-edit"></i></td>
                 <td class="blue">Edit</td>
             </tr>
@@ -94,7 +94,7 @@
                 <td colspan="4">
                     <div class="collapse" id="collapseFullDesc" data-parent="#profile">
                         <div class="row justify-content-md-center">
-                            <form class="col-md-4" action="/profile" method="post" name="frmFullDesc" id="frmFullDesc">
+                            <form class="col-md-10" action="/profile" method="post" name="frmFullDesc" id="frmFullDesc">
                                 <label for="FullDesc">Full Description</label>
                                 <textarea id="txtFullDesc" name="FullDesc" class="form-control h200" id="exampleFormControlTextarea1" rows="10" cols="30"></textarea>
                                 <button type="submit" class="btn btn-primary mt-2">Save change</button>
