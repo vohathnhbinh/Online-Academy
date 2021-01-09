@@ -112,12 +112,25 @@ router.get('/mycourse', async (req, res) => {
             teacher: req.user._doc._id
         }
     ).populate('teacher').populate('category').lean()
+    
     res.render('vwCourse/course',{
         user: req.user ? req.user._doc : null,
         courses    
     })
 })
 
-
+router.get('/edit', async (req,res)=>{
+    const courseId= req.query.courseId
+    const course = await Course.findOne(
+        {
+            _id: utils.convertId(courseId)
+        }
+    ).populate('teacher').populate('category').lean()
+    console.log(course)
+    res.render('vwCourse/edit',{
+        user: req.user ? req.user._doc : null,
+        course   
+    })
+})
 
 module.exports = router
