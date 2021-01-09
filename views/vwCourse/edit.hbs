@@ -1,12 +1,18 @@
+<h1 name="errorMsg" id="errorMsg">
+    {{#if alert}}
+        {{alert}}
+    {{/if}}
+</h1>
+
 <div class="card">
     <div class="card-header">
-        {{course.title}}
+        <h1>{{course.title}}</h1>
     </div>
     <div class="card-body">
         <table class="table table-hover" style="table-layout: fixed" id="profile">
-            <tr data-toggle="collapse" data-target="#collapseFullname">
+            <tr data-toggle="collapse" data-target="#collapseCoursename">
                 <th>Course</th>
-                <td>{{course.title}}</td>
+                <td >{{course.title}}</td>
                 <td class="small-col"><i class="fas fa-edit"></i></td>
                 <td class="blue">Edit</td>
             </tr>
@@ -14,10 +20,11 @@
                 <td colspan="4">
                     <div class="collapse" id="collapseCoursename" data-parent="#profile">
                         <div class="row justify-content-md-center">
-                            <form class="col-md-4" action="/edit" method="post" name="frmCoursename" id="frmCoursename">
-                                <label for="CourseName">Course</label>
-                                <input type="text" class="form-control" id="txtCourseName" name="CourseName" required>
-                                <button type="submit" class="btn btn-primary mt-2">Save change</button>
+                            <form class="col-md-4" action="/profile/edit?courseId={{course._id}}" method="post" name="frmCoursename" id="frmCoursename">
+                                <label for="title">Course</label>
+                                <input type="text" class="form-control" id="title" name="title" required>
+                                <input type="hidden" value="{{course._id}}" id="courseId" name="courseId">
+                                <button type="submit" class="btn btn-primary mt-2">Save change</button>                               
                             </form>
                         </div>
                     </div>
@@ -34,9 +41,11 @@
                 <td colspan="4">
                     <div class="collapse" id="collapseCourseprice" data-parent="#profile">
                         <div class="row justify-content-md-center">
-                            <form class="col-md-4" action="/edit" method="post" name="frmCourseprice" id="frmCourseprice">
-                                <label for="username">Price</label>
-                                <input type="text" class="form-control" id="txtPrice" name="Price" required>
+                            <form class="col-md-4" action="/profile/edit?courseId={{course._id}}" method="post" name="frmCourseprice" id="frmCourseprice">
+                                <label for="price">Price</label>
+                                <input type="number" class="form-control" id="price" name="price" required>
+                                <input type="hidden" value="{{course._id}}" id="courseId" name="courseId">
+                                <input type="hidden" value="{{course.fee.sale}}" id="sale" name="sale">
                                 <button type="submit" class="btn btn-primary mt-2">Save change</button>
                             </form>
                         </div>
@@ -45,7 +54,7 @@
             </tr>
 
             <tr data-toggle="collapse" data-target="#collapseSale">
-                <th>Sale</th>
+                <th>Sale (%)</th>
                 <td>{{course.fee.sale}}</td>
                 <td class="small-col"><i class="fas fa-edit"></i></td>
                 <td class="blue">Edit</td>
@@ -54,10 +63,13 @@
                 <td colspan="4">
                     <div class="collapse" id="collapseSale" data-parent="#profile">
                         <div class="row justify-content-md-center">
-                            <form class="col-md-4" action="/edit" method="post" name="frmSale" id="frmSale">
-                                <label for="Sale">Sale</label>
-                                <input type="text" class="form-control" id="txtSale" name="Sale" required>
+                            <form class="col-md-4" action="/profile/edit?courseId={{course._id}}" method="post" name="frmSale" id="frmSale">
+                                <label for="sale">Sale</label>
+                                <input type="number" class="form-control" id="sale" name="sale" required>
+                                <input type="hidden" value="{{course._id}}" id="courseId" name="courseId">
+                                <input type="hidden" value="{{course.fee.price}}" id="price" name="price">
                                 <button type="submit" class="btn btn-primary mt-2">Save change</button>
+                                
                             </form>
                         </div>
                     </div>
@@ -74,9 +86,10 @@
                 <td colspan="4">
                     <div class="collapse" id="collapseMinDesc" data-parent="#profile">
                         <div class="row justify-content-md-center">
-                            <form class="col-md-10" action="/profile" method="post" name="frmMinDesc" id="frmMinDesc">
-                                <label for="MinDesc">Min Description</label>
-                                <textarea id="txtMinDesc" name="MinDesc" class="form-control h200" id="exampleFormControlTextarea1" rows="10" cols="30"></textarea>
+                            <form class="col-md-10" action="/profile/edit?courseId={{course._id}}" method="post" name="frmMinDesc" id="frmMinDesc">
+                                <label for="minDesc">Min Description</label>
+                                <textarea id="minDesc" name="minDesc" class="form-control h200" id="exampleFormControlTextarea1" rows="10" cols="30"></textarea>
+                                <input type="hidden" value="{{course._id}}" id="courseId" name="courseId">
                                 <button type="submit" class="btn btn-primary mt-2">Save change</button>
                             </form>
                         </div>
@@ -94,9 +107,10 @@
                 <td colspan="4">
                     <div class="collapse" id="collapseFullDesc" data-parent="#profile">
                         <div class="row justify-content-md-center">
-                            <form class="col-md-10" action="/profile" method="post" name="frmFullDesc" id="frmFullDesc">
-                                <label for="FullDesc">Full Description</label>
-                                <textarea id="txtFullDesc" name="FullDesc" class="form-control h200" id="exampleFormControlTextarea1" rows="10" cols="30"></textarea>
+                            <form class="col-md-10" action="/profile/edit?courseId={{course._id}}" method="post" name="frmFullDesc" id="frmFullDesc">
+                                <label for="fullDesc">Full Description</label>
+                                <textarea id="fullDesc" name="fullDesc" class="form-control h200" id="exampleFormControlTextarea1" rows="10" cols="30"></textarea>
+                                <input type="hidden" value="{{course._id}}" id="courseId" name="courseId">
                                 <button type="submit" class="btn btn-primary mt-2">Save change</button>
                             </form>
                         </div>
@@ -107,20 +121,98 @@
 
     </div>
     <div class="card-footer text-muted">
-        <button type="submit" class="btn btn-primary">Edit</button>
+        <a name="" id="" class="btn btn-primary" href="/" role="button">Ok</a>
     </div>
 </div>
 
-{{#section 'script'}}
+{{#section 'script'}}    
+    <script>
+        $('#frmCoursename').on('submit', e =>{
+            
+            const tmp_NameCourse = $('#title').val()
+            
+            $.getJSON(`/profile/course-available?courseName=${tmp_NameCourse}`,data=>{
+                if (data === true){
+                    $('#title').off('submit').submit()
+                }
+                else{
+                    $('#errorMsg').html('This name is already in use')
+                    return
+                }
+            })
+        })
+
+        $('#frmCourseprice').on('submit', e =>{
+            
+            const tmp_CoursePrice = $('#price').val()    
+            $('frmCourseprice').off('submit').submit()
+        })
+
+        $('#frmSale').on('submit', e =>{
+            
+            const tmp_Sale = $('#sale').val()
+            /*$.getJSON(`/profile/course-available?CourseSale=${tmp_Sale}`,data=>{
+                if (data === true){
+                    $('#title').off('submit').submit()
+                }
+                else{
+                    $('#errorMsg').html('Invalid Sale value')
+                    return
+                }
+            })*/
+            if (tmp_Sale > 100 || tmp_Sale < 0){
+                $('#errorMsg').html('Invalid Sale value')
+                return
+            }
+            $('#frmSale').off('submit').submit()
+        })
+
+        $('#frmMinDesc').on('submit', e =>{
+            
+            const tmp_MinPrice = $('#minDesc').val()    
+            $('frmMinDesc').off('submit').submit()
+        })
+
+        $('#frmFullDesc').on('submit', e =>{
+            
+            const tmp_FullPrice = $('#fullDesc').val()    
+            $('frmFullDesc').off('submit').submit()
+        })
+    </script>
+
     <script src="https://cdn.tiny.cloud/1/o2ds10rhf7w3ectp2eh67hk821s2eq0sgrj2dys1gw00f7oj/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
         tinymce.init({
-        selector: '#txtFullDesc'
+        selector: '#fullDesc'
       });
     </script>
     <script>
         tinymce.init({
-        selector: '#txtMinDesc'
+        selector: '#minDesc'
       });
     </script>
+{{/section}}
+
+{{#section 'style'}}
+    <style>
+        .table-hover>tbody>tr.non-hover:hover {
+            background-color: transparent;
+        }
+        .table-hover>tbody>tr>th,
+        .table-hover>tbody>tr>td {
+            border: none;
+        }
+        i.fas {
+            display: none;
+        }
+        .table-hover>tbody>tr:hover i.fas {
+            display: inline-block;
+        }
+        td.small-col {
+            width: 1px;
+        }
+        .table-hover>tbody>tr:hover td.blue {
+            color: blue;
+        }
+    </style>
 {{/section}}

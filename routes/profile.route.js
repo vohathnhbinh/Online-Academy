@@ -46,7 +46,7 @@ router.get('/favorite', async (req, res) => {
 
 router.get('/is-available', async (req, res) => {
     const username = req.query.username
-    const email = req.query.email
+    const email = req.query.email    
     try {
         const user = await User.findOne({$or: [
             {username: username},
@@ -55,6 +55,21 @@ router.get('/is-available', async (req, res) => {
 
         if(user) return res.json(false)
         res.json(true)
+    } catch(err) {
+        console.log(err)
+    }
+})
+
+router.get('/course-available', async (req,res)=>{
+    const coursename=req.query.courseName   
+    try {
+        const course = await Course.findOne({
+            title: coursename
+        })
+        
+        if(course) return res.json(false)
+        else return res.json(true)
+
     } catch(err) {
         console.log(err)
     }
@@ -126,11 +141,95 @@ router.get('/edit', async (req,res)=>{
             _id: utils.convertId(courseId)
         }
     ).populate('teacher').populate('category').lean()
-    console.log(course)
     res.render('vwCourse/edit',{
         user: req.user ? req.user._doc : null,
         course   
     })
+})
+
+router.post('/edit', async (req,res)=>{
+    // let update_course = {title,price,sale,minDesc,fullDesc} = req.body
+    let updated = {title,price,sale,minDesc,fullDesc} = req.body
+    for(let i in updated){
+        if(!updated[i]){
+            delete updated[i]
+        }
+    }  
+    console.log(updated)
+    let update_course;
+    if (price || sale)
+    {
+        update_course = {
+            title: title,
+            fee: {
+                price: price,
+                sale: sale
+            },
+            minDesc: minDesc,
+            fullDesc: fullDesc
+        }
+    }else{
+        update_course = {
+            title: title,
+            minDesc: minDesc,
+            fullDesc: fullDesc
+        }
+    }
+    
+    
+    for(let i in update_course){
+        if(!update_course[i]){
+            delete update_course[i]
+        }
+    }  
+    console.log(update_course) 
+
+    
+
+    const tmp_course=await Course.findOne(
+        {
+            title: title
+        }
+    ).lean()
+    console.log(tmp_course)
+    console.log(title)
+    let alert=null
+    if (!tmp_course)
+    {
+        const update= await Course.findOneAndUpdate(
+            {
+                _id: req.body.courseId
+            },update_course,
+            {
+                new: true,
+                useFindAndModify: false
+            }
+        )
+    }
+    else{
+        alert="This name is already in use"
+    }
+    // const update= await Course.findOneAndUpdate(
+    //     {
+    //         _id: req.body.courseId
+    //     },update_course,
+    //     {
+    //         new: true,
+    //         useFindAndModify: false
+    //     }
+    // )
+    const course=await Course.findOne(
+        {
+            _id: req.body.courseId
+        }
+    ).populate('teacher').populate('category').lean()
+    
+    res.render('vwCourse/edit',{
+        course,
+        alert
+    })        
+            
+            
 })
 
 module.exports = router
