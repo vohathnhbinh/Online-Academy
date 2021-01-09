@@ -35,13 +35,40 @@
             {{/if}}
         </h3>
     </div>
+    {{#if user}}
+        {{#unless alreadyFavor}}
+            <div class="card-footer">
+                <div class="d-flex flex-row-reverse mr-3">
+                    <a href="/course/favorite?courseId={{morecourse.course._id}}" class="btn btn-outline-warning">Add to favorites</a>
+                </div>
+            </div>
+        {{/unless}}
+    {{/if}}
 </div>
 <div class="card">
     <h5 class="card-header">Content</h5>
     <div class="card-body">
-        {{#if isIn}}
-            <h3>Chapter 1...?</h3>
-        {{/if}}
+        <div class="row">
+            <h3 class="col-sm-2">Preview: </h3>
+            <div class="col-sm-1">
+                <a href="/watch?courseId={{morecourse.course._id}}&chapter=1" class="btn btn-sm btn-primary">Chapter 1</a>
+            </div>
+        </div>
+        <div class="row">
+            <h3 class="col-sm-2">Chapters: </h3>
+            {{#each coursecontent.content}}
+                <div class="col-sm-1">
+                    <a href="/watch?courseId={{../morecourse.course._id}}&chapter={{this.chapter}}" class="btn btn-sm btn-primary">Chapter {{this.chapter}}</a>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+</div>
+<div class="card">
+    <h5 class="card-header">Teacher info</h5>
+    <div class="card-body">
+        <p><b class="">Fullname: </b>{{morecourse.course.teacher.fullname}}</p>
+        <p><b class="">Email: </b>{{morecourse.course.teacher.email}}</p>
     </div>
 </div>
 <div class="card">
@@ -61,10 +88,10 @@
                             <p class="card-text">
                                 {{{this.course.minDesc}}}
                             </p>
-                            <input id="{{this.title}}" name="{{this.title}}" class="kv-ltr-theme-svg-star rating-loading mt-3" value="{{this.rate}}" dir="ltr" data-size="sm" readonly="true">
+                            <input id="{{this.course.title}}" name="{{this.course.title}}" class="kv-ltr-theme-svg-star rating-loading mt-3" value="{{this.course.rate}}" dir="ltr" data-size="sm" readonly="true">
                         </div>
                         <div class="card-footer">
-                            <a class="btn btn-sm btn-outline-primary" href="/course/detail?courseId={{this._id}}" role="button">
+                            <a class="btn btn-sm btn-outline-primary" href="/course/detail?courseId={{this.course._id}}" role="button">
                                 <i class="fa fa-eye" aria-hidden="true"></i>
                                 Details
                             </a>
@@ -89,7 +116,7 @@
             </form>
 
             <form action="/course/feedback" method="POST" id="frmFeedback" name="frmFeedback">
-                <div class="row form-group">
+                <div class="form-row">
                     <div class="col-sm-4">
                         <div class="input-group mb-3">
                             <input type="hidden" value="{{morecourse.course._id}}" name="id" id="id">

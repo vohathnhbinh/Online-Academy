@@ -7,11 +7,41 @@ const Course = require('../models/course')
 const MoreCourse = require('../models/morecourse')
 const utils = require('../config/utils')
 const bcrypt = require('bcrypt')
+const category = require('../models/category')
 
 router.get('/', authenticate.checkAuthenticated, (req, res) => {
     res.render('vwProfile/profile', {
-        user: req.user ? req.user._doc : null
+        user: req.user ? req.user._doc : null,
+        favorite: true
     })
+})
+
+router.get('/favorite', async (req, res) => {
+    try {
+        const student = await User.findOne({
+            _id: req.user._doc._id
+        }).populate({
+            path: 'watchlist',
+            model: 'Course',
+            populate: [
+                {
+                    path: 'teacher',
+                    model: 'User'
+                },
+                {
+                    path: 'category',
+                    model: 'Category'
+                }
+            ]
+        }).lean()
+
+        res.render('vwCourse/course', {
+            user: req.user ? req.user._doc : null,
+            courses: student.watchlist
+        })
+    } catch(err) {
+
+    }
 })
 
 router.get('/is-available', async (req, res) => {
@@ -82,8 +112,7 @@ router.get('/mycourse', async (req, res) => {
             teacher: req.user._doc._id
         }
     ).populate('teacher').populate('category').lean()
-    console.log(courses)
-    res.render('vwProfile/courses',{
+    res.render('vwCourse/course',{
         user: req.user ? req.user._doc : null,
         courses    
     })

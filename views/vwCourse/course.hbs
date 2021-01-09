@@ -51,12 +51,12 @@
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                     Details
                                 </a>
-                                {{#ifEquals ../user._id this.teacher._id}}
+                                {{#ifIdEquals ../user._id this.teacher._id}}
                                     <a class="btn btn-sm btn-outline-primary" href="/profile/edit?courseId={{this._id}}" role="button">
                                         <i class="fa fa-eye" aria-hidden="true"></i>
                                         Edit
                                     </a>
-                                {{/if}}
+                                {{/ifIdEquals}}
                             </div>
                         </div>
                     </div>

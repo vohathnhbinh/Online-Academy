@@ -27,7 +27,15 @@ const userSchema = new mongoose.Schema({
     activated: {
         type: Boolean,
         required: true
-    }
+    },
+    courses: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Course'
+    }],
+    watchlist: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Course'
+    }]
 })
 
 module.exports = mongoose.model('User', userSchema)

@@ -5,6 +5,7 @@ const Category = require('../models/category')
 const Course = require('../models/course')
 const MoreCourse = require('../models/morecourse')
 const User = require('../models/user')
+const CourseContent = require('../models/coursecontent')
 const utils = require('../config/utils')
 const fs = require('fs')
 
@@ -129,6 +130,17 @@ router.post('/join', async (req, res) => {
             }
         )
 
+        await User.update(
+            {
+                _id: req.user._doc._id
+            },
+            {
+                $push: {
+                    courses: utils.convertId(req.body.id)
+                }
+            }
+        )
+
         const course = await Course.findById(utils.convertId(req.body.id))
 
         await Category.update(
@@ -226,7 +238,6 @@ router.get('/detail', async (req, res) => {
                     break
                 }
             }
-
             const altMorecourses = await MoreCourse.find({
                 course: {$ne: utils.convertId(courseId)}
             }).populate({
@@ -246,12 +257,47 @@ router.get('/detail', async (req, res) => {
             }).sort({
                 studentNum: -1 // Descending
             }).limit(5).lean()
+
+            const coursecontent = await CourseContent.findOne({
+                course: utils.convertId(courseId)
+            }).lean()
+            const student = await User.findOne({
+                watchlist: utils.convertId(courseId)
+            })
+
             res.render('vwCourse/detail', {
                 user: req.user ? req.user._doc : null,
                 morecourse,
                 isIn,
-                altMorecourses
+                altMorecourses,
+                coursecontent,
+                alreadyFavor: student
             })
+        } else res.redirect('/no')
+    } catch(err) {
+        console.log(err)
+    }
+})
+
+router.get('/favorite', async (req, res) => {
+    try {
+        const courseId = req.query.courseId
+        if(courseId) {
+            const student = await User.findOneAndUpdate(
+                {
+                    _id: req.user._doc._id
+                },
+                {
+                    $push: {
+                        watchlist: utils.convertId(courseId)
+                    }
+                },
+                {
+                    new: true,
+                    useFindAndModify: false
+                }
+            )
+            res.redirect(`detail?courseId=${courseId}`)
         } else res.redirect('/no')
     } catch(err) {
         console.log(err)

@@ -1,0 +1,27 @@
+<div class="card">
+    <h5 class="card-header">
+        Chapter {{curVid.chapter}}
+    </h5>
+    <div class="card-body">
+        <video id="player" playsinline controls>
+            <source src="/public/videos/{{coursecontent.course.teacher}}/{{coursecontent.course._id}}/{{curVid.video}}" type="video/mp4" />
+        </video>
+    </div>
+</div>
+<div class="card">
+    <h5 class="card-header">
+        Other chapters
+    </h5>
+    <div class="card-body">
+        <div class="row">
+            {{#each otherVids}}
+                <div class="col-sm-1">
+                    <a href="/watch?courseId={{../coursecontent.course._id}}&chapter={{this.chapter}}" class="btn btn-sm btn-primary">Chapter {{this.chapter}}</a>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+    <div class="card-footer">
+        <a href="/course/detail?courseId={{coursecontent.course._id}}" class="btn btn-primary">Back to course</a>
+    </div>
+</div>

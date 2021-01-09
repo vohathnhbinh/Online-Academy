@@ -4,7 +4,10 @@
         {{#if user}}
             <span class="navbar-text text-primary"><h3>Hello {{user.fullname}}</h3></span>
             <li class="nav-item"><a class="nav-link" href="/profile"><h3>Profile</h3></a></li>
-            <li class="nav-item"><a class="nav-link" href="/profile/mycourse?myId={{user._id}}"><h3>My Courses</h3></a></li>
+            <li class="nav-item"><a class="nav-link" href="/profile/mycourse"><h3>My Courses</h3></a></li>
+            {{#if favorite}}
+                <li class="nav-item"><a class="nav-link" href="/profile/favorite"><h3>Favorite</h3></a></li>
+            {{/if}}
             <li class="nav-item"><a class="nav-link" href="/login/logout"><h3>Logout</h3></a></li>
             <li class="nav-item"><a class="nav-link" href="/verify"><h3>Verify</h3></a></li>
         {{else}}
