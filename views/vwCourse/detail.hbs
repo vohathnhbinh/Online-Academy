@@ -11,20 +11,22 @@
         </p>
         <p class="card-text text-success">Out of {{morecourse.students.length}} student(s) in this course, {{morecourse.rating.amount}} has (have) rated</p>
         {{#if user}}
-            {{#unless isIn}}
-                <form action="/course/join" method="POST" id="frmJoin">
-                    <div class="row form-group">
-                        <div class="col-sm-4">
-                            <div class="input-group mb-3">
-                                <input type="hidden" value="{{morecourse.course._id}}" name="id" id="id">
-                                <button class="btn btn-outline-primary" type="submit">
-                                    Join
-                                </button>
+            {{#ifIdNotEquals user._id morecourse.course.teacher._id}}
+                {{#unless isIn}}
+                    <form action="/course/join" method="POST" id="frmJoin">
+                        <div class="row form-group">
+                            <div class="col-sm-4">
+                                <div class="input-group mb-3">
+                                    <input type="hidden" value="{{morecourse.course._id}}" name="id" id="id">
+                                    <button class="btn btn-outline-primary" type="submit">
+                                        Join
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </form>
-            {{/unless}}
+                    </form>
+                {{/unless}}
+            {{/ifIdNotEquals}}
         {{/if}}
         <h3 id="errorMsg">
             {{#if successful}}
@@ -35,25 +37,34 @@
             {{/if}}
         </h3>
     </div>
-    {{#if user}}
-        {{#unless alreadyFavor}}
-            <div class="card-footer">
-                <div class="d-flex flex-row-reverse mr-3">
+    <div class="card-footer">
+        <div class="d-flex flex-row-reverse mr-3">
+            {{#if user}}
+                {{#unless alreadyFavor}}
                     <a href="/course/favorite?courseId={{morecourse.course._id}}" class="btn btn-outline-warning">Add to favorites</a>
-                </div>
-            </div>
-        {{/unless}}
-    {{/if}}
+                {{/unless}}
+                {{#ifIdEquals user._id morecourse.course.teacher._id}}
+                    <a class="btn btn-outline-primary mr-2" href="/profile/edit?courseId={{morecourse.course._id}}" role="button">
+                        <i class="fa fa-eye" aria-hidden="true"></i>
+                        Edit
+                    </a>
+                {{/ifIdEquals}}
+            {{/if}}
+        </div>
+    </div>                 
 </div>
 <div class="card">
     <h5 class="card-header">Content</h5>
     <div class="card-body">
         <div class="row">
             <h3 class="col-sm-2">Preview: </h3>
-            <div class="col-sm-1">
-                <a href="/watch?courseId={{morecourse.course._id}}&chapter=1" class="btn btn-sm btn-primary">Chapter 1</a>
-            </div>
+            {{#if preview}}
+                <div class="col-sm-1">
+                    <a href="/watch?courseId={{morecourse.course._id}}&chapter=1" class="btn btn-sm btn-primary">Chapter 1</a>
+                </div>
+            {{/if}}
         </div>
+        <h2>Join the course to see more contents</h2>
         <div class="row">
             <h3 class="col-sm-2">Chapters: </h3>
             {{#each coursecontent.content}}

@@ -8,6 +8,7 @@ const morecourseSchema = new mongoose.Schema({
         unique: true
     },
     students: [{
+        _id:false,
         student: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',

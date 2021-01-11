@@ -8,6 +8,7 @@ const User = require('../models/user')
 const CourseContent = require('../models/coursecontent')
 const utils = require('../config/utils')
 const fs = require('fs')
+const course = require('../models/course')
 
 router.get('/test', async (req, res) => {
     try {
@@ -80,7 +81,6 @@ router.post('/add', upload.single('fuMain') , async function(req,res){
         const altCourse = await Course.findOne({
             title: NameCourse
         })
-        console.log(altCourse)
         const trueDir = './public/images/' + altCourse.teacher + '/' + altCourse._id
         await fs.promises.mkdir(trueDir, { recursive: true })
 
@@ -170,7 +170,7 @@ router.get('/byCat', async (req, res) => {
         req.session.courses = courses
 
         const page = req.query.page 
-        const perPage = 2
+        const perPage = 3
         const altCourses = await Course.find({
             category: utils.convertId(categoryId)
         }).populate('teacher').populate('category')
@@ -243,20 +243,25 @@ router.get('/detail', async (req, res) => {
             }).populate({
                 path: 'course',
                 model: 'Course',
-                populate: {
+                populate: [{
                     path: 'category',
                     model: Category,
                     match: {
                         _id: morecourse.course.category
                     }
                 },
-                populate: {
+                {
                     path: 'teacher',
                     model: User
-                }
+                }]
             }).sort({
                 studentNum: -1 // Descending
             }).limit(5).lean()
+            for(i in altMorecourses) {
+                if(!altMorecourses[i].course.category) {
+                    delete altMorecourses[i]
+                }
+            }
 
             const coursecontent = await CourseContent.findOne({
                 course: utils.convertId(courseId)
@@ -264,6 +269,11 @@ router.get('/detail', async (req, res) => {
             const student = await User.findOne({
                 watchlist: utils.convertId(courseId)
             })
+            let preview = null
+            if(coursecontent) {
+                if(coursecontent.content)
+                    preview = coursecontent.content[0]
+            }
 
             res.render('vwCourse/detail', {
                 user: req.user ? req.user._doc : null,
@@ -271,6 +281,7 @@ router.get('/detail', async (req, res) => {
                 isIn,
                 altMorecourses,
                 coursecontent,
+                preview,
                 alreadyFavor: student
             })
         } else res.redirect('/no')

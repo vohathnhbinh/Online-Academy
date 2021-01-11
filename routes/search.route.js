@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
         req.session.courses = courses
 
         const page = (req.query.page <= courses.length) || req.query.page ? req.query.page : 1 
-        const perPage = 2
+        const perPage = 3
         const altCourses = await Course.find({
             $text: {
                 $search: result

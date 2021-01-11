@@ -8,7 +8,9 @@ const coursecontentSchema = new mongoose.Schema({
         unique: true
     },
     content: [{
+        _id:false,
         chapter: Number,
+        title: String,
         video: String
     }]
 })

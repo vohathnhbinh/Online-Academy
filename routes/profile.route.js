@@ -5,9 +5,12 @@ const User = require('../models/user')
 const Category = require('../models/category')
 const Course = require('../models/course')
 const MoreCourse = require('../models/morecourse')
+const CourseContent = require('../models/coursecontent')
 const utils = require('../config/utils')
 const bcrypt = require('bcrypt')
 const category = require('../models/category')
+const multer = require('multer')
+const fs = require('fs')
 
 router.get('/', authenticate.checkAuthenticated, (req, res) => {
     res.render('vwProfile/profile', {
@@ -34,6 +37,7 @@ router.get('/favorite', async (req, res) => {
                 }
             ]
         }).lean()
+        req.session.courses = student.watchlist
 
         res.render('vwCourse/course', {
             user: req.user ? req.user._doc : null,
@@ -124,9 +128,10 @@ router.post('/', async (req, res) => {
 router.get('/mycourse', async (req, res) => {
     const courses = await Course.find(
         {
-            teacher: req.user._doc._id
+            teacher: req.user ? req.user._doc._id : null
         }
     ).populate('teacher').populate('category').lean()
+    req.session.courses = courses
     
     res.render('vwCourse/course',{
         user: req.user ? req.user._doc : null,
@@ -135,101 +140,148 @@ router.get('/mycourse', async (req, res) => {
 })
 
 router.get('/edit', async (req,res)=>{
-    const courseId= req.query.courseId
-    const course = await Course.findOne(
-        {
-            _id: utils.convertId(courseId)
-        }
-    ).populate('teacher').populate('category').lean()
-    res.render('vwCourse/edit',{
-        user: req.user ? req.user._doc : null,
-        course   
-    })
+    try {
+        const categories = await Category.find({}).lean()
+        const courseId= req.query.courseId
+        const course = await Course.findOne(
+            {
+                _id: utils.convertId(courseId),
+                teacher: req.user ? req.user._doc : null
+            }
+        ).populate('teacher').populate('category').lean()
+
+        const coursecontent = await CourseContent.findOne({
+            course: utils.convertId(courseId)
+        }).lean()
+
+        res.render('vwCourse/edit',{
+            user: req.user ? req.user._doc : null,
+            course,
+            cat: categories,
+            coursecontent
+        })
+    } catch(err) {
+        console.log(err)
+    }
 })
 
-router.post('/edit', async (req,res)=>{
-    // let update_course = {title,price,sale,minDesc,fullDesc} = req.body
-    let updated = {title,price,sale,minDesc,fullDesc} = req.body
-    for(let i in updated){
-        if(!updated[i]){
-            delete updated[i]
-        }
-    }  
-    console.log(updated)
-    let update_course;
-    if (price || sale)
-    {
-        update_course = {
-            title: title,
-            fee: {
-                price: price,
-                sale: sale
-            },
-            minDesc: minDesc,
-            fullDesc: fullDesc
-        }
-    }else{
-        update_course = {
-            title: title,
-            minDesc: minDesc,
-            fullDesc: fullDesc
-        }
+let filename = null
+let dir = null
+const limits = {
+    fileSize: 100 * 1024 * 1024
+}
+const storage = multer.diskStorage({
+    destination: async function(req,file,cb){
+        dir = './public/tmp'
+        await fs.promises.mkdir(dir, { recursive: true })
+        cb(null, dir)
+    },
+    filename : function(req,file,cb){
+        filename = Date.now() + file.originalname
+        cb(null, filename)
     }
-    
-    
-    for(let i in update_course){
-        if(!update_course[i]){
-            delete update_course[i]
-        }
-    }  
-    console.log(update_course) 
+})
+const upload=multer({
+    limits,
+    storage
+})
 
-    
-
-    const tmp_course=await Course.findOne(
+router.post('/edit', upload.single('fuMain'), async (req,res)=>{
+    try {
+        const courseId = req.query.courseId
+        let updated = {title,price,sale,minDesc,fullDesc} = req.body
+        for(let i in updated){
+            if(!updated[i]){
+                delete updated[i]
+            }
+        }  
+        let update_course;
+        if (price || sale)
         {
-            title: title
+            update_course = {
+                title: title,
+                fee: {
+                    price: price,
+                    sale: sale
+                },
+                minDesc: minDesc,
+                fullDesc: fullDesc
+            }
+        } else if (req.body.category) {
+            update_course = {
+                category: utils.convertId(req.body.category)
+            }
+        } else {
+            update_course = {
+                title: title,
+                minDesc: minDesc,
+                fullDesc: fullDesc
+            }
         }
-    ).lean()
-    console.log(tmp_course)
-    console.log(title)
-    let alert=null
-    if (!tmp_course)
-    {
-        const update= await Course.findOneAndUpdate(
+        
+        for(let i in update_course){
+            if(!update_course[i]){
+                delete update_course[i]
+            }
+        }   
+
+        const course = await Course.findOneAndUpdate(
             {
-                _id: req.body.courseId
-            },update_course,
+                _id: utils.convertId(courseId)
+            }, update_course,
             {
                 new: true,
                 useFindAndModify: false
             }
         )
-    }
-    else{
-        alert="This name is already in use"
-    }
-    // const update= await Course.findOneAndUpdate(
-    //     {
-    //         _id: req.body.courseId
-    //     },update_course,
-    //     {
-    //         new: true,
-    //         useFindAndModify: false
-    //     }
-    // )
-    const course=await Course.findOne(
-        {
-            _id: req.body.courseId
+
+        const titleX = req.body.titleX
+        if(filename && titleX) {
+            const coursecontent = await CourseContent.findOneAndUpdate({
+                course: utils.convertId(courseId)
+            })
+
+            let content = coursecontent.content ? coursecontent.content : {} 
+            content.push({
+                chapter: 99,
+                title: titleX,
+                video: filename
+            })
+            for(i = 0; i < content.length; i++) {
+                content[i].chapter = i + 1
+            }
+            
+            const updatedCourseContent = await CourseContent.findOneAndUpdate(
+                {
+                    course: utils.convertId(courseId)
+                },
+                {
+                    $set: {
+                        content
+                    }
+                },
+                {
+                    upsert: true,
+                    useFindAndModify: false
+                }
+            )
+            const altCourse = await Course.findOne({
+                _id: utils.convertId(courseId)
+            })
+            const trueDir = './public/videos/' + altCourse.teacher + '/' + altCourse._id
+            await fs.promises.mkdir(trueDir, { recursive: true })
+
+            await fs.promises.rename(
+                dir + '/' + filename,
+                trueDir + '/' + filename
+            )
         }
-    ).populate('teacher').populate('category').lean()
-    
-    res.render('vwCourse/edit',{
-        course,
-        alert
-    })        
-            
-            
+
+        res.redirect(`edit?courseId=${courseId}`) 
+    } catch(err) {
+        console.log(err)
+    }
+       
 })
 
 module.exports = router
