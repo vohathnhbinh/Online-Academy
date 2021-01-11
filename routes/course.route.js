@@ -8,7 +8,6 @@ const User = require('../models/user')
 const CourseContent = require('../models/coursecontent')
 const utils = require('../config/utils')
 const fs = require('fs')
-const course = require('../models/course')
 
 router.get('/test', async (req, res) => {
     try {
