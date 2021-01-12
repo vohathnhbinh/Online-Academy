@@ -5,10 +5,26 @@ const User = require('../models/user')
 const Passcode = require('../models/passcode')
 const crypto = require('crypto')
 const bcrypt = require('bcrypt')
+const nodemailer = require('nodemailer')
 
 router.get('/', authenticate.checkAuthenticated, authenticate.checkNotVerified, (req, res) => {
     res.render('verify', {
         user: req.user ? req.user._doc : null
+    })
+})
+
+let transporter = null
+nodemailer.createTestAccount((err, account) => {
+    if(err) console.log(err)
+    transporter = nodemailer.createTransport({
+        name: 'example.com',
+        host: 'smtp.ethereal.email',
+        port: 587,
+        secure: false,
+        auth: {
+            user: account.user,
+            pass: account.pass
+        }
     })
 })
 
@@ -31,25 +47,24 @@ router.get('/send', authenticate.checkAuthenticated, authenticate.checkNotVerifi
                 useFindAndModify: false
             }
         )
+
+        const mailData = {
+            from: 'kgz21740@cuoly.com',
+            to: 'uquoirwupzosbhmqff@twzhhq.com',
+            subject: 'Account verification',
+            text: 'passcode'
+        }
+    
+        transporter.sendMail(mailData, function (err, info) {
+            if(err)
+                res.send(err)
+            else
+                res.send(info)
+        })
     } catch(err) {
         console.log(err)
     }
-    const mailData = {
-        from: 'me@me',
-        to: 'you@you',
-        subject: 'Account verification',
-        text: 'passcode'
-    }
-
-    var transporter
-    require('../config/nodemailer_config')(transporter)
-
-    transporter.sendMail(mailData, function (err, info) {
-        if(err)
-            res.send(err)
-        else
-            res.send(info)
-    })
+    
 })
 
 module.exports = router

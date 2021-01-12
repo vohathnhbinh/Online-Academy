@@ -1,181 +1,94 @@
-<div id="hottest" class="carousel slide" data-ride="carousel">
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <div class="card text-center text-white bg-danger">
-              <div class="card-body">
-                <h5 class="card-title">Hottest courses</h5>
-                <h6 class="card-subtitle">Teacher</h5>
-                <h6 class="text-primary pt-4">Category</h6>
-                <h5 class="text-light">Price</h5>
-                <h5 class="text-warning">Sale off</h5>
+<h1 class="ml-5 mt-3 text-danger">Hottest courses</h1>
+<div class="owl-carousel owl-theme my-4">
+    {{#each morecourses}}
+        <div class="card bg-light">
+            <img src="/public/images/{{this.course.teacher._id}}/{{this.course._id}}/{{this.course.smallPicture}}" class="card-img-top" alt="{{this.course.title}}">
+            <div class="card-body">
+                <h5 class="card-title">{{this.course.title}}</h5>
+                <h6 class="card-subtitle">by {{this.course.teacher.fullname}}</h5>
+                <h6 class="text-primary pt-4">{{this.course.category.name}}</h6>
+                <h5 class="text-danger">{{this.course.fee.price}} VND</h5>
+                <h5 class="text-warning">Sale off: {{this.course.fee.sale}}%</h5>
                 <p class="card-text">
-                    Description
+                    {{{this.course.minDesc}}}
                 </p>
-              </div>
+            </div>
+            <div class="card-footer">
+                <a class="btn btn-sm btn-outline-primary" href="/course/detail?courseId={{this.course._id}}" role="button">
+                    <i class="fa fa-eye" aria-hidden="true"></i>
+                    Details
+                </a>
             </div>
         </div>
-        {{#each morecourses}}
-            <div class="carousel-item">
-                <div class="card text-center bg-light">
-                    <div class="card-body">
-                        <h5 class="card-title">{{this.course.title}}</h5>
-                        <h6 class="card-subtitle">by {{this.course.teacher.fullname}}</h5>
-                        <h6 class="text-primary pt-4">{{this.course.category.name}}</h6>
-                        <h5 class="text-danger">{{this.course.fee.price}} VND</h5>
-                        <h5 class="text-warning">Sale off: {{this.course.fee.sale}}%</h5>
-                        <p class="card-text">
-                            {{{this.course.minDesc}}}
-                        </p>
-                    </div>
-                    <div class="card-footer">
-                        <a class="btn btn-sm btn-outline-primary" href="/course/detail?courseId={{this.course._id}}" role="button">
-                            <i class="fa fa-eye" aria-hidden="true"></i>
-                            Details
-                        </a>
-                    </div>
-                </div>
-            </div>
-        {{/each}}
-    </div>
-    <a class="carousel-control-prev" href="#hottest" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#hottest" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
+    {{/each}}
 </div>
 
-<div id="viewest" class="carousel slide" data-ride="carousel">
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <div class="card text-center text-white bg-primary">
-              <div class="card-body">
-                <h5 class="card-title">Most view courses</h5>
-                <h6 class="card-subtitle">Teacher</h5>
-                <h6 class="text-light pt-4">Category</h6>
-                <h5 class="text-danger">Price</h5>
-                <h5 class="text-warning">Sale off</h5>
+<h1 class="ml-5 mt-3 text-danger">Most view courses</h1>
+<div class="owl-carousel owl-theme my-4">
+    {{#each viewestMorecourses}}
+        <div class="card bg-light">
+            <img src="/public/images/{{this.course.teacher._id}}/{{this.course._id}}/{{this.course.smallPicture}}" class="card-img-top" alt="{{this.course.title}}">
+            <div class="card-body">
+                <h5 class="card-title">{{this.course.title}}</h5>
+                <h6 class="card-subtitle">by {{this.course.teacher.fullname}}</h5>
+                <h6 class="text-primary pt-4">{{this.course.category.name}}</h6>
+                <h5 class="text-danger">{{this.course.fee.price}} VND</h5>
+                <h5 class="text-warning">Sale off: {{this.course.fee.sale}}%</h5>
                 <p class="card-text">
-                    Description
+                    {{{this.course.minDesc}}}
                 </p>
-              </div>
+            </div>
+            <div class="card-footer">
+                <a class="btn btn-sm btn-outline-primary" href="/course/detail?courseId={{this.course._id}}" role="button">
+                    <i class="fa fa-eye" aria-hidden="true"></i>
+                    Details
+                </a>
             </div>
         </div>
-        {{#each viewestMorecourses}}
-            <div class="carousel-item">
-                <div class="card text-center bg-light">
-                    <div class="card-body">
-                        <h5 class="card-title">{{this.course.title}}</h5>
-                        <h6 class="card-subtitle">by {{this.course.teacher.fullname}}</h5>
-                        <h6 class="text-primary pt-4">{{this.course.category.name}}</h6>
-                        <h5 class="text-danger">{{this.course.fee.price}} VND</h5>
-                        <h5 class="text-warning">Sale off: {{this.course.fee.sale}}%</h5>
-                        <p class="card-text">
-                            {{{this.course.minDesc}}}
-                        </p>
-                    </div>
-                    <div class="card-footer">
-                        <a class="btn btn-sm btn-outline-primary" href="/course/detail?courseId={{this.course._id}}" role="button">
-                            <i class="fa fa-eye" aria-hidden="true"></i>
-                            Details
-                        </a>
-                    </div>
-                </div>
-            </div>
-        {{/each}}
-    </div>
-    <a class="carousel-control-prev" href="#viewest" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#viewest" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
+    {{/each}}
 </div>
 
-<div id="newest" class="carousel slide" data-ride="carousel">
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <div class="card text-center text-white bg-warning">
-              <div class="card-body">
-                <h5 class="card-title">Newly added courses</h5>
-                <h6 class="card-subtitle">Teacher</h5>
-                <h6 class="text-primary pt-4">Category</h6>
-                <h5 class="text-danger">Price</h5>
-                <h5 class="text-light">Sale off</h5>
+<h1 class="ml-5 mt-3 text-danger">Newly added courses</h1>
+<div class="owl-carousel owl-theme my-4">
+    {{#each newestCourses}}
+        <div class="card bg-light">
+            <img src="/public/images/{{this.teacher._id}}/{{this._id}}/{{this.smallPicture}}" class="card-img-top" alt="{{this.title}}">
+            <div class="card-body">
+                <h5 class="card-title">{{this.title}}</h5>
+                <h6 class="card-subtitle">by {{this.teacher.fullname}}</h5>
+                <h6 class="text-primary pt-4">{{this.category.name}}</h6>
+                <h5 class="text-danger">{{this.fee.price}} VND</h5>
+                <h5 class="text-warning">Sale off: {{this.fee.sale}}%</h5>
                 <p class="card-text">
-                    Description
+                    {{{this.minDesc}}}
                 </p>
-              </div>
+            </div>
+            <div class="card-footer">
+                <a class="btn btn-sm btn-outline-primary" href="/course/detail?courseId={{this._id}}" role="button">
+                    <i class="fa fa-eye" aria-hidden="true"></i>
+                    Details
+                </a>
             </div>
         </div>
-        {{#each newestCourses}}
-            <div class="carousel-item">
-                <div class="card text-center bg-light">
-                    <div class="card-body">
-                        <h5 class="card-title">{{this.title}}</h5>
-                        <h6 class="card-subtitle">by {{this.teacher.fullname}}</h5>
-                        <h6 class="text-primary pt-4">{{this.category.name}}</h6>
-                        <h5 class="text-danger">{{this.fee.price}} VND</h5>
-                        <h5 class="text-warning">Sale off: {{this.fee.sale}}%</h5>
-                        <p class="card-text">
-                            {{{this.minDesc}}}
-                        </p>
-                    </div>
-                    <div class="card-footer">
-                        <a class="btn btn-sm btn-outline-primary" href="/course/detail?courseId={{this._id}}" role="button">
-                            <i class="fa fa-eye" aria-hidden="true"></i>
-                            Details
-                        </a>
-                    </div>
-                </div>
-            </div>
-        {{/each}}
-    </div>
-    <a class="carousel-control-prev" href="#newest" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#newest" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
+    {{/each}}
 </div>
 
-<div id="hotcat" class="carousel slide" data-ride="carousel">
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <div class="card text-center bg-light">
-              <div class="card-body">
-                <div class="card-title">Hottest categories</div>
-              </div>
+<h2 class="ml-5 mt-3 text-danger">Hottest categories</h2>
+<div class="owl-carousel owl-theme my-4">
+    {{#each hottestCategories}}
+        <div class="card text-center bg-info">
+            <div class="card-body">
+                <a class="whitelink" href="/course/byCat?categoryId={{this._id}}">{{this.name}}</a>
             </div>
         </div>
-        {{#each hottestCategories}}
-            <div class="carousel-item text-center">
-                <div class="card text-center text-white bg-light">
-                    <div class="card-body">
-                        <a href="/course/byCat?categoryId={{this._id}}">{{this.name}}</a>
-                    </div>
-                </div>
-            </div>
-        {{/each}}
-    </div>
-    <a class="carousel-control-prev" href="#hotcat" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#hotcat" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
+    {{/each}}
 </div>
+
 <br><br><br>
 
 {{#section 'style'}}
+    <link rel="stylesheet" href="/public/lib/OwlCarousel2-2.3.4/dist/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="/public/lib/OwlCarousel2-2.3.4/dist/assets/owl.theme.default.min.css">
     <style>
         .carousel-control-prev-icon {
             background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
@@ -184,5 +97,36 @@
         .carousel-control-next-icon {
             background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
         }
+
+        .card-img-top {
+            width: 100%;
+            height: 15vw;
+            object-fit: cover;
+        }
+
+        a.whitelink:link, a.whitelink:visited {
+            color: white;
+        }
     </style>
+{{/section}}
+
+{{#section 'script'}}
+    <script src="/public/lib/OwlCarousel2-2.3.4/dist/owl.carousel.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".owl-carousel").owlCarousel({
+                margin:30,
+                nav:true,
+                stagePadding:30,
+                responsive:{
+                    0:{
+                        items:1
+                    },
+                    600:{
+                        items:3
+                    }
+                }
+            })
+        })
+    </script>
 {{/section}}
