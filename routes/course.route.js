@@ -8,6 +8,7 @@ const User = require('../models/user')
 const CourseContent = require('../models/coursecontent')
 const utils = require('../config/utils')
 const fs = require('fs')
+const authenticate = require('../middlewares/authentication')
 
 router.get('/test', async (req, res) => {
     try {
@@ -33,7 +34,7 @@ router.get('/test', async (req, res) => {
     }
 })
 
-router.get('/add', async (req,res) => {
+router.get('/add', authenticate.checkAuthenticated, async (req,res) => {
     try {
         const categories = await Category.find({}).lean()
         res.render('vwCourse/add', {
@@ -365,24 +366,14 @@ router.post('/rating', async (req, res) => {
         }
         const truerate = sum / amount
 
-        await MoreCourse.update(
-            {
-                course: utils.convertId(req.body.id)
-            },
-            {
-                $set: {
-                    'rating.rate': truerate,
-                    'rating.amount': amount
-                }
-            }
-        )
         await Course.update(
             {
                 _id: utils.convertId(req.body.id)
             },
             {
                 $set: {
-                    rate: truerate
+                    rate: truerate,
+                    rateamount: amount
                 }
             }
         )

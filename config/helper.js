@@ -11,5 +11,6 @@ module.exports = hbs => {
         if(arg1 != null && arg2 != null) {
             return (!arg1.equals(arg2) ) ? options.fn(this) : options.inverse(this)
         } else return options.inverse(this)
-    })
+    }),
+    hbs.handlebars.registerHelper('dateFormat', require('handlebars-dateformat'))
 }

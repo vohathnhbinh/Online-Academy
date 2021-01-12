@@ -1,6 +1,13 @@
 <div class="card">
     <h5 class="card-header">
-        {{morecourse.course.title}} by {{morecourse.course.teacher.fullname}}
+        <div class="d-flex justify-content-between">
+            <h3>
+                {{morecourse.course.title}} by {{morecourse.course.teacher.fullname}}
+            </h3>
+            <div>
+                Updated on <b>{{dateFormat morecourse.course.updatedOn "dddd, MMMM Do YYYY, h:mm:ss a"}}</b>
+            </div>
+        </div>
     </h5>
     <div class="card-body">
         <img src="/public/images/{{morecourse.course.teacher._id}}/{{morecourse.course._id}}/{{morecourse.course.smallPicture}}" alt="{{morecourse.course.title}}">
@@ -9,7 +16,7 @@
         <p class="card-text">
             {{{morecourse.course.fullDesc}}}
         </p>
-        <p class="card-text text-success">Out of {{morecourse.students.length}} student(s) in this course, {{morecourse.rating.amount}} has (have) rated</p>
+        <p class="card-text text-success">Out of {{morecourse.students.length}} student(s) in this course, {{morecourse.course.rateamount}} has (have) rated</p>
         {{#if user}}
             {{#ifIdNotEquals user._id morecourse.course.teacher._id}}
                 {{#unless isIn}}
@@ -100,6 +107,7 @@
                                 {{{this.course.minDesc}}}
                             </p>
                             <input id="{{this.course.title}}" name="{{this.course.title}}" class="kv-ltr-theme-svg-star rating-loading mt-3" value="{{this.course.rate}}" dir="ltr" data-size="sm" readonly="true">
+                            {{this.course.rateamount}} has (have) rated
                         </div>
                         <div class="card-footer">
                             <a class="btn btn-sm btn-outline-primary" href="/course/detail?courseId={{this.course._id}}" role="button">
@@ -140,7 +148,7 @@
                 </div>
             </form>
         {{/if}}
-        <input id="rating-display" name="rating-display" class="kv-ltr-theme-svg-star rating-loading mt-3" value="{{morecourse.rating.rate}}" dir="ltr" data-size="xl" readonly="true">
+        <input id="rating-display" name="rating-display" class="kv-ltr-theme-svg-star rating-loading mt-3" value="{{morecourse.course.rate}}" dir="ltr" data-size="xl" readonly="true">
 
         {{#each morecourse.students}}
             {{#if this.feedback}}

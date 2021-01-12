@@ -66,7 +66,7 @@ router.get('/sort-fee', async (req, res) => {
     }
 })
 
-router.get('/sort-rate', async (req, res) => {
+router.get('/sort-rating', async (req, res) => {
     const courses = req.session.courses
     try {
         const categories = await Category.find({}).lean()

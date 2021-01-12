@@ -16,10 +16,6 @@ const morecourseSchema = new mongoose.Schema({
         rate: Number,
         feedback: String
     }],
-    rating: {
-        rate: Number, // Danh gia
-        amount: Number // So luong hoc vien danh gia
-    },
     viewAmount: Number, // So luong click xem chi tiet
     studentNum: Number, // So luong dang ky
 })

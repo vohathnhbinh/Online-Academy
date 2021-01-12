@@ -277,6 +277,17 @@ router.post('/edit', upload.single('fuMain'), async (req,res)=>{
             )
         }
 
+        const courseX = await Course.findOneAndUpdate(
+            {
+                _id: utils.convertId(courseId)
+            },
+            {
+                $set: {
+                    updatedOn: new Date()
+                }
+            }
+        )
+
         res.redirect(`edit?courseId=${courseId}`) 
     } catch(err) {
         console.log(err)

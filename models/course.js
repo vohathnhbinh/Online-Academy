@@ -33,7 +33,8 @@ const courseSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    rate: Number,
+    rate: {type: Number, default: 0},
+    rateamount: {type: Number, default: 0},
     createdOn: {type: Date, default: new Date()},
     updatedOn: Date
 })
