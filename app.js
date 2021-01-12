@@ -2,21 +2,20 @@ if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
 }
 
-const express = require('express');
-const exphbs  = require('express-handlebars');
+const express = require('express')
+const exphbs  = require('express-handlebars')
 const hbs_section = require('express-handlebars-sections')
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser')
+const bodyParser = require('body-parser')
 const passport = require('passport')
 const flash = require('express-flash')
-const session = require('express-session');
+const session = require('express-session')
 
- 
-const app = express();
-const port = process.env.PORT || 8080;
+const app = express()
+const port = process.env.PORT || 8080
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use('/public', express.static('public'))
 
@@ -26,7 +25,7 @@ app.engine('hbs', exphbs({
         section: hbs_section()
     }
 }));
-app.set('view engine', 'hbs');
+app.set('view engine', 'hbs')
 const hbs = exphbs.create({})
 require('./config/helper')(hbs)
 

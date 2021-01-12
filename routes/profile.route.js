@@ -41,8 +41,32 @@ router.get('/favorite', async (req, res) => {
 
         res.render('vwCourse/course', {
             user: req.user ? req.user._doc : null,
-            courses: student.watchlist
+            courses: student.watchlist,
+            favorite: true
         })
+    } catch(err) {
+
+    }
+})
+
+router.get('/delete', async (req, res) => {
+    const courseId = req.query.courseId
+    try {
+        const student = await User.findOneAndUpdate(
+            {
+                _id: req.user._doc._id
+            },
+            {
+                $pull: {
+                    watchlist: utils.convertId(courseId)
+                }
+            },
+            {
+                new: true
+            }
+        )
+
+        res.redirect('favorite')
     } catch(err) {
 
     }
@@ -126,11 +150,19 @@ router.post('/', async (req, res) => {
 })
 
 router.get('/mycourse', async (req, res) => {
-    const courses = await Course.find(
-        {
-            teacher: req.user ? req.user._doc._id : null
-        }
-    ).populate('teacher').populate('category').lean()
+    if(req.user._doc.role === 1) {
+        var courses = await Course.find(
+            {
+                teacher: req.user ? req.user._doc._id : null
+            }
+        ).populate('teacher').populate('category').lean()
+    } else {
+        const student = await User.findOne({
+            _id: req.user ? req.user._doc._id : null
+        })
+        var courses = student.courses
+    }
+    
     req.session.courses = courses
     
     res.render('vwCourse/course',{
