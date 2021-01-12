@@ -9,7 +9,8 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const passport = require('passport')
 const flash = require('express-flash')
-const session = require('express-session')
+const session = require('express-session');
+
  
 const app = express();
 const port = process.env.PORT || 8080;
@@ -59,6 +60,7 @@ app.use('/verify', require('./routes/verify.route'))
 app.use('/course', require('./routes/course.route'))
 app.use('/search', require('./routes/search.route'))
 app.use('/watch', require('./routes/watch.route'))
+app.use('/admin',require('./routes/admin.route'))
 
 app.use(function(req,res){
     res.render('404',{
