@@ -226,7 +226,7 @@ router.post('/edit', upload.single('fuMain'), async (req,res)=>{
             if(!updated[i]){
                 delete updated[i]
             }
-        }  
+        }
         let update_course;
         if (price || sale)
         {
@@ -272,7 +272,6 @@ router.post('/edit', upload.single('fuMain'), async (req,res)=>{
             }).populate('course')
 
             let studentCount = morecourse.students.length
-            console.log(studentCount)
             await Category.update(
                 {
                     _id: course.category

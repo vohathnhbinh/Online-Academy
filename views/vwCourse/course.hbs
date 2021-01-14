@@ -20,8 +20,14 @@
             {{/each}}
         </ul>
         <div class="mr-5">
-            <a class="btn btn-outline-danger" href="/search/sort-rating">Sort rating descending</a>
-            <a class="btn btn-outline-warning" href="/search/sort-fee">Sort fee ascending</a>
+            <a class="btn btn-outline-danger" href="/search/sort-rating">
+                <i class="fa fa-sort" aria-hidden="true"></i>
+                Sort rating descending
+            </a>
+            <a class="btn btn-outline-warning" href="/search/sort-fee">
+                <i class="fa fa-sort" aria-hidden="true"></i>
+                Sort fee ascending
+            </a>
         </div>
     </div>
     {{#if empty}}
@@ -32,43 +38,45 @@
         <div class="card-body">
             <div class="row">
                 {{#each courses}}
-                    <div class="col-sm-4 mb-3">
-                        <div class="card h-100">
-                            <img src="/public/images/{{this.teacher._id}}/{{this._id}}/{{this.smallPicture}}" class="card-img-top" alt="{{this.title}}">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <h5 class="card-title">{{this.title}}</h5>
-                                    {{#if ../favorite}}
-                                        <a href="/profile/delete?courseId={{this._id}}" class="btn btn-danger">X</a>
-                                    {{/if}}
-                                    {{#if ../delete}}
-                                        <a href="/admin/deletecourse?courseId={{this._id}}" class="btn btn-danger">X</a>
-                                    {{/if}}
+                    {{#unless this.disabled}}
+                        <div class="col-sm-4 mb-3">
+                            <div class="card h-100">
+                                <img src="/public/images/{{this.teacher._id}}/{{this._id}}/{{this.smallPicture}}" class="card-img-top" alt="{{this.title}}">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title">{{this.title}}</h5>
+                                        {{#if ../favorite}}
+                                            <a href="/profile/delete?courseId={{this._id}}" class="btn btn-danger">X</a>
+                                        {{/if}}
+                                        {{#if ../disable}}
+                                            <a href="/admin/disable?courseId={{this._id}}" class="btn btn-danger">Disable</a>
+                                        {{/if}}
+                                    </div>
+                                    <h6 class="card-subtitle">by {{this.teacher.fullname}}</h5>
+                                    <h6 class="text-primary pt-4">{{this.category.name}}</h6>
+                                    <h5 class="text-danger">{{this.fee.price}} VND</h5>
+                                    <h5 class="text-warning">Sale off: {{this.fee.sale}}%</h5>
+                                    <p class="card-text">
+                                        {{{this.minDesc}}}
+                                    </p>
+                                    <input id="{{this.title}}" name="{{this.title}}" class="kv-ltr-theme-svg-star rating-loading mt-3" value="{{this.rate}}" dir="ltr" data-size="sm" readonly="true">
+                                    {{this.rateamount}} has (have) rated
                                 </div>
-                                <h6 class="card-subtitle">by {{this.teacher.fullname}}</h5>
-                                <h6 class="text-primary pt-4">{{this.category.name}}</h6>
-                                <h5 class="text-danger">{{this.fee.price}} VND</h5>
-                                <h5 class="text-warning">Sale off: {{this.fee.sale}}%</h5>
-                                <p class="card-text">
-                                    {{{this.minDesc}}}
-                                </p>
-                                <input id="{{this.title}}" name="{{this.title}}" class="kv-ltr-theme-svg-star rating-loading mt-3" value="{{this.rate}}" dir="ltr" data-size="sm" readonly="true">
-                                {{this.rateamount}} has (have) rated
-                            </div>
-                            <div class="card-footer">
-                                <a class="btn btn-sm btn-outline-primary" href="/course/detail?courseId={{this._id}}" role="button">
-                                    <i class="fa fa-eye" aria-hidden="true"></i>
-                                    Details
-                                </a>
-                                {{#ifIdEquals ../user._id this.teacher._id}}
-                                    <a class="btn btn-sm btn-outline-primary" href="/profile/edit?courseId={{this._id}}" role="button">
+                                <div class="card-footer">
+                                    <a class="btn btn-sm btn-outline-primary" href="/course/detail?courseId={{this._id}}" role="button">
                                         <i class="fa fa-eye" aria-hidden="true"></i>
-                                        Edit
+                                        Details
                                     </a>
-                                {{/ifIdEquals}}
+                                    {{#ifIdEquals ../user._id this.teacher._id}}
+                                        <a class="btn btn-sm btn-outline-primary" href="/profile/edit?courseId={{this._id}}" role="button">
+                                            <i class="fa fa-edit" aria-hidden="true"></i>
+                                            Edit
+                                        </a>
+                                    {{/ifIdEquals}}
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    {{/unless}}
                 {{/each}}
             </div>
         </div>
