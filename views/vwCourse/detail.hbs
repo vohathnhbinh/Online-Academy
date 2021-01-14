@@ -10,7 +10,7 @@
         </div>
     </h5>
     <div class="card-body">
-        <img src="/public/images/{{morecourse.course.teacher._id}}/{{morecourse.course._id}}/{{morecourse.course.smallPicture}}" alt="{{morecourse.course.title}}">
+        <img src="/public/images/{{morecourse.course.teacher._id}}/{{morecourse.course._id}}/{{morecourse.course.smallPicture}}" alt="{{morecourse.course.title}}" class="limit">
         <p class="card-text mt-3">Price: <span class="text-danger font-weight-bold">{{morecourse.course.fee.price}}</span></p>
         <p class="card-text">Sale off: <span class="text-warning font-weight-bold">{{morecourse.course.fee.sale}}%</span></p>
         <p class="card-text">
@@ -194,6 +194,11 @@
             width: 100%;
             height: 15vw;
             object-fit: cover;
+        }
+
+        .limit {
+            width: 50vw;
+            height: 50vw;
         }
     </style>
 {{/section}}
