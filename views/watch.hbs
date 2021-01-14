@@ -2,6 +2,12 @@
     <h5 class="card-header">
         Chapter {{curVid.chapter}}: {{curVid.title}}
     </h5>
+    {{#each progress.progress}}
+        {{#ifEquals this.video ../curVid.title}}
+            <input type="hidden" id="lefttime" value="{{this.time}}">
+            <button id="left" class="btn btn-warning">Click this to return to where you left off</button>
+        {{/ifEquals}}
+    {{/each}}
     <div class="card-body d-flex justify-content-center">
         <video
             id="my-video"
@@ -44,18 +50,20 @@
     <script src="https://vjs.zencdn.net/7.10.2/video.min.js"></script>
     <script>
         var myPlayer = videojs('my-video')
-        myPlayer.on('pause', function(e) {
-            console.log(myPlayer.currentTime())
+
+        $('#left').click(() => {
+            const dest = $('#lefttime').val()
+            console.log(dest)
+            myPlayer.currentTime(dest)
         })
 
-        const params = new URLSearchParams(`currentTime=${myPlayer.currentTime}&title=${curVid.title}`)
-        console.log(params.get('title'))
-
-        document.addEventListener("visibilitychange", function() {
-            if (document.visibilityState != 'visible') {
-                
-                navigator.sendBeacon('/watch/update-time', params)
+        window.addEventListener('beforeunload', function() {
+            var searchParams = {
+                currentTime: myPlayer.currentTime(),
+                title: "{{curVid.title}}"
             }
+            var blob= new Blob([JSON.stringify(searchParams)], {type : 'application/json; charset=UTF-8'})
+            navigator.sendBeacon('/watch/update-time', blob)
         })
     </script>
 {{/section}}

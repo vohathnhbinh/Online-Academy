@@ -8,6 +8,7 @@ const Progress = require('../models/progress')
 router.get('/', async (req, res) => {
     const courseId = req.query.courseId
     const chapter = req.query.chapter
+    req.session.userId = req.user ? req.user._doc._id : null
     try {
         const coursecontent = await CourseContent.findOne({
             course: utils.convertId(courseId)
@@ -23,8 +24,8 @@ router.get('/', async (req, res) => {
 
         const progress = await Progress.findOne({
             student: req.user ? req.user._doc._id : null,
-            'progress.title': curVid.title
-        })
+            'progress.video': curVid.title
+        }).lean()
 
         if (student || chapter == 1) {
             res.render('watch', {
@@ -32,7 +33,7 @@ router.get('/', async (req, res) => {
                 coursecontent,
                 curVid,
                 otherVids,
-                progressTime: progress ? progress.progress.time : 0
+                progress: progress ? progress : 0
             })
         } else res.redirect(`/course/detail?courseId=${courseId}`)
         
@@ -43,32 +44,50 @@ router.get('/', async (req, res) => {
 
 router.post('/update-time', async(req, res) => {
     try {
-        const currentTime = req.query.currentTime
-        const title = req.query.title
-        console.log(currentTime)
-        const progress = await Progress.findOneAndUpdate(
-            {
-                student: req.user ? req.user._doc._id : null
-            },
-            {
-                $push: {
-                    progress: {
-                        video: title,
-                        time: currentTime
+        const {currentTime, title} = req.body
+        const userId = req.session.userId
+        const checkProgress = await Progress.findOne({
+            student: utils.convertId(userId),
+            'progress.video': title
+        })
+        if(!checkProgress) {
+            
+            const progress = await Progress.findOneAndUpdate(
+                {
+                    student: utils.convertId(userId)
+                },
+                {
+                    $push: {
+                        progress: {
+                            video: title,
+                            time: currentTime
+                        }
+                    }
+                },
+                {
+                    new: true,
+                    upsert: true,
+                    useFindAndModify: false
+                }
+            )
+        } else {
+            await Progress.updateOne(
+                {
+                    student: utils.convertId(userId),
+                    'progress.video': title
+                },
+                {
+                    $set: {
+                        'progress.$.time': currentTime
                     }
                 }
-            },
-            {
-                new: true,
-                upsert: true,
-                useFindAndModify: false
-            }
-        )
-        res.json(true)
+            )
+        }
+        
+        res.redirect('/')
     } catch(err) {
         console.log(err)
     }
-    
 })
 
 module.exports = router

@@ -5,7 +5,6 @@ if (process.env.NODE_ENV !== 'production') {
 const express = require('express')
 const exphbs  = require('express-handlebars')
 const hbs_section = require('express-handlebars-sections')
-const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const passport = require('passport')
 const flash = require('express-flash')
@@ -16,6 +15,7 @@ const port = process.env.PORT || 8080
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.text())
 
 app.use('/public', express.static('public'))
 

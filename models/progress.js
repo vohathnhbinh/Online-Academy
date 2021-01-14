@@ -9,6 +9,7 @@ const progressSchema = new mongoose.Schema({
     },
     progress: [
         {
+            _id:false,
             video: String,
             time: Number
         }
