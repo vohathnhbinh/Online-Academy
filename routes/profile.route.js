@@ -262,23 +262,50 @@ router.post('/edit', upload.single('fuMain'), async (req,res)=>{
                 _id: utils.convertId(courseId)
             }, update_course,
             {
-                new: true,
                 useFindAndModify: false
             }
         )
+
+        if(req.body.category) {
+            const morecourse = await MoreCourse.findOne({
+                course: utils.convertId(courseId)
+            }).populate('course')
+
+            let studentCount = morecourse.students.length
+            console.log(studentCount)
+            await Category.update(
+                {
+                    _id: course.category
+                },
+                {
+                    $inc: {
+                        studentNum: -studentCount
+                    }
+                }
+            )
+            await Category.update(
+                {
+                    _id: utils.convertId(req.body.category)
+                },
+                {
+                    $inc: {
+                        studentNum: studentCount
+                    }
+                }
+            )
+        }
 
         const titleX = req.body.titleX
         if(filename && titleX) {
             const coursecontent = await CourseContent.findOneAndUpdate(
                 {
                     course: utils.convertId(courseId)
-                }, 
+                }, {},
                 {
-                    neư:true,
+                    new:true,
                     upsert: true
                 }
             )
-
             let content = coursecontent.content ? coursecontent.content : {} 
             content.push({
                 chapter: 99,
