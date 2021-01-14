@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Category = require('../models/category')
+const Course = require('../models/course')
 const utils = require('../config/utils')
 
 router.get('/', (req, res) => {
@@ -114,6 +115,33 @@ router.post('/addcat', async(req, res) => {
 
         await category.save()
         res.redirect('category')
+    } catch(err) {
+        console.log(err)
+    }
+})
+
+router.get('/course', async(req, res) => {
+    try {
+        const courses = await Course.find({}).
+        populate('teacher').populate('category').lean()
+
+        res.render('vwCourse/course', {
+            user: req.user ? req.user._doc : null,
+            courses,
+            delete: true
+        })
+    } catch(err) {
+        console.log(err)
+    }
+})
+
+router.get('/delete', async(req, res) => {
+    const courseId = req.query.courseId
+    try {
+        await Course.deleteOne({
+            _id: utils.convertId(courseId)
+        })
+        res.redirect('/course')
     } catch(err) {
         console.log(err)
     }
