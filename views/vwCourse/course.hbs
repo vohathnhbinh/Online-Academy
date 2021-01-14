@@ -41,6 +41,9 @@
                                     {{#if ../favorite}}
                                         <a href="/profile/delete?courseId={{this._id}}" class="btn btn-danger">X</a>
                                     {{/if}}
+                                    {{#if ../delete}}
+                                        <a href="/admin/deletecourse?courseId={{this._id}}" class="btn btn-danger">X</a>
+                                    {{/if}}
                                 </div>
                                 <h6 class="card-subtitle">by {{this.teacher.fullname}}</h5>
                                 <h6 class="text-primary pt-4">{{this.category.name}}</h6>
