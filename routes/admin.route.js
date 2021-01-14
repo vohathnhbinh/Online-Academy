@@ -90,4 +90,33 @@ router.get('/delete', async(req, res) => {
     }
 })
 
+router.get('/is-available', async(req, res) => {
+    const catname = req.query.catname
+    try {
+        const category = await Category.findOne({
+            name: catname
+        })
+
+        if(category) return res.json(false)
+        res.json(true)
+    } catch {
+        console.log(err)
+    }
+})
+
+router.post('/addcat', async(req, res) => {
+    const {catName, catType} = req.body
+    try {
+        const category = new Category({
+            name: catName,
+            type: catType
+        })
+
+        await category.save()
+        res.redirect('category')
+    } catch(err) {
+        console.log(err)
+    }
+})
+
 module.exports = router

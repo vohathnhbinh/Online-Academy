@@ -8,27 +8,42 @@
             {{/each}}
         {{/if}}
         <form action="/register" method="post" name="frmRegister" id="frmRegister">
-                <div class="form-group">
-                    <label for="fullname">Fullname</label>
-                    <input type="text" class="form-control" id="fullname" name="fullname" required autofocus value="{{fullname}}">
-                </div>
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" class="form-control" id="username" name="username" required placeholder="Must have at least 6 characters" value="{{username}}">
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" required placeholder="name@example.com" value="{{email}}">
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" required placeholder="Must have at least 6 characters">
-                </div>
-                <div class="form-group">
-                    <label for="repassword">Confirm password</label>
-                    <input type="password" class="form-control" id="repassword" name="repassword" required placeholder="Please re-enter your password">
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+            <div class="form-group">
+                <label for="fullname">Fullname</label>
+                <input type="text" class="form-control" id="fullname" name="fullname" required autofocus value="{{fullname}}">
+            </div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" name="username" required placeholder="Must have at least 6 characters" value="{{username}}">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required placeholder="name@example.com" value="{{email}}">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required placeholder="Must have at least 6 characters">
+            </div>
+            <div class="form-group">
+                <label for="repassword">Confirm password</label>
+                <input type="password" class="form-control" id="repassword" name="repassword" required placeholder="Please re-enter your password">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
 </div>
+
+{{#section 'script'}}
+    <script src="sweetalert2.all.min.js"></script>
+    <script>
+        $('#frmRegister').on('submit', e =>{
+            Swal.fire({
+                title: 'Success',
+                text: 'Register complete',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            })
+            return
+        })
+    </script>
+{{/section}}

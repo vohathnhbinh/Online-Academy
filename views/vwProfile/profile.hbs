@@ -1,4 +1,4 @@
-<h1 name="errorMsg" id="errorMsg">
+<h1 name="errorMsg" id="errorMsg" class="pl-5">
     {{#if isSuccessful}}
         Password updated!
     {{/if}}
@@ -89,6 +89,7 @@
 </div>
 
 {{#section 'script'}}
+    <script src="sweetalert2.all.min.js"></script>
     <script>
         $('#frmUsername').on('submit', e => {
             e.preventDefault()
@@ -102,6 +103,12 @@
                     $('#frmUsername').off('submit').submit()
                 } else {
                     $('#errorMsg').html('Username is not available')
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Username is not available',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    })
                     return
                 }
             }) 
@@ -115,6 +122,12 @@
                     $('#frmEmail').off('submit').submit()
                 } else {
                     $('#errorMsg').html('Email is already in use')
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Email is already in use',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    })
                     return
                 }
             }) 
@@ -137,6 +150,12 @@
                     $('#frmPassword').off('submit').submit()
                 } else {
                     $('#errorMsg').html('Password is incorrect')
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Password is incorrect',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    })
                     return
                 }
             })

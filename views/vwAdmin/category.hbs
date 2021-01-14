@@ -1,6 +1,7 @@
 {{#if error}}
-    <h2>There are courses belong in the category you are trying to delete!!!</h2>
+    <h2 class="pl-5">There are courses belong in the category you are trying to delete!!!</h2>
 {{/if}}
+<h2 id="errorMsg" class="ml-3"></h2>
 <div class="mx-5" style="margin-top: 30px">
     <table class="table table-hover" style="table-layout: fixed" id="profile">
         {{#each cat}}
@@ -36,6 +37,33 @@
                 </td>
             </tr>
         {{/each}}
+
+        <tr data-toggle="collapse" data-target="#collapseCat">
+            <th colspan="2">New category</th>
+            <td class="small-col"><i class="fas fa-plus"></i></td>
+            <td class="green" colspan="2">Add</td>
+        </tr>
+        <tr class="non-hover">
+            <td colspan="5">
+                <div class="collapse" id="collapseCat" data-parent="#profile">
+                    <div class="row justify-content-md-center">
+                        <form class="col-md-4" action="/admin/addcat" method="post" name="frmCat" id="frmCat">
+                            <label for="cat">Category name</label>
+                            <input type="text" class="form-control" id="catName" name="catName" required>
+
+                            <label for="cat{{this.type}}">Category type:</label>
+                            <select class="form-select mt-3 ml-2" id="catType" name="catType" required>
+                                {{#each catTYPE}}
+                                    <option value="{{this}}">{{this}}</option>
+                                {{/each}}                 
+                            </select>
+                            <br>
+                            <button type="submit" class="btn btn-primary mt-2">Save change</button>
+                        </form>
+                    </div>
+                </div>
+            </td>
+        </tr>
     </table>
 </div>
 
@@ -61,4 +89,30 @@
             color: blue;
         }
     </style>
+{{/section}}
+
+{{#section 'script'}}
+    <script src="sweetalert2.all.min.js"></script>
+    <script>
+        $('#frmCat').on('submit', e =>{
+            e.preventDefault()
+            const name_tmp = $('#catName').val()
+            
+            $.getJSON(`/admin/is-available?catname=${name_tmp}`,data=>{
+                if (data === true){
+                    $('#frmCat').off('submit').submit()
+                }
+                else{
+                    $('#errorMsg').html('Name already exists')
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Name already exists',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    })
+                    return
+                }
+            })
+        })
+    </script>
 {{/section}}
