@@ -269,9 +269,15 @@ router.post('/edit', upload.single('fuMain'), async (req,res)=>{
 
         const titleX = req.body.titleX
         if(filename && titleX) {
-            const coursecontent = await CourseContent.findOneAndUpdate({
-                course: utils.convertId(courseId)
-            }, {upsert: true})
+            const coursecontent = await CourseContent.findOneAndUpdate(
+                {
+                    course: utils.convertId(courseId)
+                }, 
+                {
+                    neư:true,
+                    upsert: true
+                }
+            )
 
             let content = coursecontent.content ? coursecontent.content : {} 
             content.push({
