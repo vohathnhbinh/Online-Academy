@@ -64,7 +64,12 @@
                                             <a href="/admin/disable?courseId={{this._id}}" class="btn btn-danger">Disable</a>
                                         {{/if}}
                                     </div>
-                                    <h6 class="card-subtitle">by {{this.teacher.fullname}}</h5>
+                                    <h6 class="card-subtitle">by {{this.teacher.fullname}}</h6>
+                                    {{#if this.completed}}
+                                        <h5 class="text-success">Completed</h5>
+                                    {{else}}
+                                        <h5 class="text-danger">Incompleted</h5>
+                                    {{/if}}
                                     <h6 class="text-primary pt-4">{{this.category.name}}</h6>
                                     <h5 class="text-danger">{{this.fee.price}} VND</h5>
                                     <h5 class="text-warning">Sale off: {{this.fee.sale}}%</h5>

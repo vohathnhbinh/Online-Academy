@@ -4,6 +4,7 @@ const CourseContent = require('../models/coursecontent')
 const utils = require('../config/utils')
 const User = require('../models/user')
 const Progress = require('../models/progress')
+const Course = require('../models/course')
 
 router.get('/', async (req, res) => {
     const courseId = req.query.courseId
@@ -21,13 +22,17 @@ router.get('/', async (req, res) => {
             _id: req.user ? req.user._doc._id : null,
             courses: utils.convertId(courseId)
         })
+        const teacher = await Course.findOne({
+            teacher: req.user ? req.user._doc._id : null,
+            _id: utils.convertId(courseId)
+        })
 
         const progress = await Progress.findOne({
             student: req.user ? req.user._doc._id : null,
             'progress.video': curVid.title
         }).lean()
 
-        if (student || chapter == 1) {
+        if (student || teacher || chapter == 1) {
             res.render('watch', {
                 user: req.user ? req.user._doc : null,
                 coursecontent,

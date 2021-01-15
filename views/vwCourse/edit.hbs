@@ -2,7 +2,14 @@
 
 <div class="card">
     <div class="card-header">
-        <h1>{{course.title}}</h1>
+        <div class="d-flex justify-content-between">
+            <h1>{{course.title}}</h1>
+            {{#if course.completed}}
+                <a href="/profile/markincomplete?courseId={{course._id}}" class="btn btn-outline-danger">Mark incomplete</a>
+            {{else}}
+                <a href="/profile/markcomplete?courseId={{course._id}}" class="btn btn-outline-success">Mark complete</a>
+            {{/if}}
+        </div>
     </div>
     <div class="card-body">
         <table class="table table-hover" style="table-layout: fixed" id="profile">

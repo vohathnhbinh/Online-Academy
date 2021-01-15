@@ -6,7 +6,12 @@
                 <img src="/public/images/{{this.course.teacher._id}}/{{this.course._id}}/{{this.course.smallPicture}}" class="card-img-top" alt="{{this.course.title}}">
                 <div class="card-body">
                     <h5 class="card-title">{{this.course.title}}</h5>
-                    <h6 class="card-subtitle">by {{this.course.teacher.fullname}}</h5>
+                    <h6 class="card-subtitle">by {{this.course.teacher.fullname}}</h6>
+                    {{#if this.course.completed}}
+                        <h5 class="text-success">Completed</h5>
+                    {{else}}
+                        <h5 class="text-danger">Incompleted</h5>
+                    {{/if}}
                     <h6 class="text-primary pt-4">{{this.course.category.name}}</h6>
                     <h5 class="text-danger">{{this.course.fee.price}} VND</h5>
                     <h5 class="text-warning">Sale off: {{this.course.fee.sale}}%</h5>
@@ -33,7 +38,12 @@
                 <img src="/public/images/{{this.course.teacher._id}}/{{this.course._id}}/{{this.course.smallPicture}}" class="card-img-top" alt="{{this.course.title}}">
                 <div class="card-body">
                     <h5 class="card-title">{{this.course.title}}</h5>
-                    <h6 class="card-subtitle">by {{this.course.teacher.fullname}}</h5>
+                    <h6 class="card-subtitle">by {{this.course.teacher.fullname}}</h6>
+                    {{#if this.course.completed}}
+                        <h5 class="text-success">Completed</h5>
+                    {{else}}
+                        <h5 class="text-danger">Incompleted</h5>
+                    {{/if}}
                     <h6 class="text-primary pt-4">{{this.course.category.name}}</h6>
                     <h5 class="text-danger">{{this.course.fee.price}} VND</h5>
                     <h5 class="text-warning">Sale off: {{this.course.fee.sale}}%</h5>
@@ -60,7 +70,12 @@
                 <img src="/public/images/{{this.teacher._id}}/{{this._id}}/{{this.smallPicture}}" class="card-img-top" alt="{{this.title}}">
                 <div class="card-body">
                     <h5 class="card-title">{{this.title}}</h5>
-                    <h6 class="card-subtitle">by {{this.teacher.fullname}}</h5>
+                    <h6 class="card-subtitle">by {{this.teacher.fullname}}</h6>
+                    {{#if this.completed}}
+                        <h5 class="text-success">Completed</h5>
+                    {{else}}
+                        <h5 class="text-danger">Incompleted</h5>
+                    {{/if}}
                     <h6 class="text-primary pt-4">{{this.category.name}}</h6>
                     <h5 class="text-danger">{{this.fee.price}} VND</h5>
                     <h5 class="text-warning">Sale off: {{this.fee.sale}}%</h5>

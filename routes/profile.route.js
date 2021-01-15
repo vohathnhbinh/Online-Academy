@@ -171,7 +171,6 @@ router.get('/mycourse', async (req, res) => {
     }
     
     req.session.courses = courses
-    console.log(courses)
     
     res.render('vwCourse/course',{
         user: req.user ? req.user._doc : null,
@@ -364,7 +363,40 @@ router.post('/edit', upload.single('fuMain'), async (req,res)=>{
     } catch(err) {
         console.log(err)
     }
-       
+})
+
+router.get('/markcomplete', async(req, res) => {
+    const courseId = req.query.courseId
+    try {
+        await Course.updateOne(
+            {
+                _id: utils.convertId(courseId)
+            },
+            {
+                completed: true
+            }
+        )
+        res.redirect(`edit?courseId=${courseId}`)
+    } catch(err) {
+        console.log(err)
+    }
+})
+
+router.get('/markincomplete', async(req, res) => {
+    const courseId = req.query.courseId
+    try {
+        await Course.updateOne(
+            {
+                _id: utils.convertId(courseId)
+            },
+            {
+                completed: false
+            }
+        )
+        res.redirect(`edit?courseId=${courseId}`)
+    } catch(err) {
+        console.log(err)
+    }
 })
 
 module.exports = router

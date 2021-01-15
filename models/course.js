@@ -37,7 +37,8 @@ const courseSchema = new mongoose.Schema({
     rateamount: {type: Number, default: 0},
     createdOn: {type: Date, default: new Date()},
     updatedOn: Date,
-    disabled: {type: Boolean, default: false}
+    disabled: {type: Boolean, default: false},
+    completed: {type: Boolean, default: false}
 })
 
 courseSchema.index(
