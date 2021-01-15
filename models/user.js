@@ -35,7 +35,8 @@ const userSchema = new mongoose.Schema({
     watchlist: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Course'
-    }]
+    }],
+    desc: String
 })
 
 module.exports = mongoose.model('User', userSchema)

@@ -119,7 +119,7 @@ router.get('/is-found', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-    let updatedValue = {fullname, username, email, n_password} = req.body
+    let updatedValue = {fullname, username, email, n_password, desc} = req.body
     
     for(let i in updatedValue)
         if(!updatedValue[i])
@@ -141,7 +141,7 @@ router.post('/', async (req, res) => {
                 useFindAndModify: false
             }
         )
-        res.render('profile', {
+        res.render('/', {
             isSuccessful
         })
     } catch(err) {
