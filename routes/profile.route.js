@@ -159,11 +159,19 @@ router.get('/mycourse', async (req, res) => {
     } else {
         const student = await User.findOne({
             _id: req.user ? req.user._doc._id : null
-        })
-        var courses = student.courses
+        }).populate({
+            path: 'courses',
+            model: Course,
+            populate: ({
+                path: 'teacher',
+                model: User
+            })
+        }).lean()        
+        var courses = student.courses                
     }
     
     req.session.courses = courses
+    console.log(courses)
     
     res.render('vwCourse/course',{
         user: req.user ? req.user._doc : null,
