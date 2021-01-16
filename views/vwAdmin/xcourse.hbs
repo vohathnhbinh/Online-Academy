@@ -86,7 +86,7 @@
                                     <h5 class="text-danger">Incompleted</h5>
                                 {{/if}}
                                 <h6 class="text-primary pt-4">{{this.category.name}}</h6>
-                                <h5 class="text-danger">{{this.fee.price}} VND</h5>
+                                <h5 class="text-danger">{{toLocale this.fee.price}}</h5>
                                 <h5 class="text-warning">Sale off: {{this.fee.sale}}%</h5>
                                 <p class="card-text">
                                     {{{this.minDesc}}}
