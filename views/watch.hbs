@@ -1,6 +1,7 @@
 <div class="card">
     <h5 class="card-header">
         Chapter {{curVid.chapter}}: {{curVid.title}}
+        <input type="hidden" id="secret" value="{{curVid.title}}">
     </h5>
     {{#each progress.progress}}
         {{#ifEquals this.video ../curVid.title}}
@@ -58,11 +59,12 @@
         })
 
         window.addEventListener('beforeunload', function() {
+            let str = $('#secret').val()
             var searchParams = {
                 currentTime: myPlayer.currentTime(),
-                title: "{{curVid.title}}"
+                title: str
             }
-            var blob= new Blob([JSON.stringify(searchParams)], {type : 'application/json; charset=UTF-8'})
+            const blob = new Blob([JSON.stringify(searchParams)], {type : 'application/json; charset=utf-8'})
             navigator.sendBeacon('/watch/update-time', blob)
         })
     </script>

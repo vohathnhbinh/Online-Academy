@@ -16,7 +16,8 @@ router.get('/', async (req, res) => {
         }).populate('course').lean()
 
         const curVid = coursecontent.content[chapter - 1]
-        const otherVids = coursecontent.content.splice(chapter, 1)
+        let otherVids = coursecontent.content.splice(chapter - 1, 1)
+        otherVids = coursecontent.content
 
         const student = await User.findOne({
             _id: req.user ? req.user._doc._id : null,
@@ -29,7 +30,6 @@ router.get('/', async (req, res) => {
 
         const progress = await Progress.findOne({
             student: req.user ? req.user._doc._id : null,
-            'progress.video': curVid.title
         }).lean()
 
         if (student || teacher || chapter == 1) {
