@@ -141,7 +141,7 @@ router.post('/', async (req, res) => {
                 useFindAndModify: false
             }
         )
-        res.render('/', {
+        res.render('vwProfile/profile', {
             isSuccessful
         })
     } catch(err) {

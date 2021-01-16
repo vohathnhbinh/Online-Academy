@@ -3,12 +3,12 @@
     <ul class="navbar-nav mr-auto">
         {{#if user}}
             {{#if user.locked}}
-                <span class="navbar-text text-primary mr-5 ml-5"><h3>Your account has been locked</h3></span>
+                <span class="navbar-text text-primary mr-3 ml-3"><h3>Your account has been locked</h3></span>
             {{else}}
                 {{#ifEquals user.role 2}}
-                    <li class="nav-item"><a class="nav-link mr-5 ml-5 text-danger" href="/admin"><h3>Admin</h3></a></li>
+                    <li class="nav-item"><a class="nav-link mr-2 ml-2 text-danger" href="/admin"><h3>Admin</h3></a></li>
                 {{else}}
-                    <span class="navbar-text text-primary mr-5 ml-5"><h3>Hello {{user.fullname}}</h3></span>
+                    <span class="navbar-text text-primary mr-2 ml-2"><h3>Hello {{user.fullname}}</h3></span>
                 {{/ifEquals}}
                 <li class="nav-item"><a class="nav-link" href="/profile"><h3>Profile</h3></a></li>
                 <li class="nav-item"><a class="nav-link" href="/profile/mycourse"><h3>My Courses</h3></a></li>

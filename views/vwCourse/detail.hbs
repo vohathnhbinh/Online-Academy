@@ -15,23 +15,25 @@
         <h4 class="card-text">Sale off: <span class="text-warning font-weight-bold">{{morecourse.course.fee.sale}}%</span></h4>
         <p class="card-text text-success">({{morecourse.course.rateamount}} ratings) {{morecourse.studentNum}} students</p>
         <p class="card-text">
-            {{{morecourse.course.fullDesc}}}
+            <h4>Description:</h4>{{{morecourse.course.fullDesc}}}
         </p>
         {{#if user}}
             {{#ifIdNotEquals user._id morecourse.course.teacher._id}}
                 {{#unless isIn}}
-                    <form action="/course/join" method="POST" id="frmJoin">
-                        <div class="row form-group">
-                            <div class="col-sm-4">
-                                <div class="input-group mb-3">
-                                    <input type="hidden" value="{{morecourse.course._id}}" name="id" id="id">
-                                    <button class="btn btn-outline-primary" type="submit">
-                                        Join
-                                    </button>
+                    {{#ifEquals user.role 0}}
+                        <form action="/course/join" method="POST" id="frmJoin">
+                            <div class="row form-group">
+                                <div class="col-sm-4">
+                                    <div class="input-group mb-3">
+                                        <input type="hidden" value="{{morecourse.course._id}}" name="id" id="id">
+                                        <button class="btn btn-outline-primary btn-lg btn-block" type="submit">
+                                            Join
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    {{/ifEquals}}
                 {{/unless}}
             {{/ifIdNotEquals}}
         {{/if}}
