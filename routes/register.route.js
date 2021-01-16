@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt')
 const validate = require('../middlewares/validation')
 const authenticate = require('../middlewares/authentication')
 
-router.get('/', authenticate.checkNotAuthenticated, (req, res) => {
+router.get('/', authenticate.checkNotAuthenticated, authenticate.checkNotLocked, (req, res) => {
     res.render('register')
 })
 

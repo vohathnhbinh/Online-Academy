@@ -2,8 +2,9 @@ const express = require('express')
 const router = express.Router()
 const Course = require('../models/course')
 const Category = require('../models/category')
+const authenticate = require('../middlewares/authentication')
 
-router.get('/', async (req, res) => {
+router.get('/', authenticate.checkNotLocked, async (req, res) => {
     const result = req.query.q
     try {
         const categories = await Category.find({}).lean()

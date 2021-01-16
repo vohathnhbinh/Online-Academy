@@ -49,7 +49,8 @@ router.get('/', async (req, res) => {
         const newestCourses = await Course.find({})
         .populate('teacher').populate('category')
         .sort({
-            createdAt: -1
+            createdAt: -1,
+            updatedOn: -1
         }).limit(10).lean()
 
         const hottestCategories = await Category.find({})

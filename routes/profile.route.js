@@ -19,7 +19,7 @@ router.get('/', authenticate.checkAuthenticated, (req, res) => {
     })
 })
 
-router.get('/favorite', async (req, res) => {
+router.get('/favorite', authenticate.checkAuthenticated, async (req, res) => {
     try {
         const student = await User.findOne({
             _id: req.user._doc._id
@@ -373,7 +373,9 @@ router.get('/markcomplete', async(req, res) => {
                 _id: utils.convertId(courseId)
             },
             {
-                completed: true
+                $set: {
+                    completed: true
+                }
             }
         )
         res.redirect(`edit?courseId=${courseId}`)
@@ -390,7 +392,9 @@ router.get('/markincomplete', async(req, res) => {
                 _id: utils.convertId(courseId)
             },
             {
-                completed: false
+                $set: {
+                    completed: false
+                }
             }
         )
         res.redirect(`edit?courseId=${courseId}`)

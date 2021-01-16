@@ -5,8 +5,9 @@ const utils = require('../config/utils')
 const User = require('../models/user')
 const Progress = require('../models/progress')
 const Course = require('../models/course')
+const authenticate = require('../middlewares/authentication')
 
-router.get('/', async (req, res) => {
+router.get('/', authenticate.checkNotLocked, async (req, res) => {
     const courseId = req.query.courseId
     const chapter = req.query.chapter
     req.session.userId = req.user ? req.user._doc._id : null

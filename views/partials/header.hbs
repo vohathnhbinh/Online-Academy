@@ -2,14 +2,22 @@
     <a class="navbar-brand text-danger" href="/"><img src="/public/logo.png" alt="ACA" width="100" height="100"></a>
     <ul class="navbar-nav mr-auto">
         {{#if user}}
-            <span class="navbar-text text-primary"><h3>Hello {{user.fullname}}</h3></span>
-            <li class="nav-item"><a class="nav-link" href="/profile"><h3>Profile</h3></a></li>
-            <li class="nav-item"><a class="nav-link" href="/profile/mycourse"><h3>My Courses</h3></a></li>
-            {{#if favorite}}
-                <li class="nav-item"><a class="nav-link" href="/profile/favorite"><h3>Favorite</h3></a></li>
+            {{#if user.locked}}
+                <span class="navbar-text text-primary mr-5 ml-5"><h3>Your account has been locked</h3></span>
+            {{else}}
+                {{#ifEquals user.role 2}}
+                    <li class="nav-item"><a class="nav-link mr-5 ml-5 text-danger" href="/admin"><h3>Admin</h3></a></li>
+                {{else}}
+                    <span class="navbar-text text-primary mr-5 ml-5"><h3>Hello {{user.fullname}}</h3></span>
+                {{/ifEquals}}
+                <li class="nav-item"><a class="nav-link" href="/profile"><h3>Profile</h3></a></li>
+                <li class="nav-item"><a class="nav-link" href="/profile/mycourse"><h3>My Courses</h3></a></li>
+                {{#if favorite}}
+                    <li class="nav-item"><a class="nav-link" href="/profile/favorite"><h3>Favorite</h3></a></li>
+                {{/if}}
+                <li class="nav-item"><a class="nav-link" href="/login/logout"><h3>Logout</h3></a></li>
+                <li class="nav-item"><a class="nav-link" href="/verify"><h3>Verify</h3></a></li>
             {{/if}}
-            <li class="nav-item"><a class="nav-link" href="/login/logout"><h3>Logout</h3></a></li>
-            <li class="nav-item"><a class="nav-link" href="/verify"><h3>Verify</h3></a></li>
         {{else}}
             <li class="nav-item"><a class="nav-link" href="/register"><h3>Register</h3></a></li>
             <li class="nav-item"><a class="nav-link" href="/login"><h3>Login</h3></a></li>
@@ -17,7 +25,10 @@
     </ul>
     <form action="/search" class="form-inline my-2 my-lg-0" method="GET">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" name="q">
-        <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+        <button class="btn btn-success my-2 my-sm-0" type="submit">
+            <i class="fas fa-search"></i>
+            Search
+        </button>
     </form>
 </nav>
 {{#if categories}}
@@ -56,17 +67,3 @@
     </a>
 </div>
 {{/ifEquals}}
-
-{{#section 'style'}}
-    <style>
-    </style>
-{{/section}}
-
-{{#section 'script'}}
-    <script>
-        $(document).ready(function() {
-            $('li.active').removeClass('active');
-            $('a[href="' + location.pathname + '"]').closest('li').addClass('active'); 
-        });
-    </script>
-{{/section}}

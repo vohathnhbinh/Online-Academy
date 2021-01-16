@@ -26,5 +26,23 @@ module.exports = {
         }
 
         next()
+    },
+    checkAdmin: (req, res, next) => {
+        if(req.user) {
+            if(req.user._doc.role === 2) {
+                return next()
+            }
+        }
+        
+        res.redirect('/')
+    },
+    checkNotLocked: (req, res, next) => {
+        if(req.user) {
+            if(req.user._doc.locked) {
+                return res.redirect('/')
+            }
+        }
+
+        next()
     }
 }

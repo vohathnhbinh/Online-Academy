@@ -17,7 +17,7 @@ const morecourseSchema = new mongoose.Schema({
         feedback: String
     }],
     viewAmount: Number, // So luong click xem chi tiet
-    studentNum: Number, // So luong dang ky
+    studentNum: {type: Number, default: 0}, // So luong dang ky
 })
 
 module.exports = mongoose.model('MoreCourse', morecourseSchema)

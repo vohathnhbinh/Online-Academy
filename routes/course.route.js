@@ -34,7 +34,7 @@ router.get('/test', async (req, res) => {
     }
 })
 
-router.get('/add', authenticate.checkAuthenticated, async (req,res) => {
+router.get('/add', authenticate.checkAuthenticated, authenticate.checkNotLocked, async (req,res) => {
     try {
         const categories = await Category.find({}).lean()
         res.render('vwCourse/add', {
@@ -74,7 +74,8 @@ router.post('/add', upload.single('fuMain') , async function(req,res){
             },
             smallPicture: filename,
             minDesc: MinDesc,
-            fullDesc: FullDesc
+            fullDesc: FullDesc,
+            createdOn: new Date()
         })
         await course.save()
 
@@ -160,7 +161,7 @@ router.post('/join', async (req, res) => {
     }
 })
 
-router.get('/byCat', async (req, res) => {
+router.get('/byCat', authenticate.checkNotLocked, async (req, res) => {
     try {
         const categories = await Category.find({}).lean()
         const categoryId = req.query.categoryId
@@ -202,7 +203,7 @@ router.get('/byCat', async (req, res) => {
     }
 })
 
-router.get('/detail', async (req, res) => {
+router.get('/detail', authenticate.checkNotLocked, async (req, res) => {
     try {
         const courseId = req.query.courseId
         if(courseId) {

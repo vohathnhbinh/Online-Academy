@@ -26,5 +26,8 @@ module.exports = hbs => {
             if (arg >= 4.5) return options.fn(this)
             return options.inverse(this)
         } else return options.inverse(this)
+    }),
+    hbs.handlebars.registerHelper('toLocale', function(arg) {
+        return arg.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})
     })
 }

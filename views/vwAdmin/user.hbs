@@ -1,0 +1,68 @@
+<div class="mx-5" style="margin-top: 30px">
+    <h1 class="mb-3">Students</h1>
+    <table class="table table-hover" style="table-layout: fixed" id="profile">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Fullname</th>
+                <th>Email</th>
+                <th>Function</th>
+            </tr>
+        </thead>
+        {{#each students}}
+            <tr>
+                <td>{{this.username}}</td>
+                <td>{{this.fullname}}</td>
+                <td>{{this.email}}</td>
+                <td>
+                    <a href="/admin/maketeacher?id={{this._id}}" class="btn btn-outline-primary">
+                        <i class="fas fa-user-circle"></i>
+                        Make teacher
+                    </a>
+                    {{#if this.locked}}
+                        <a href="/admin/unlock?id={{this._id}}" class="btn btn-outline-warning">
+                            <i class="fas fa-unlock-alt"></i>
+                            Unlock
+                        </a>
+                    {{else}}
+                        <a href="/admin/lock?id={{this._id}}" class="btn btn-outline-danger">
+                            <i class="fas fa-lock"></i>
+                            Lock
+                        </a>
+                    {{/if}}
+                </td>
+            </tr>
+        {{/each}}
+    </table>
+    <h1 class="mb-3">Teachers</h1>
+    <table class="table table-hover" style="table-layout: fixed" id="profile">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Fullname</th>
+                <th>Email</th>
+                <th>Function</th>
+            </tr>
+        </thead>
+        {{#each teachers}}
+            <tr>
+                <td>{{this.username}}</td>
+                <td>{{this.fullname}}</td>
+                <td>{{this.email}}</td>
+                <td>
+                    {{#if this.locked}}
+                        <a href="/admin/unlock?id={{this._id}}" class="btn btn-outline-warning">
+                            <i class="fas fa-unlock-alt"></i>
+                            Unlock
+                        </a>
+                    {{else}}
+                        <a href="/admin/lock?id={{this._id}}" class="btn btn-outline-danger">
+                            <i class="fas fa-lock"></i>
+                            Lock
+                        </a>
+                    {{/if}}
+                </td>
+            </tr>
+        {{/each}}
+    </table>
+</div>

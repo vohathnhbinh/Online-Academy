@@ -11,12 +11,12 @@
     </h5>
     <div class="card-body">
         <img src="/public/images/{{morecourse.course.teacher._id}}/{{morecourse.course._id}}/{{morecourse.course.smallPicture}}" alt="{{morecourse.course.title}}" class="limit">
-        <p class="card-text mt-3">Price: <span class="text-danger font-weight-bold">{{morecourse.course.fee.price}}</span></p>
-        <p class="card-text">Sale off: <span class="text-warning font-weight-bold">{{morecourse.course.fee.sale}}%</span></p>
+        <h3 class="card-text mt-3">Price: <span class="text-danger font-weight-bold">{{toLocale morecourse.course.fee.price}}</span></h3>
+        <h4 class="card-text">Sale off: <span class="text-warning font-weight-bold">{{morecourse.course.fee.sale}}%</span></h4>
+        <p class="card-text text-success">({{morecourse.course.rateamount}} ratings) {{morecourse.studentNum}} students</p>
         <p class="card-text">
             {{{morecourse.course.fullDesc}}}
         </p>
-        <p class="card-text text-success">({{morecourse.course.rateamount}} ratings) {{morecourse.students.length}} students</p>
         {{#if user}}
             {{#ifIdNotEquals user._id morecourse.course.teacher._id}}
                 {{#unless isIn}}
@@ -63,23 +63,23 @@
 <div class="card">
     <h5 class="card-header">Content</h5>
     <div class="card-body">
-        <div class="row">
-            <h3 class="col-sm-2">Preview: </h3>
-            {{#if preview}}
-                <div class="col-sm-1">
-                    <a href="/watch?courseId={{morecourse.course._id}}&chapter=1" class="btn btn-sm btn-primary">Chapter 1</a>
-                </div>
-            {{/if}}
-        </div>
-        <h2>Join the course to watch more contents</h2>
-        <div class="row">
-            <h3 class="col-sm-2">Chapters: </h3>
-            {{#each coursecontent.content}}
-                <div class="col-sm-1">
-                    <a href="/watch?courseId={{../morecourse.course._id}}&chapter={{this.chapter}}" class="btn btn-sm btn-primary">Chapter {{this.chapter}}</a>
-                </div>
-            {{/each}}
-        </div>
+        {{#if preview}}
+            <a href="/watch?courseId={{morecourse.course._id}}&chapter=1" class="btn btn-lg btn-outline-primary">Preview</a>
+        {{/if}}
+        <table class="mt-5">
+            <tr>
+                <td><h3 class="mr-5">Videos</h3></td>
+                <td>
+                    {{#each coursecontent.content}}
+                        <a href="/watch?courseId={{../morecourse.course._id}}&chapter={{this.chapter}}" class="btn btn-sm btn-primary mb-3">Chapter {{this.chapter}}</a>
+                        <span class="pl-2"><b>{{this.title}}</b></span>
+                        <br>
+                    {{else}}
+                        <h3 class="text-danger">Empty</h5>
+                    {{/each}}
+                </td>
+            </tr>
+        </table>
     </div>
 </div>
 <div class="card">
@@ -126,6 +126,8 @@
                         </div>
                     </div>
                 {{/unless}}
+            {{else}}
+                <h3 class="text-danger">Empty</h5>
             {{/each}}
         </div>
     </div>

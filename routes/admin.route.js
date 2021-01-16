@@ -4,14 +4,15 @@ const Category = require('../models/category')
 const Course = require('../models/course')
 const User = require('../models/user')
 const utils = require('../config/utils')
+const authenticate = require('../middlewares/authentication')
 
-router.get('/', (req, res) => {
+router.get('/', authenticate.checkAdmin, (req, res) => {
     res.render('vwAdmin/admin', {
         user: req.user ? req.user._doc : null
     })
 })
 
-router.get('/category', async(req, res) => {
+router.get('/category', authenticate.checkAdmin, async(req, res) => {
     try {
         const categories = await Category.find({}).lean()
 
@@ -121,10 +122,15 @@ router.post('/addcat', async(req, res) => {
     }
 })
 
-router.get('/course', async(req, res) => {
+router.get('/course', authenticate.checkAdmin, async(req, res) => {
     try {
         const courses = await Course.find({}).
-        populate('teacher').populate('category').lean()
+        populate('teacher').populate('category')
+        .sort({
+            createdOn: -1,
+            updatedOn: -1
+        })
+        .lean()
         req.session.courses = courses
 
         const categories = await Category.find({}).lean()
@@ -151,7 +157,9 @@ router.get('/disable', async(req, res) => {
                 _id: utils.convertId(courseId)
             },
             {
-                disabled: true
+                $set: {
+                    disabled: true
+                }
             }
         )
         res.redirect('course')
@@ -168,7 +176,9 @@ router.get('/enable', async(req, res) => {
                 _id: utils.convertId(courseId)
             },
             {
-                disabled: false
+                $set: {
+                    disabled: false
+                }
             }
         )
         res.redirect('course')
@@ -253,6 +263,82 @@ router.get('/sort-rating', async (req, res) => {
             teachers,
             empty: courses.length === 0
         })
+    } catch (err) {
+        console.log(err)
+    }
+})
+
+router.get('/user', authenticate.checkAdmin, async (req, res) => {
+    try {
+        const students = await User.find({
+            role: 0
+        }).lean()
+        const teachers = await User.find({
+            role: 1
+        }).lean()
+
+        res.render('vwAdmin/user', {
+            user: req.user ? req.user._doc : null,
+            students,
+            teachers
+        })
+    } catch (err) {
+        console.log(err)
+    }
+})
+
+router.get('/maketeacher', async (req, res) => {
+    const userId = req.query.id
+    try {
+        await User.updateOne(
+            {
+                _id: utils.convertId(userId)
+            },
+            {
+                $set: {
+                    role: 1
+                }
+            }
+        )
+        res.redirect('user')
+    } catch (err) {
+        console.log(err)
+    }
+})
+
+router.get('/lock', async (req, res) => {
+    const userId = req.query.id
+    try {
+        await User.updateOne(
+            {
+                _id: utils.convertId(userId)
+            },
+            {
+                $set: {
+                    locked: true
+                }
+            }
+        )
+        res.redirect('user')
+    } catch (err) {
+        console.log(err)
+    }
+})
+
+router.get('/unlock', async (req, res) => {
+    const userId = req.query.id
+    try {
+        await User.updateOne(
+            {
+                _id: utils.convertId(userId)
+            },
+            {
+                $set: {
+                    locked: false
+                }
+            }
+        )
+        res.redirect('user')
     } catch (err) {
         console.log(err)
     }

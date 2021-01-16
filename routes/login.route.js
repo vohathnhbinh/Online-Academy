@@ -3,7 +3,7 @@ const router = express.Router()
 const authenticate = require('../middlewares/authentication')
 
 module.exports = passport => {
-    router.get('/', authenticate.checkNotAuthenticated, (req, res) => {
+    router.get('/', authenticate.checkNotAuthenticated, authenticate.checkNotLocked, (req, res) => {
         res.render('login')
     })
 
