@@ -46,9 +46,9 @@
             {{/if}}
         </h3>
     </div>
-    <div class="card-footer">
-        <div class="d-flex flex-row-reverse mr-3">
-            {{#if user}}
+    {{#if user}}
+        <div class="card-footer">
+            <div class="d-flex flex-row-reverse mr-3">
                 {{#unless alreadyFavor}}
                     <a href="/course/favorite?courseId={{morecourse.course._id}}" class="btn btn-outline-warning">Add to favorites</a>
                 {{/unless}}
@@ -58,19 +58,19 @@
                         Edit
                     </a>
                 {{/ifIdEquals}}
-            {{/if}}
+            </div>
         </div>
-    </div>                 
+    {{/if}}                 
 </div>
 <div class="card">
-    <h5 class="card-header">Content</h5>
+    <h3 class="card-header">Content</h3>
     <div class="card-body">
         {{#if preview}}
             <a href="/watch?courseId={{morecourse.course._id}}&chapter=1" class="btn btn-lg btn-outline-primary">Preview</a>
         {{/if}}
         <table class="mt-5">
             <tr>
-                <td><h3 class="mr-5">Videos</h3></td>
+                <td><h5 class="mr-5">Videos</h5></td>
                 <td>
                     {{#each coursecontent.content}}
                         <a href="/watch?courseId={{../morecourse.course._id}}&chapter={{this.chapter}}" class="btn btn-sm btn-primary mb-3">Chapter {{this.chapter}}</a>
@@ -85,7 +85,7 @@
     </div>
 </div>
 <div class="card">
-    <h5 class="card-header">Teacher info</h5>
+    <h3 class="card-header">Teacher info</h3>
     <div class="card-body">
         <p><b class="">Fullname: </b>{{morecourse.course.teacher.fullname}}</p>
         <p><b class="">Email: </b>{{morecourse.course.teacher.email}}</p>
@@ -94,7 +94,7 @@
     </div>
 </div>
 <div class="card">
-    <h5 class="card-header">Hottest courses in same category</h5>
+    <h3 class="card-header">Hottest courses in same category</h3>
     <div class="card-body">
         <div class="row">
             {{#each altMorecourses}}
@@ -135,28 +135,19 @@
     </div>
 </div>
 <div class="card">
-    <h5 class="card-header">Feedbacks</h5>
+    <h3 class="card-header">Feedbacks</h3>
     <div class="card-body">
         {{#if isIn}}
-            <form action="/course/rating" method="POST" id="frmRating" name="frmRating">
-                <input type="hidden" value="{{morecourse.course._id}}" name="id" id="id">
-                <label for="rating">Rate this course</label>
-                <input id="rating" name="rating" class="kv-ltr-theme-svg-star rating-loading" value="0" dir="ltr" data-size="sm" required>
-                <button class="btn btn-outline-warning mt-2" type="submit">
-                    Submit
-                </button>
-            </form>
-
-            <form action="/course/feedback" method="POST" id="frmFeedback" name="frmFeedback">
+            <form action="/course/rating" method="POST" id="frmFeedback" name="frmFeedback">
                 <div class="form-row">
                     <div class="col-sm-4">
-                        <div class="input-group mb-3">
-                            <input type="hidden" value="{{morecourse.course._id}}" name="id" id="id">
-                            <textarea form="frmFeedback" class="form-control mt-3" style="resize:none" id="feedback" name="feedback" rows="3" cols="50" placeholder="Give us your feedback about this course (This may replace your old feedback if you have already given one" required></textarea>
-                            <button class="btn btn-outline-danger" type="submit">
-                                Submit
-                            </button>
-                        </div>
+                        <input type="hidden" value="{{morecourse.course._id}}" name="id" id="id">
+                        <label for="rating">Rate this course and give a feedback</label>
+                        <input id="rating" name="rating" class="kv-ltr-theme-svg-star rating-loading" value="0" dir="ltr" data-size="sm" required>
+                        <textarea form="frmFeedback" class="form-control mt-3" style="resize:none" id="feedback" name="feedback" rows="3" cols="50" placeholder="Give us your feedback about this course (This may replace your old feedback if you have already given one" required></textarea>
+                        <button class="btn btn-outline-danger btn-block mt-4" type="submit">
+                            Submit
+                        </button>
                     </div>
                 </div>
             </form>
@@ -165,8 +156,17 @@
 
         {{#each morecourse.students}}
             {{#if this.feedback}}
-                <h5 class="mt-3">{{this.student.fullname}}</h5>
-                <p class="card-text">{{this.feedback}}</p>
+                <div class="card mt-3 border-dark">
+                    <div class="card-body"> 
+                        <h4 class="mt-3">{{this.student.fullname}}</h4>
+                        {{#if this.rate}}
+                            <input class="kv-ltr-theme-svg-star rating-loading mt-3" value="{{this.rate}}" dir="ltr" data-size="xs" readonly="true">
+                        {{else}}
+                            <input class="kv-ltr-theme-svg-star rating-loading mt-3"dir="ltr" data-size="xs" readonly="true">
+                        {{/if}}
+                        <p class="card-text mt-3">{{this.feedback}}</p>   
+                    </div>
+                </div>
             {{/if}}
         {{/each}}
     </div>

@@ -316,29 +316,6 @@ router.get('/favorite', async (req, res) => {
     }
 })
 
-router.post('/feedback', async (req, res) => {
-    try {
-        const morecourse = await MoreCourse.findOneAndUpdate(
-            {
-                course: utils.convertId(req.body.id),
-                'students.student': req.user._doc._id
-            },
-            {
-                $set: {
-                    'students.$.feedback': req.body.feedback
-                }
-            },
-            {
-                new: true,
-                useFindAndModify: false
-            }
-        )
-        res.redirect(`detail?courseId=${req.body.id}`)
-    } catch(err) {
-        console.log(err)
-    }
-})
-
 router.post('/rating', async (req, res) => {
     try {
         const morecourse = await MoreCourse.findOneAndUpdate(
@@ -348,7 +325,8 @@ router.post('/rating', async (req, res) => {
             },
             {
                 $set: {
-                    'students.$.rate': req.body.rating
+                    'students.$.rate': req.body.rating,
+                    'students.$.feedback': req.body.feedback
                 }
             },
             {

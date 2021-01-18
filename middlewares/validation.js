@@ -5,6 +5,7 @@ const validateRegister = () => {
     return [
         check('username', 'Username must have at least 6 characters').isLength({min: 6}),
         check('password', 'Password must have at least 6 characters').isLength({min: 6}),
+        check('email', 'Email is invalid').isEmail(),
         check('repassword', 'Password does not match').custom((value, {req}) => {
             if (value !== req.body.password) return false
             return true

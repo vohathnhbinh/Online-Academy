@@ -27,24 +27,24 @@
 
 <form action="/course/add" method="post" enctype="multipart/form-data">
     <div class="card">
-        <h5 class="card-header">
-            Thêm khóa học mới
-        </h5>
+        <h3 class="card-header text-center">
+            Add course
+        </h3>
         <div class="card-body">
             <div class="col-md-12">                
                 <div class="form-group">
                     {{!-- <input id="fuMain" name="fuMain" type="file" class="file"> --}}
-                    <label for="formFile" class="form-label">Hình ảnh khóa học</label>
+                    <label for="formFile" class="form-label">Image</label>
                     <input name="fuMain" class="form-control" type="file" accept="image/*" id="formFile">
                 </div>
 
                 <div class="mb-3">
-                    <label for="txtNameCourse" class="form-label" >Tên khóa học</label>
-                    <input id="txtNameCourse" name="NameCourse" class="form-control" type="text" placeholder="Tên khóa học" >
+                    <label for="txtNameCourse" class="form-label">Name of the course</label>
+                    <input id="txtNameCourse" name="NameCourse" class="form-control" type="text">
                 </div>
                 
                 <div class="input-group mb-3">
-                    <label class="input-group-text" for="inputCategory">Lĩnh vực</label>
+                    <label class="input-group-text" for="inputCategory">Category</label>
                     <select class="form-select" id="inputCategory" name="CategoryCourse">
                         {{#each categories}}
                             <option value="{{this._id}}">{{this.name}}</option>
@@ -54,16 +54,16 @@
 
 
                 <div class="mb-3">
-                    <label for="txtMinDesc" class="form-label" >Mô tả khóa học</label>
+                    <label for="txtMinDesc" class="form-label" >A short description of the course</label>
                     <textarea id="txtMinDesc" name="MinDesc" class="form-control" id="exampleFormControlTextarea1" rows="10" cols="30"></textarea>
                 </div>
 
                 <div class="mb-3">
-                    <label for="txtFullDesc" class="form-label">Chi tiết khóa học</label>
+                    <label for="txtFullDesc" class="form-label">A detail description of the course</label>
                     <textarea id="txtFullDesc" name="FullDesc" class="form-control h200" id="exampleFormControlTextarea1" rows="10" cols="30"></textarea>
                 </div>
 
-                <label for="txtFee" class="form-label">Học phí</label>
+                <label for="txtFee" class="form-label">Course's fee</label>
                 <div class="input-group mb-3">            
                     <span class="input-group-text">VND</span>
                     <input id="txtFee" name="Fee" class="form-control" type="text" aria-label="Amount (to the nearest dollar)" placeholder="Số tiền học phí" aria-label="default input example">
@@ -71,7 +71,7 @@
             </div>
         </div>
         <div class="card-footer">
-            <button type="submit" class="btn btn-primary">Thêm khóa học</button>
+            <button type="submit" class="btn btn-primary btn-block">Add</button>
         </div>
     </div>
 </form>
