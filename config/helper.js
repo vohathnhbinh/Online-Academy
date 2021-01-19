@@ -29,5 +29,8 @@ module.exports = hbs => {
     }),
     hbs.handlebars.registerHelper('toLocale', function(arg) {
         return arg.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})
+    }),
+    hbs.handlebars.registerHelper('calSale', function(arg1, arg2) {
+        return (arg1 * (1 - (arg2 / 100))).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})
     })
 }

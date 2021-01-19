@@ -13,8 +13,17 @@
                         <h5 class="text-danger">Incompleted</h5>
                     {{/if}}
                     <h6 class="text-primary pt-4">{{this.course.category.name}}</h6>
-                    <h5 class="text-danger">{{this.course.fee.price}} VND</h5>
-                    <h5 class="text-warning">Sale off: {{this.course.fee.sale}}%</h5>
+                    {{#if this.course.fee.sale}}
+                        <div class="side-side">
+                            <h5><del>{{toLocale this.course.fee.price}}</del></h5>
+                            <h5 class="text-danger ml-2">{{calSale this.course.fee.price this.course.fee.sale}}</h5>
+                        </div>
+                    {{else}}
+                        <h5 class="text-danger">{{toLocale this.course.fee.price}}</h5>
+                    {{/if}}
+                    {{#if this.course.fee.sale}}
+                        <h5 class="text-warning">Sale off: {{this.course.fee.sale}}%</h5>
+                    {{/if}}
                     <p class="card-text">
                         {{{this.course.minDesc}}}
                     </p>
@@ -45,8 +54,17 @@
                         <h5 class="text-danger">Incompleted</h5>
                     {{/if}}
                     <h6 class="text-primary pt-4">{{this.course.category.name}}</h6>
-                    <h5 class="text-danger">{{this.course.fee.price}} VND</h5>
-                    <h5 class="text-warning">Sale off: {{this.course.fee.sale}}%</h5>
+                    {{#if this.course.fee.sale}}
+                        <div class="side-side">
+                            <h5><del>{{toLocale this.course.fee.price}}</del></h5>
+                            <h5 class="text-danger ml-2">{{calSale this.course.fee.price this.course.fee.sale}}</h5>
+                        </div>
+                    {{else}}
+                        <h5 class="text-danger">{{toLocale this.course.fee.price}}</h5>
+                    {{/if}}
+                    {{#if this.course.fee.sale}}
+                        <h5 class="text-warning">Sale off: {{this.course.fee.sale}}%</h5>
+                    {{/if}}
                     <p class="card-text">
                         {{{this.course.minDesc}}}
                     </p>
@@ -77,8 +95,17 @@
                         <h5 class="text-danger">Incompleted</h5>
                     {{/if}}
                     <h6 class="text-primary pt-4">{{this.category.name}}</h6>
-                    <h5 class="text-danger">{{this.fee.price}} VND</h5>
-                    <h5 class="text-warning">Sale off: {{this.fee.sale}}%</h5>
+                    {{#if this.fee.sale}}
+                        <div class="side-side">
+                            <h5><del>{{toLocale this.fee.price}}</del></h5>
+                            <h5 class="text-danger ml-2">{{calSale this.fee.price this.fee.sale}}</h5>
+                        </div>
+                    {{else}}
+                        <h5 class="text-danger">{{toLocale this.fee.price}}</h5>
+                    {{/if}}
+                    {{#if this.fee.sale}}
+                        <h5 class="text-warning">Sale off: {{this.fee.sale}}%</h5>
+                    {{/if}}
                     <p class="card-text">
                         {{{this.minDesc}}}
                     </p>
@@ -126,6 +153,13 @@
 
         a.whitelink:link, a.whitelink:visited {
             color: white;
+        }
+
+        .side-side {
+            display: inline;
+        }
+        .side-side > h5 {
+            display: inline-block;
         }
     </style>
 {{/section}}

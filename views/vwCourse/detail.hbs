@@ -10,9 +10,19 @@
         </div>
     </h5>
     <div class="card-body">
-        <img src="/public/images/{{morecourse.course.teacher._id}}/{{morecourse.course._id}}/{{morecourse.course.smallPicture}}" alt="{{morecourse.course.title}}" class="limit">
-        <h3 class="card-text mt-3">Price: <span class="text-danger font-weight-bold">{{toLocale morecourse.course.fee.price}}</span></h3>
-        <h4 class="card-text">Sale off: <span class="text-warning font-weight-bold">{{morecourse.course.fee.sale}}%</span></h4>
+        <img src="/public/images/{{morecourse.course.teacher._id}}/{{morecourse.course._id}}/{{morecourse.course.smallPicture}}" alt="{{morecourse.course.title}}" class="limit"><br>
+        {{#if morecourse.course.fee.sale}}
+            <div class="side-side">
+                <h3 class="card-text mt-3">Price: <span><del>{{toLocale morecourse.course.fee.price}}</del></span></h3>
+                <h3 class="card-text mt-3 text-danger font-weight-bold ml-2">{{calSale morecourse.course.fee.price morecourse.course.fee.sale}}</h3>
+            </div>
+        {{else}}
+            <h3 class="card-text mt-3">Price: <span class="text-danger font-weight-bold">{{toLocale morecourse.course.fee.price}}</span></h3>
+        {{/if}}
+        {{#if morecourse.course.fee.sale}}
+            <h4 class="card-text">Sale off: <span class="text-warning font-weight-bold">{{morecourse.course.fee.sale}}%</span></h4>
+        {{/if}}
+
         <p class="card-text text-success">({{morecourse.course.rateamount}} ratings) {{morecourse.studentNum}} students</p>
         <p class="card-text">
             <h4>Description:</h4>{{{morecourse.course.fullDesc}}}
@@ -111,8 +121,17 @@
                                     <h5 class="text-danger">Incompleted</h5>
                                 {{/if}}
                                 <h6 class="text-primary pt-4">{{this.course.category.name}}</h6>
-                                <h5 class="text-danger">{{toLocale this.course.fee.price}}</h5>
-                                <h5 class="text-warning">Sale off: {{this.course.fee.sale}}%</h5>
+                                {{#if this.course.fee.sale}}
+                                    <div class="side-side">
+                                        <h5><del>{{toLocale this.course.fee.price}}</del></h5>
+                                        <h5 class="text-danger ml-2">{{calSale this.course.fee.price this.course.fee.sale}}</h5>
+                                    </div>
+                                {{else}}
+                                    <h5 class="text-danger">{{toLocale this.course.fee.price}}</h5>
+                                {{/if}}
+                                {{#if this.course.fee.sale}}
+                                    <h5 class="text-warning">Sale off: {{this.course.fee.sale}}%</h5>
+                                {{/if}}
                                 <p class="card-text">
                                     {{{this.course.minDesc}}}
                                 </p>
@@ -210,6 +229,15 @@
 
         .limit {
             width: 50vw;
+        }
+        .side-side {
+            display: inline;
+        }
+        .side-side > h5 {
+            display: inline-block;
+        }
+        .side-side > h3 {
+            display: inline-block;
         }
     </style>
 {{/section}}

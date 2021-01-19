@@ -150,7 +150,7 @@ router.post('/', async (req, res) => {
 })
 
 router.get('/mycourse', async (req, res) => {
-    if(req.user._doc.role === 1) {
+    if(req.user._doc.role === 1 || req.user._doc.role === 2) {
         var courses = await Course.find(
             {
                 teacher: req.user ? req.user._doc._id : null

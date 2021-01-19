@@ -257,12 +257,16 @@ router.get('/detail', authenticate.checkNotLocked, async (req, res) => {
                 }]
             }).sort({
                 studentNum: -1 // Descending
-            }).limit(5).lean()
-            for(i in altMorecourses) {
-                if(!altMorecourses[i].course.category) {
-                    delete altMorecourses[i]
-                }
-            }
+            }).lean()
+            let altX = altMorecourses.filter((item) => {
+                return item.course.category != null
+            })
+            let altY = altX.slice(0, 5)
+            //console.log(altMorecourses)
+            //for (i = 0; i < 5; i++) {
+            //    console.log(altMorecourses[i])
+            //    altX.push(altMorecourses[i])
+            //}
 
             const coursecontent = await CourseContent.findOne({
                 course: utils.convertId(courseId)
@@ -280,7 +284,7 @@ router.get('/detail', authenticate.checkNotLocked, async (req, res) => {
                 user: req.user ? req.user._doc : null,
                 morecourse,
                 isIn,
-                altMorecourses,
+                altMorecourses: altY,
                 coursecontent,
                 preview,
                 alreadyFavor: student
