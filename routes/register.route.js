@@ -1,46 +1,23 @@
-const express = require('express')
-const router = express.Router()
-const User = require('../models/user')
-const bcrypt = require('bcrypt')
-const validate = require('../middlewares/validation')
-const authenticate = require('../middlewares/authentication')
+const express = require('express');
+const router = express.Router();
+const User = require('../models/user');
+const bcrypt = require('bcrypt');
+const validate = require('../middlewares/validation');
+const authenticate = require('../middlewares/authentication');
+const RegCtrl = require('../controllers/register.controller');
 
-router.get('/', authenticate.checkNotAuthenticated, authenticate.checkNotLocked, (req, res) => {
-    res.render('register')
-})
+router.get(
+  '/',
+  authenticate.checkNotAuthenticated,
+  authenticate.checkNotLocked,
+  RegCtrl.getRegister
+);
 
-router.post('/', authenticate.checkNotAuthenticated, validate.validateRegister(), async (req, res) => {
-    const {username, email, password, fullname} = req.body
+router.post(
+  '/',
+  authenticate.checkNotAuthenticated,
+  validate.validateRegister(),
+  RegCtrl.postRegister
+);
 
-    if (!res.locals.fail) {
-        try {
-            const hashedPassword = await bcrypt.hash(password, 10)
-
-            const user = new User({
-                username,
-                fullname,
-                email,
-                password: hashedPassword,
-                role: 0,
-                activated: false
-            })
-            await user.save()
-            res.redirect('/login')
-        } catch(err) {
-            console.log(err)
-            res.render('register', {
-                username,
-                fullname,
-                email
-            })
-        }
-    } else {
-        res.render('register', {
-            username,
-            fullname,
-            email
-        })
-    }
-})
-
-module.exports = router
+module.exports = router;

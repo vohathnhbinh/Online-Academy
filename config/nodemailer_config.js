@@ -1,17 +1,25 @@
-const nodemailer = require('nodemailer')
+const nodemailer = require('nodemailer');
 
-const mailInit = (transporter) => {
-    nodemailer.createTestAccount((err, account) => {
-        if(err) console.log(err)
-        transporter = nodemailer.createTransport({
-            host: 'smtp.ethereal.email',
-            port: 587,
-            secure: false,
-            auth: {
-                user: account.user,
-                pass: account.pass
-            }
-        })
-    })
-}
-module.exports = mailInit
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    type: 'OAuth2',
+    user: process.env.EMAIL_USERNAME,
+    password: process.env.EMAIL_PASSWORD,
+    clientId: process.env.CLIENTID,
+    clientSecret: process.env.CLIENTSECRET,
+    refreshToken: process.env.REFRESHTOKEN,
+  },
+});
+
+const checkMailConnection = (Transporter) => {
+  Transporter.verify((err, success) => {
+    if (err) console.log(err);
+    if (success) console.log('Server is ready to handle mail');
+  });
+};
+
+module.exports = {
+  transporter,
+  checkMailConnection,
+};

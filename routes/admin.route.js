@@ -1,347 +1,38 @@
-const express = require('express')
-const router = express.Router()
-const Category = require('../models/category')
-const Course = require('../models/course')
-const User = require('../models/user')
-const utils = require('../config/utils')
-const authenticate = require('../middlewares/authentication')
+const express = require('express');
+const router = express.Router();
+const authenticate = require('../middlewares/authentication');
+const AdminCtrl = require('../controllers/admin.controller');
 
-router.get('/', authenticate.checkAdmin, (req, res) => {
-    res.render('vwAdmin/admin', {
-        user: req.user ? req.user._doc : null
-    })
-})
+router.get('/', authenticate.checkAdmin, AdminCtrl.getAdmin);
 
-router.get('/category', authenticate.checkAdmin, async(req, res) => {
-    try {
-        const categories = await Category.find({}).lean()
+router.get('/category', authenticate.checkAdmin, AdminCtrl.getCategory);
 
-        const catTYPE = categories.map(item => item.type)
-        .filter((value, index, self) => self.indexOf(value) === index)
+router.post('/category', AdminCtrl.postCategory);
 
-        res.render('vwAdmin/category', {
-            user: req.user ? req.user._doc : null,
-            cat: categories,
-            catTYPE
-        })
-    } catch(err) {
-        console.log(err)
-    }
-})
+router.get('/delete', AdminCtrl.deleteCategory);
 
-router.post('/category', async(req, res) => {
-    try {
-        const id = req.query.id
+router.get('/is-available', AdminCtrl.getAvailable);
 
-        const catname = req.body.catname
-        const updatedCatName = req.body[catname]
+router.post('/addcat', AdminCtrl.postAddCat);
 
-        const cattype = req.body.cattype
-        const updatedCatType = req.body[cattype]
+router.get('/course', authenticate.checkAdmin, AdminCtrl.getCourse);
 
-        const updatedCat = {
-            name: updatedCatName,
-            type: updatedCatType
-        }
-        for(let i in updatedCat){
-            if(!updatedCat[i]){
-                delete updatedCat[i]
-            }
-        }
+router.get('/disable', AdminCtrl.getDisable);
 
-        const category = await Category.findOneAndUpdate(
-            {
-                _id: utils.convertId(id)
-            }, updatedCat,
-            {
-                new: true
-            }
-        )
-        res.redirect('category')
-    } catch(err) {
-        console.log(err)
-    }
-})
+router.get('/enable', AdminCtrl.getEnable);
 
-router.get('/delete', async(req, res) => {
-    try {
-        const id = req.query.id
-        const category = await Category.findOne({
-            _id: utils.convertId(id)
-        })
+router.post('/filter', AdminCtrl.postFilter);
 
-        if(category.studentNum > 0) {
-            const categories = await Category.find({}).lean()
+router.get('/sort-fee', AdminCtrl.getSortFee);
 
-            const catTYPE = categories.map(item => item.type)
-            .filter((value, index, self) => self.indexOf(value) === index)
+router.get('/sort-rating', AdminCtrl.getSortRating);
 
-            res.render('vwAdmin/category', {
-                user: req.user ? req.user._doc : null,
-                cat: categories,
-                catTYPE,
-                error: true
-            })
-        } else {
-            await Category.deleteOne({
-                _id: utils.convertId(id)
-            })
-            res.redirect('category')
-        }
-    } catch(err) {
-        console.log(err)
-    }
-})
+router.get('/user', authenticate.checkAdmin, AdminCtrl.getUser);
 
-router.get('/is-available', async(req, res) => {
-    const catname = req.query.catname
-    try {
-        const category = await Category.findOne({
-            name: catname
-        })
+router.get('/maketeacher', AdminCtrl.getMakeTeacher);
 
-        if(category) return res.json(false)
-        res.json(true)
-    } catch {
-        console.log(err)
-    }
-})
+router.get('/lock', AdminCtrl.getLock);
 
-router.post('/addcat', async(req, res) => {
-    const {catName, catType} = req.body
-    try {
-        const category = new Category({
-            name: catName,
-            type: catType
-        })
+router.get('/unlock', AdminCtrl.getUnlock);
 
-        await category.save()
-        res.redirect('category')
-    } catch(err) {
-        console.log(err)
-    }
-})
-
-router.get('/course', authenticate.checkAdmin, async(req, res) => {
-    try {
-        const courses = await Course.find({}).
-        populate('teacher').populate('category')
-        .sort({
-            createdOn: -1,
-            updatedOn: -1
-        })
-        .lean()
-        req.session.courses = courses
-
-        const categories = await Category.find({}).lean()
-        const teachers = await User.find({
-            role: 1
-        }).lean()
-
-        res.render('vwAdmin/xcourse', {
-            user: req.user ? req.user._doc : null,
-            courses,
-            cat: categories,
-            teachers
-        })
-    } catch(err) {
-        console.log(err)
-    }
-})
-
-router.get('/disable', async(req, res) => {
-    const courseId = req.query.courseId
-    try {
-        await Course.updateOne(
-            {
-                _id: utils.convertId(courseId)
-            },
-            {
-                $set: {
-                    disabled: true
-                }
-            }
-        )
-        res.redirect('course')
-    } catch(err) {
-        console.log(err)
-    }
-})
-
-router.get('/enable', async(req, res) => {
-    const courseId = req.query.courseId
-    try {
-        await Course.updateOne(
-            {
-                _id: utils.convertId(courseId)
-            },
-            {
-                $set: {
-                    disabled: false
-                }
-            }
-        )
-        res.redirect('course')
-    } catch(err) {
-        console.log(err)
-    }
-})
-
-router.post('/filter', async(req, res) => {
-    try {
-        const {category, teacher} = req.body
-
-        let courses
-        if(category && teacher) {
-            courses = await Course.find({
-                category: utils.convertId(category),
-                teacher: utils.convertId(teacher)
-            }).lean()
-        } else if (category) {
-            courses = await Course.find({
-                category: utils.convertId(category)
-            }).lean()
-        } else if (teacher) {
-            courses = await Course.find({
-                teacher: utils.convertId(teacher)
-            }).lean()
-        }
-        req.session.courses = courses
-
-        const categories = await Category.find({}).lean()
-        const teachers = await User.find({
-            role: 1
-        }).lean()
-
-        res.render('vwAdmin/xcourse', {
-            user: req.user ? req.user._doc : null,
-            courses,
-            cat: categories,
-            teachers
-        })
-    } catch(err) {
-        console.log(err)
-    }
-})
-
-router.get('/sort-fee', async (req, res) => {
-    const courses = req.session.courses
-    try {
-        const categories = await Category.find({}).lean()
-        courses.sort((a, b) => a.fee.price - b.fee.price)
-
-        const teachers = await User.find({
-            role: 1
-        }).lean()
-
-        res.render('vwAdmin/xcourse', {
-            user: req.user ? req.user._doc : null,
-            cat: categories,
-            courses,
-            teachers,
-            empty: courses.length === 0
-        })
-    } catch (err) {
-        console.log(err)
-    }
-})
-
-router.get('/sort-rating', async (req, res) => {
-    const courses = req.session.courses
-    try {
-        const categories = await Category.find({}).lean()
-        courses.sort((a, b) => b.rate - a.rate)
-
-        const teachers = await User.find({
-            role: 1
-        }).lean()
-
-        res.render('vwAdmin/xcourse', {
-            user: req.user ? req.user._doc : null,
-            cat: categories,
-            courses,
-            teachers,
-            empty: courses.length === 0
-        })
-    } catch (err) {
-        console.log(err)
-    }
-})
-
-router.get('/user', authenticate.checkAdmin, async (req, res) => {
-    try {
-        const students = await User.find({
-            role: 0
-        }).lean()
-        const teachers = await User.find({
-            role: 1
-        }).lean()
-
-        res.render('vwAdmin/user', {
-            user: req.user ? req.user._doc : null,
-            students,
-            teachers
-        })
-    } catch (err) {
-        console.log(err)
-    }
-})
-
-router.get('/maketeacher', async (req, res) => {
-    const userId = req.query.id
-    try {
-        await User.updateOne(
-            {
-                _id: utils.convertId(userId)
-            },
-            {
-                $set: {
-                    role: 1
-                }
-            }
-        )
-        res.redirect('user')
-    } catch (err) {
-        console.log(err)
-    }
-})
-
-router.get('/lock', async (req, res) => {
-    const userId = req.query.id
-    try {
-        await User.updateOne(
-            {
-                _id: utils.convertId(userId)
-            },
-            {
-                $set: {
-                    locked: true
-                }
-            }
-        )
-        res.redirect('user')
-    } catch (err) {
-        console.log(err)
-    }
-})
-
-router.get('/unlock', async (req, res) => {
-    const userId = req.query.id
-    try {
-        await User.updateOne(
-            {
-                _id: utils.convertId(userId)
-            },
-            {
-                $set: {
-                    locked: false
-                }
-            }
-        )
-        res.redirect('user')
-    } catch (err) {
-        console.log(err)
-    }
-})
-
-module.exports = router
+module.exports = router;
