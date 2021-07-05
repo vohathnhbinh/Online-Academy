@@ -51,15 +51,19 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 const mongoose = require('mongoose');
-mongoose.connect(process.env.DATABASE_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-const db = mongoose.connection;
-db.on('error', (error) => console.error(error));
-db.once('open', () => console.log('Database connected'));
+mongoose
+  .connect(process.env.DATABASE_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then((result) => {
+    console.log('connected to MongoDB');
+  })
+  .catch((error) => {
+    console.log('error connecting to MongoDB:', error.message);
+  });
 
-checkMailConnection(transporter);
+// checkMailConnection(transporter);
 
 app.use('/', require('./routes/home.route'));
 app.use('/login', require('./routes/login.route')(passport));

@@ -63,7 +63,7 @@ module.exports = {
           activated: true,
         };
         await User.findByIdAndUpdate(req.user.user_id, updatedUser);
-        res.redirect('home');
+        res.redirect('../');
       } else {
         res.redirect('/');
       }

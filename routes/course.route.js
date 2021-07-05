@@ -12,7 +12,7 @@ router.get(
   CourseCtrl.getAdd
 );
 
-router.post('/add', upload.single('fuMain'), CourseCtrl.postAdd);
+router.post('/add', CourseCtrl.upload.single('fuMain'), CourseCtrl.postAdd);
 
 router.get('/has-joined', CourseCtrl.getHasJoin);
 

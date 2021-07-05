@@ -25,7 +25,7 @@ router.get('/mycourse', ProfileCtrl.getMyCourse);
 
 router.get('/edit', ProfileCtrl.getEdit);
 
-router.post('/edit', upload.single('fuMain'), ProfileCtrl.postEdit);
+router.post('/edit', ProfileCtrl.upload.single('fuMain'), ProfileCtrl.postEdit);
 
 router.get('/markcomplete', ProfileCtrl.getMarkComplete);
 

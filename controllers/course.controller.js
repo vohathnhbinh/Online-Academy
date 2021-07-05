@@ -23,6 +23,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 module.exports = {
+  upload,
+
   getTest: async (res, req, next) => {
     try {
       let category = await Category.findOne({

@@ -30,6 +30,8 @@ const upload = multer({
 });
 
 module.exports = {
+  upload,
+
   getProfile: (req, res) => {
     res.render('vwProfile/profile', {
       user: req.user ? req.user._doc : null,

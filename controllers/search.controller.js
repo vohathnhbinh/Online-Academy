@@ -73,7 +73,7 @@ module.exports = {
     }
   },
 
-  getSortRaing: async (req, res, next) => {
+  getSortRating: async (req, res, next) => {
     const courses = req.session.courses;
     try {
       const categories = await Category.find({}).lean();
