@@ -189,12 +189,13 @@ module.exports = {
 
       const pages = [];
       let paginationNum = 0;
-      if (courses.length / perPage == parseInt(courses.length / perPage)) {
+      if (courses.length % perPage === 0) {
         paginationNum = courses.length / perPage;
-      } else paginationNum = parseInt(courses.length / perPage) + 1;
+      } else paginationNum = Math.floor(courses.length / perPage) + 1;
       for (i = 1; i <= paginationNum; i++) {
         pages.push(i);
       }
+      console.log(pages);
 
       res.render('vwCourse/course', {
         user: req.user ? req.user._doc : null,
