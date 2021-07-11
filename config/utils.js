@@ -1,15 +1,15 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const convertId = (id) => {
-    if(mongoose.isValidObjectId(id)) {
-        return id
-    } else {
-        return mongoose.Types.ObjectId(id)
-    }
-}
+  if (mongoose.isValidObjectId(id)) {
+    return id;
+  } else {
+    return mongoose.Types.ObjectId(id);
+  }
+};
 
 const utils = {
-    convertId
-}
+  convertId,
+};
 
-module.exports = utils
+module.exports = utils;

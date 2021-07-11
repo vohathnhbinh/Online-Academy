@@ -35,66 +35,66 @@
                     {{#unless this.disabled}}
                         <div class="col-sm-4 mb-3">
                             {{#isHot this.rate}}
-                            <div class="card h-100 border-danger">
+                                <div class="card h-100 border-danger">
                             {{else}}
                                 {{#isNew this.createdOn}}
-                            <div class="card h-100 border-warning">
+                                    <div class="card h-100 border-warning">
                                 {{else}}
                                     {{#if this.fee.sale}}
-                            <div class="card h-100 border-primary">
+                                        <div class="card h-100 border-primary">
                                     {{else}}
-                            <div class="card h-100">        
+                                        <div class="card h-100">        
                                     {{/if}}
                                 {{/isNew}}
                             {{/isHot}}
-                                <img src="/public/images/{{this.teacher._id}}/{{this._id}}/{{this.smallPicture}}" class="card-img-top" alt="{{this.title}}">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between">
-                                        <h5 class="card-title">{{this.title}}</h5>
-                                        {{#if ../favorite}}
-                                            <a href="/profile/delete?courseId={{this._id}}" class="btn btn-danger">X</a>
-                                        {{/if}}
-                                        {{#if ../disable}}
-                                            <a href="/admin/disable?courseId={{this._id}}" class="btn btn-danger">Disable</a>
-                                        {{/if}}
-                                    </div>
-                                    <h6 class="card-subtitle">by {{this.teacher.fullname}}</h6>
-                                    {{#if this.completed}}
-                                        <h5 class="text-success">Completed</h5>
-                                    {{else}}
-                                        <h5 class="text-danger">Incompleted</h5>
-                                    {{/if}}
-                                    <h6 class="text-primary pt-4">{{this.category.name}}</h6>
-                                    {{#if this.fee.sale}}
-                                        <div class="side-side">
-                                            <h5><del>{{toLocale this.fee.price}}</del></h5>
-                                            <h5 class="text-danger ml-2">{{calSale this.fee.price this.fee.sale}}</h5>
+                                    <img src="/public/images/{{this.teacher._id}}/{{this._id}}/{{this.smallPicture}}" class="card-img-top" alt="{{this.title}}">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="card-title">{{this.title}}</h5>
+                                            {{#if ../favorite}}
+                                                <a href="/profile/delete?courseId={{this._id}}" class="btn btn-danger">X</a>
+                                            {{/if}}
+                                            {{#if ../disable}}
+                                                <a href="/admin/disable?courseId={{this._id}}" class="btn btn-danger">Disable</a>
+                                            {{/if}}
                                         </div>
-                                    {{else}}
-                                        <h5 class="text-danger">{{toLocale this.fee.price}}</h5>
-                                    {{/if}}
-                                    {{#if this.fee.sale}}
-                                        <h5 class="text-warning">Sale off: {{this.fee.sale}}%</h5>
-                                    {{/if}}
-                                    <p class="card-text">
-                                        {{{this.minDesc}}}
-                                    </p>
-                                    <input id="{{this.title}}" name="{{this.title}}" class="kv-ltr-theme-svg-star rating-loading mt-3" value="{{this.rate}}" dir="ltr" data-size="sm" readonly="true">
-                                    {{this.rateamount}} ratings
-                                </div>
-                                <div class="card-footer">
-                                    <a class="btn btn-sm btn-outline-primary mr-2" href="/course/detail?courseId={{this._id}}" role="button">
-                                        <i class="fa fa-eye" aria-hidden="true"></i>
-                                        Details
-                                    </a>
-                                    {{#ifIdEquals ../user._id this.teacher._id}}
-                                        <a class="btn btn-sm btn-outline-primary" href="/profile/edit?courseId={{this._id}}" role="button">
-                                            <i class="fa fa-edit" aria-hidden="true"></i>
-                                            Edit
+                                        <h6 class="card-subtitle">by {{this.teacher.fullname}}</h6>
+                                        {{#if this.completed}}
+                                            <h5 class="text-success">Completed</h5>
+                                        {{else}}
+                                            <h5 class="text-danger">Incompleted</h5>
+                                        {{/if}}
+                                            <h6 class="text-primary pt-4">{{this.category.name}}</h6>
+                                        {{#if this.fee.sale}}
+                                            <div class="side-side">
+                                                <h5><del>{{toLocale this.fee.price}}</del></h5>
+                                                <h5 class="text-danger ml-2">{{calSale this.fee.price this.fee.sale}}</h5>
+                                            </div>
+                                        {{else}}
+                                            <h5 class="text-danger">{{toLocale this.fee.price}}</h5>
+                                        {{/if}}
+                                        {{#if this.fee.sale}}
+                                            <h5 class="text-warning">Sale off: {{this.fee.sale}}%</h5>
+                                        {{/if}}
+                                        <p class="card-text">
+                                            {{{this.minDesc}}}
+                                        </p>
+                                        <input id="{{this.title}}" name="{{this.title}}" class="kv-ltr-theme-svg-star rating-loading mt-3" value="{{this.rate}}" dir="ltr" data-size="sm" readonly="true">
+                                        {{this.rateamount}} ratings
+                                    </div>
+                                    <div class="card-footer">
+                                        <a class="btn btn-sm btn-outline-primary mr-2" href="/course/detail?courseId={{this._id}}" role="button">
+                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                            Details
                                         </a>
-                                    {{/ifIdEquals}}
+                                        {{#ifIdEquals ../user._id this.teacher._id}}
+                                            <a class="btn btn-sm btn-outline-primary" href="/profile/edit?courseId={{this._id}}" role="button">
+                                                <i class="fa fa-edit" aria-hidden="true"></i>
+                                                Edit
+                                            </a>
+                                        {{/ifIdEquals}}
+                                    </div>
                                 </div>
-                            </div>
                         </div>
                     {{/unless}}
                 {{/each}}
